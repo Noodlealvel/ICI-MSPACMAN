@@ -14,5 +14,10 @@ public class AlgoritmicGhosts extends GhostController {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String getName() {
+		return "grupo04";
+	}
 
 }

@@ -20,7 +20,7 @@ public class AlgoritmicPacman extends PacmanController {
 			return game.getApproximateNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), DM.EUCLID);
 		}
 		nearestGhost = getNearestGhost(game,limit/2, true);
-		if(nearestGhost != null) {
+		if(nearestGhost != null && game.getGhostEdibleTime(nearestGhost) >= limit/2) {
 			GameView.addLines(game,Color.GREEN,game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(nearestGhost));
 			return game.getNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), DM.EUCLID);
 		}
@@ -54,6 +54,10 @@ public class AlgoritmicPacman extends PacmanController {
 			}
 		}
 		return nearestGhost;
+	}
+	@Override
+	public String getName() {
+		return "grupo04";
 	}
 
 }
