@@ -15,7 +15,7 @@ public class Prac1Test {
 		 .setSightLimit(0)
 		 .build();
 		 PacmanController pacMan = new AlgoritmicPacman();
-		 GhostController ghosts = new AlgoritmicGhosts();
+		 GhostController ghosts = new Ghosts();
 
 		 System.out.println(
 		 executor.runGame(pacMan, ghosts, 20)

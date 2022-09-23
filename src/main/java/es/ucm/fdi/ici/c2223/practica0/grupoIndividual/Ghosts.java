@@ -25,13 +25,14 @@ public class Ghosts extends GhostController {
 					moves.put(ghostType, game.getApproximateNextMoveAwayFromTarget(
 							game.getGhostCurrentNodeIndex(ghostType), pacman, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
 				}
-			} else {
-				if (rnd.nextFloat() < 0.9) {
-					moves.put(ghostType, game.getApproximateNextMoveTowardsTarget(
-							game.getGhostCurrentNodeIndex(ghostType), pacman, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
-				} else {
-					moves.put(ghostType, getNextRandomMove());
-				}
+				else {
+					if (rnd.nextFloat() < 0.9) {
+						moves.put(ghostType, game.getNextMoveTowardsTarget(
+								game.getGhostCurrentNodeIndex(ghostType), pacman, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
+					} else {
+						moves.put(ghostType, getNextRandomMove());
+					}
+			} 
 			}
 		}
 		return moves;
