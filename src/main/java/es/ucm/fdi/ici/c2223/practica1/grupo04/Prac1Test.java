@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2223.grupo04.PabloPardosAlvaroVelasco;
+package es.ucm.fdi.ici.c2223.practica1.grupo04;
 
 import es.ucm.fdi.ici.c2223.practica0.grupoIndividual.Ghosts;
 import es.ucm.fdi.ici.c2223.practica0.grupoIndividual.MsPacman;
