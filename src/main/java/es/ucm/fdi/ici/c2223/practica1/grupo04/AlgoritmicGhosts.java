@@ -9,15 +9,19 @@ import pacman.game.Game;
 
 public class AlgoritmicGhosts extends GhostController {
 
+	public AlgoritmicGhosts()	{
+
+		 super();
+
+		 setName("Ghosts01");
+
+		 setTeam("Team04");
+
+}
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	public String getName() {
-		return "grupo04";
 	}
 
 }

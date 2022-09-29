@@ -11,6 +11,16 @@ import pacman.game.GameView;
 
 public class AlgoritmicPacman extends PacmanController {
 
+	
+	public AlgoritmicPacman()	{
+
+			 super();
+
+			 setName("MsPacMan01");
+
+			 setTeam("Team04");
+
+	 }
 	@Override
 	public MOVE getMove(Game game, long timeDue) {
 		int limit = 50;
@@ -54,10 +64,6 @@ public class AlgoritmicPacman extends PacmanController {
 			}
 		}
 		return nearestGhost;
-	}
-	@Override
-	public String getName() {
-		return "grupo04";
 	}
 
 }
