@@ -15,10 +15,10 @@ public class Prac1Test {
 		 .setSightLimit(0)
 		 .build();
 		 PacmanController pacMan = new AlgoritmicPacman();
-		 GhostController ghosts = new Ghosts();
+		 GhostController ghosts = new es.ucm.fdi.ici.c2122.practica1.grupo01.Ghosts();
 
 		 System.out.println(
-		 executor.runGame(pacMan, ghosts, 20)
+		 executor.runGame(pacMan, ghosts, 50)
 		 );
 		 }
 }
