@@ -14,10 +14,10 @@ import pacman.game.GameView;
 public class MsPacMan extends PacmanController {
 
 	final static private int FLEELIMIT = 40;
-	final static private int EATLIMIT = 20;
-	final static private int EATTIMELIMIT = 80;
-	final static private int PPILLDANGERRADIUS = 80;
-	final static private int CHASELIMITER = 10;
+	final static private int EATLIMIT = 80;
+	final static private int EATTIMELIMIT = 20;
+	final static private int PPILLDANGERRADIUS = 90;
+	final static private int CHASELIMITER = 15;
 	final static private int EXPLORERADIUS = 30;
 	private GHOST lastNearGhost;
 	private int closeChaseCounter;
@@ -94,7 +94,7 @@ public class MsPacMan extends PacmanController {
 		
 	}
 	
-	private int EatLimiterTimer(Game game) {
+	private int EatLimiter(Game game) {
 		switch (game.getGhostCurrentEdibleScore()) {
 	    case 1600:
 	    	return (int) (EATLIMIT * 1.5);
@@ -109,7 +109,7 @@ public class MsPacMan extends PacmanController {
 		}
 	}
 
-	private int EatLimiter(Game game) {
+	private int EatLimiterTimer(Game game) {
 		switch (game.getGhostCurrentEdibleScore()) {
 	    case 1600:
 	    	return (int) (EATTIMELIMIT * 0.5);
