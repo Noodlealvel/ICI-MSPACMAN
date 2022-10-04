@@ -14,8 +14,8 @@ import pacman.game.GameView;
 public class MsPacMan extends PacmanController {
 
 	final static private int FLEELIMIT = 40;
-	final static private int EATLIMIT = 40;
-	final static private int EATTIMELIMIT = 30;
+	final static private int EATLIMIT = 20;
+	final static private int EATTIMELIMIT = 80;
 	final static private int PPILLDANGERRADIUS = 80;
 	final static private int CHASELIMITER = 10;
 	final static private int EXPLORERADIUS = 30;
@@ -78,7 +78,7 @@ public class MsPacMan extends PacmanController {
 		//Resetea el chase counter porque nadie le persique
 		closeChaseCounter = 0;
 		GHOST nearestEdibleGhost = getNearestGhost(game,pacmanIndex,EatLimiter(game), true);
-		if(nearestEdibleGhost != null && game.getGhostEdibleTime(nearestEdibleGhost) >= EATTIMELIMIT) {
+		if(nearestEdibleGhost != null && game.getGhostEdibleTime(nearestEdibleGhost) >= EatLimiterTimer(game)) {
 			//Si está cerca del fantasma comestible se lo come si le sale rentable por puntuación y si no le queda mucho para quitarse el comestible
 			GameView.addLines(game,Color.GREEN,pacmanIndex,game.getGhostCurrentNodeIndex(nearestEdibleGhost));
 			return game.getNextMoveTowardsTarget(pacmanIndex, game.getGhostCurrentNodeIndex(nearestEdibleGhost), game.getPacmanLastMoveMade(), DM.EUCLID);
@@ -94,18 +94,33 @@ public class MsPacMan extends PacmanController {
 		
 	}
 	
-	private int EatLimiter(Game game) {
+	private int EatLimiterTimer(Game game) {
 		switch (game.getGhostCurrentEdibleScore()) {
 	    case 1600:
-	    	return EATLIMIT;
+	    	return (int) (EATLIMIT * 1.5);
 	    case 800:
 	    	return (int) (EATLIMIT * 0.8);
 	    case 400:
-	    	return (int)(EATLIMIT * 0.6);
+	    	return (int)(EATLIMIT * 0.7);
 	    case 200:
-	    	return (int)(EATLIMIT * 0.4);
+	    	return (int)(EATLIMIT * 0.5);
 	    default:
 	    	return EATLIMIT;
+		}
+	}
+
+	private int EatLimiter(Game game) {
+		switch (game.getGhostCurrentEdibleScore()) {
+	    case 1600:
+	    	return (int) (EATTIMELIMIT * 0.5);
+	    case 800:
+	    	return (int) (EATTIMELIMIT * 0.6);
+	    case 400:
+	    	return (int) (EATTIMELIMIT * 0.8);
+	    case 200:
+	    	return (int) (EATTIMELIMIT * 1.5);
+	    default:
+	    	return EATTIMELIMIT;
 		}
 	}
 
@@ -191,7 +206,7 @@ public class MsPacMan extends PacmanController {
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			if(game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 )) {
 				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
 				if((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= limit) {
 					nearestGhost = ghost;
