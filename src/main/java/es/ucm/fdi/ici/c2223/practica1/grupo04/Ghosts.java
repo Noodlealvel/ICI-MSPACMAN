@@ -9,7 +9,7 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class AlgoritmicGhosts extends GhostController {
+public class Ghosts extends GhostController {
 
 	private EnumMap<GHOST, MOVE> moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 	private MOVE[] allMoves = MOVE.values();
@@ -19,13 +19,13 @@ public class AlgoritmicGhosts extends GhostController {
 	private final int LimitPPClose= 10;
 	
 	
-	public AlgoritmicGhosts()	{
+	public Ghosts()	{
 
 		 super();
 
-		 setName("Ghosts01");
+		 setName("Ghosts T");
 
-		 setTeam("Team04");
+		 setTeam("Team04-2223");
 
 }
 	@Override

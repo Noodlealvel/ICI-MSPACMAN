@@ -1,7 +1,5 @@
 package es.ucm.fdi.ici.c2223.practica1.grupo04;
 
-import es.ucm.fdi.ici.c2223.practica0.grupoIndividual.Ghosts;
-import es.ucm.fdi.ici.c2223.practica0.grupoIndividual.MsPacman;
 import pacman.Executor;
 import pacman.controllers.GhostController;
 import pacman.controllers.PacmanController;
@@ -14,7 +12,7 @@ public class Prac1Test {
 		 .setScaleFactor(3.0)
 		 .setSightLimit(0)
 		 .build();
-		 PacmanController pacMan = new AlgoritmicPacman();
+		 PacmanController pacMan = new MsPacMan();
 		 GhostController ghosts = new es.ucm.fdi.ici.c2122.practica1.grupo01.Ghosts();
 
 		 System.out.println(
