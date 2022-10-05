@@ -1,5 +1,6 @@
 package es.ucm.fdi.ici.c2223.practica1.grupo04;
 
+import java.awt.Color;
 import java.util.EnumMap;
 import java.util.Random;
 
@@ -8,6 +9,7 @@ import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
+import pacman.game.GameView;
 
 public class Ghosts extends GhostController {
 
@@ -16,7 +18,13 @@ public class Ghosts extends GhostController {
 	private Random rnd = new Random();
 	private int[] ppIndexes;
 	int pacmanPos;
-	private final int LimitPPClose= 10;
+	private final static int LIMITPPCLOSE= 20;
+	private final static GHOST AGGRESSIVE = GHOST.BLINKY;
+	private final static GHOST PPHUNTER = GHOST.PINKY;
+	private final static GHOST FLANKING = GHOST.SUE;
+	private final static GHOST CENTER = GHOST.INKY;
+	private static final int GHOSTCHASELIMIT = 50;
+	private static final int PPILLCLOSELIMIT = 50;
 	
 	
 	public Ghosts()	{
@@ -34,58 +42,117 @@ public class Ghosts extends GhostController {
 		int pacmanPos = game.getPacmanCurrentNodeIndex();
 		ppIndexes=game.getActivePowerPillsIndices();
 		
-		if (game.doesGhostRequireAction(GHOST.PINKY)) // Fantasma que va hacia PPs excepto si queda solo una
+		if (game.doesGhostRequireAction(PPHUNTER)) // Fantasma que va hacia PPs excepto si queda solo una
 		{
-			if (game.isGhostEdible(GHOST.PINKY)) {
-				moves.put(GHOST.PINKY,
-						game.getApproximateNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(GHOST.PINKY), pacmanPos,
-								game.getGhostLastMoveMade(GHOST.PINKY), DM.PATH));
+			if (game.isGhostEdible(PPHUNTER)) {
+				moves.put(PPHUNTER,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(PPHUNTER), pacmanPos,
+								game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
 			} else if (ppIndexes.length > 1) {
-				chasePowerPill(GHOST.PINKY, game);
+				chasePowerPill(PPHUNTER, game);
 			} else {
 				if (rnd.nextFloat() < 0.5) {
-					chasePowerPill(GHOST.PINKY, game);
+					chasePowerPill(PPHUNTER, game);
 				} else {
-					moves.put(GHOST.PINKY,
-							game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(GHOST.PINKY),
-									pacmanPos, game.getGhostLastMoveMade(GHOST.PINKY), DM.PATH));
+					moves.put(PPHUNTER,
+							game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(PPHUNTER),
+									pacmanPos, game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
 				}
 			}
 		}
 
-		if (game.doesGhostRequireAction(GHOST.BLINKY)) // Fantasma agresivo
+		if (game.doesGhostRequireAction(AGGRESSIVE)) // Fantasma agresivo
 		{
-			if (game.isGhostEdible(GHOST.BLINKY) || pacmanCloseToPPill(game)) {
-				moves.put(GHOST.BLINKY,
-						game.getApproximateNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(GHOST.BLINKY),
-								pacmanPos, game.getGhostLastMoveMade(GHOST.BLINKY), DM.EUCLID));
+
+			if (game.isGhostEdible(AGGRESSIVE) || pacmanCloseToPPill(game)) {
+				moves.put(AGGRESSIVE,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(AGGRESSIVE),
+								pacmanPos, game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID));
 			} else {
-				moves.put(GHOST.BLINKY,
-						game.getApproximateNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(GHOST.BLINKY), pacmanPos,
-								game.getGhostLastMoveMade(GHOST.BLINKY), DM.EUCLID));
+				GameView.addLines(game, Color.red, pacmanPos, game.getGhostCurrentNodeIndex(AGGRESSIVE));
+				moves.put(AGGRESSIVE,
+						game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(AGGRESSIVE), pacmanPos,
+								game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID));
 			}
 		}
 	
 		
-		if (game.doesGhostRequireAction(GHOST.INKY))
+		if (game.doesGhostRequireAction(CENTER)) //Fantasma que intenta estar por el centro
 		{
+			int nearestPPill = getIndexOfClosestPPILL(game, CENTER);
+			if (game.isGhostEdible(CENTER) || pacmanCloseToPPill(game)) {
+				moves.put(CENTER,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(CENTER),
+								pacmanPos, game.getGhostLastMoveMade(CENTER), DM.EUCLID));
+			}
+			else if (game.getNumberOfActivePowerPills() > 0 &&  game.getDistance(game.getGhostCurrentNodeIndex(CENTER), nearestPPill, DM.EUCLID) <= PPILLCLOSELIMIT) {
+				moves.put(CENTER,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(CENTER),
+								nearestPPill, game.getGhostLastMoveMade(CENTER), DM.EUCLID));
+			}
+			else moves.put(CENTER,
+					game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(CENTER), pacmanPos,
+							game.getGhostLastMoveMade(CENTER), DM.EUCLID));
 			
 		}
 		
-		if (game.doesGhostRequireAction(GHOST.SUE))
+		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero también perseguir a Pacman
 		{
-			
+			GHOST nearestGhost = getNearestGhost(game, game.getGhostCurrentNodeIndex(FLANKING), GHOSTCHASELIMIT);
+			if(game.isGhostEdible(FLANKING)|| pacmanCloseToPPill(game)) {
+				moves.put(FLANKING,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos,
+								game.getGhostLastMoveMade(FLANKING), DM.PATH));
+			}
+			else if(game.getGhostEdibleTime(AGGRESSIVE) > 0 && game.getShortestPathDistance(game.getGhostCurrentNodeIndex(FLANKING), game.getGhostCurrentNodeIndex(nearestGhost)) <= GHOSTCHASELIMIT) {
+				moves.put(FLANKING,
+						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(FLANKING), game.getGhostCurrentNodeIndex(nearestGhost),
+								game.getGhostLastMoveMade(FLANKING), DM.EUCLID));
+				
+			}
+			else {moves.put(FLANKING,
+					game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos,
+							game.getGhostLastMoveMade(FLANKING), DM.EUCLID));}
 		}
 		
 		return moves;
 	}
 	
+	private GHOST getNearestGhost(Game game,int nodeIndex, int limit) {
+		GHOST nearestGhost = null;
+		double shortestDistance = -1;
+		double distanceGhost = 0;
+		for (GHOST ghost : GHOST.values()) {
+			if(game.getGhostLairTime(ghost) == 0 ) {
+				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+				if((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= limit) {
+					nearestGhost = ghost;
+					shortestDistance = distanceGhost;
+				}
+			}
+		}
+		return nearestGhost;
+	}
+	
+	private int getIndexOfClosestPPILL(Game game, GHOST ghost) {
+		double powerPillDistance;
+		double shortestDistance = -1;
+		int nearestPPill = -1;
+		for(int pillNode : game.getActivePowerPillsIndices()) {
+			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode,DM.EUCLID);
+			if(powerPillDistance < shortestDistance || shortestDistance == -1) {
+				shortestDistance = powerPillDistance;
+				nearestPPill = pillNode;
+			}
+		}
+		return nearestPPill;
+	}
 	public void chasePowerPill (GHOST ghostType, Game game)
 	{
 		int ghostPos=game.getGhostCurrentNodeIndex(ghostType);
 		for (int PP: ppIndexes)
 		{
-			if (game.getDistance(PP, pacmanPos, DM.PATH) >LimitPPClose)
+			if (game.getDistance(PP, pacmanPos, DM.PATH) >LIMITPPCLOSE)
 			{
 				moves.put(ghostType, game.getApproximateNextMoveTowardsTarget(ghostPos, PP, game.getGhostLastMoveMade(ghostType), DM.PATH));
 				break;
@@ -96,7 +163,7 @@ public class Ghosts extends GhostController {
 	
 	private boolean pacmanCloseToPPill(Game game) {
 		for(int PPill : game.getActivePowerPillsIndices()) {
-			if(game.getDistance(PPill, game.getPacmanCurrentNodeIndex(), DM.EUCLID) <= LimitPPClose) {
+			if(game.getDistance(PPill, game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID) <= LIMITPPCLOSE) {
 				return true;
 			}
 		}
