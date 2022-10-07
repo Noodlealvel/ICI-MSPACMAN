@@ -110,7 +110,12 @@ public class Ghosts extends GhostController {
 								game.getGhostLastMoveMade(FLANKING), DM.EUCLID));
 				
 			}
-			else {moves.put(FLANKING,
+			else if (isGhostInPath(game, pacmanPos, AGGRESSIVE)) {
+				moves.put(FLANKING,
+					allMoves[rnd.nextInt(3)]);
+				
+			}
+			else{moves.put(FLANKING,
 					game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos,
 							game.getGhostLastMoveMade(FLANKING), DM.EUCLID));}
 		}
@@ -118,6 +123,14 @@ public class Ghosts extends GhostController {
 		return moves;
 	}
 	
+	private boolean isGhostInPath(Game game, int pacmanPos, GHOST ghost) {
+		int[] path= game.getShortestPath(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos, game.getGhostLastMoveMade(FLANKING));
+		for(int i : path) {
+			if(game.getGhostCurrentNodeIndex(ghost) == i)
+				return true;
+		}
+		return false;
+	}
 	private GHOST getNearestGhost(Game game,int nodeIndex, int limit) {
 		GHOST nearestGhost = null;
 		double shortestDistance = -1;
