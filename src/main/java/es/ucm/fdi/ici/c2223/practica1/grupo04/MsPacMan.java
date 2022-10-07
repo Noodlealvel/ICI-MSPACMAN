@@ -12,6 +12,13 @@ import pacman.game.Game;
 import pacman.game.GameView;
 
 public class MsPacMan extends PacmanController {
+	
+	//
+	//
+	// QUITAR GAMEVIEWS ANTES DE ENTREGAR
+	//
+	//
+	
 
 	final static private int FLEELIMIT = 40;
 	final static private int EATLIMIT = 80;
