@@ -9,16 +9,8 @@ import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
-import pacman.game.GameView;
 
 public class MsPacMan extends PacmanController {
-	
-	//
-	//
-	// QUITAR GAMEVIEWS ANTES DE ENTREGAR
-	//
-	//
-	
 
 	final static private int FLEELIMIT = 30;
 	final static private int EATLIMIT = 80;
@@ -42,7 +34,7 @@ public class MsPacMan extends PacmanController {
 	 }
 	
 	private int getFleeingDistance(Game game) {
-		//Seg�n las vidas es m�s agresivo o huye con m�s facilidad
+		//Segun las vidas es mas agresivo o huye con mas facilidad
 		switch (game.getPacmanNumberOfLivesRemaining()) {
 	    case 3:
 	    	return FLEELIMIT;
@@ -63,46 +55,39 @@ public class MsPacMan extends PacmanController {
 		int pacmanIndex = game.getPacmanCurrentNodeIndex();
 		GHOST nearestGhost = getNearestGhost(game,pacmanIndex,limit, false);
 		if(nearestGhost != null) {
-			//El fantasma que tiene m�s cerca no es comestible
+			//El fantasma que tiene mas cerca no es comestible
 			if (game.getDistance(game.getGhostCurrentNodeIndex(nearestGhost),pacmanIndex,game.getPacmanLastMoveMade(), MEASUREMETHOD) < limit/2){
 				//El fantasma est� "muy cerca"
 				if(nearestGhost != lastNearGhost) {
-					//Si el fantasma est� muy cerca pero a�n no lleva un rato persigui�ndole intenta huir
+					//Si el fantasma esta muy cerca pero aun no lleva un rato persiguiendole intenta huir
 					return fleeFromNearestGhost(nearestGhost, pacmanIndex, game);
 				}
-				GameView.addLines(game,Color.ORANGE,pacmanIndex,game.getGhostCurrentNodeIndex(nearestGhost));
-				//Si el fantasma est� muy cerca y s� que lleva un rato persigui�ndole este va hacia una PPill
+				//Si el fantasma esta muy cerca y si que lleva un rato persiguiendole este va hacia una PPill
 				closeChaseCounter = 0;
 				if (indexOfNearestPPill(game) != -1) {
-					GameView.addLines(game,Color.RED,pacmanIndex,game.getGhostCurrentNodeIndex(nearestGhost));
-					GameView.addLines(game,Color.RED,pacmanIndex,indexOfNearestPPill(game));
 					return game.getNextMoveTowardsTarget(pacmanIndex, indexOfNearestPPill(game), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 				}
 				//Si no hay PPill simplemente huye
 				return game.getNextMoveAwayFromTarget(pacmanIndex, game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 			}
-			//Si est� cerca pero no "muy cerca" simplemente huye,
+			//Si esta cerca pero no "muy cerca" simplemente huye,
 			closeChaseCounter = 0;
-			GameView.addLines(game,Color.MAGENTA,pacmanIndex,game.getGhostCurrentNodeIndex(nearestGhost));
 			return game.getNextMoveAwayFromTarget(pacmanIndex, game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 		}
 		//Resetea el chase counter porque nadie le persique
 		closeChaseCounter = 0;
 		GHOST nearestEdibleGhost = getNearestGhost(game,pacmanIndex,EatLimiter(game), true);
 		if(nearestEdibleGhost != null && game.getGhostEdibleTime(nearestEdibleGhost) >= EatLimiterTimer(game)) {
-			//Si est� cerca del fantasma comestible se lo come si le sale rentable por puntuaci�n y si no le queda mucho para quitarse el comestible
-			GameView.addLines(game,Color.GREEN,pacmanIndex,game.getGhostCurrentNodeIndex(nearestEdibleGhost));
+			//Si esta cerca del fantasma comestible se lo come si le sale rentable por puntuacion y si no le queda mucho para quitarse el comestible
 			return game.getNextMoveTowardsTarget(pacmanIndex, game.getGhostCurrentNodeIndex(nearestEdibleGhost), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 		}
 		if(!isNearestPPillDangerRadiusSafe(game) && game.getShortestPathDistance(indexOfNearestPPill(game), pacmanIndex, game.getPacmanLastMoveMade()) < PPILLDANGERRADIUS) {
-			//Si Pacman est� en el radio de peligro de una PPill activa y esta tiene 2+ fantasmas alrededor intenta ir hacia la PPill
-			GameView.addLines(game,Color.BLUE,pacmanIndex,indexOfNearestPPill(game));
+			//Si Pacman esta en el radio de peligro de una PPill activa y esta tiene 2+ fantasmas alrededor intenta ir hacia la PPill
 			return game.getNextMoveTowardsTarget(pacmanIndex, indexOfNearestPPill(game), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 		}
 		
-		//Cuando est� en condiciones normales busca el camino con m�s Pills para ir por este
+		//Cuando esta en condiciones normales busca el camino con mas Pills para ir por este
 		int nearPillIndex = indexOfNearestOptimalPathToPill(game, pacmanIndex, EXPLORERADIUS);
-		GameView.addPoints(game,Color.cyan,game.getShortestPath(nearPillIndex,pacmanIndex, game.getPacmanLastMoveMade()));
 		return game.getNextMoveTowardsTarget(pacmanIndex,nearPillIndex, game.getPacmanLastMoveMade(), MEASUREMETHOD);
 		
 	}
@@ -138,7 +123,7 @@ public class MsPacMan extends PacmanController {
 	}
 
 	private boolean isNearestPPillDangerRadiusSafe(Game game) {
-		//Funci�n que considera si el radio alrededor de la Ppill m�s cercana es seguro o no
+		//Funcion que considera si el radio alrededor de la Ppill mas cercana es seguro o no
 		int nearestPPill = indexOfNearestPPill(game);
 		if(indexOfNearestPPill(game) == -1)
 			return true;
@@ -247,7 +232,6 @@ public class MsPacMan extends PacmanController {
 		if(closeChaseCounter >= CHASELIMITER) {
 			lastNearGhost = nearestGhost;
 		}
-		GameView.addLines(game,Color.MAGENTA,pacmanIndex,game.getGhostCurrentNodeIndex(nearestGhost));
 		return game.getNextMoveAwayFromTarget(pacmanIndex, game.getGhostCurrentNodeIndex(nearestGhost), game.getPacmanLastMoveMade(), MEASUREMETHOD);
 	}
 

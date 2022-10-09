@@ -45,7 +45,7 @@ public class Ghosts extends GhostController {
 				moves.put(PPHUNTER,
 						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(PPHUNTER), pacmanPos,
 								game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
-			} else if (game.getNumberOfActivePowerPills() > 1) { //Si hay más de una PP intenta ir a la PP más cercana
+			} else if (game.getNumberOfActivePowerPills() > 1) { //Si hay mï¿½s de una PP intenta ir a la PP mï¿½s cercana
 				chasePowerPill(PPHUNTER, game);
 			} else {
 				if (game.getNumberOfActivePowerPills() == 1 && rnd.nextFloat() < 0.5) { //Si solo hay una o va a ella o hace otra cosa 1/2 de las veces
@@ -87,7 +87,7 @@ public class Ghosts extends GhostController {
 			
 		}
 		
-		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero también perseguir a Pacman
+		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero tambiï¿½n perseguir a Pacman
 		{
 			
 			GHOST nearestGhost = getNearestGhost(game, game.getGhostCurrentNodeIndex(FLANKING), GHOSTCHASELIMIT);
@@ -184,7 +184,7 @@ public class Ghosts extends GhostController {
 	
 	private void chasePacman(Game game, int pacmanPos, GHOST ghostType) {
 		if (rnd.nextDouble() < SCATTERFRECUENCY && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghostType), game.getGhostLastMoveMade(ghostType), DM.EUCLID) < CHASINGCLOSE) {
-			//huye de Pacman según el scatter frequency y si pacman está lo suficientemente cerca
+			//huye de Pacman segï¿½n el scatter frequency y si pacman estï¿½ lo suficientemente cerca
 			moves.put(ghostType,
 					game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghostType), pacmanPos,
 							game.getGhostLastMoveMade(ghostType), DM.PATH));
