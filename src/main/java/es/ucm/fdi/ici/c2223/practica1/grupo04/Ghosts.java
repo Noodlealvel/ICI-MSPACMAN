@@ -17,20 +17,20 @@ public class Ghosts extends GhostController {
 	private final static GHOST PPHUNTER = GHOST.PINKY;
 	private final static GHOST FLANKING = GHOST.SUE;
 	private final static GHOST CENTER = GHOST.INKY;
-	private static final int GHOSTCHASELIMIT = 40;
+	private static final int GHOSTCHASELIMIT = 60;
 	private static final int PPILLCLOSELIMIT = 40;
 	private static final double PACMANPPCLOSEFLEE = 40;
 	private static final double SCATTERFRECUENCY = 0.1;
-	private static final double CHASINGCLOSE = 15;
+	private static final double CHASINGCLOSE = 30;
 	
 	
 	public Ghosts()	{
 
 		 super();
 
-		 setName("Ghosts T");
+		 setName("Ghosts04");
 
-		 setTeam("Team04-2223");
+		 setTeam("Team04");
 
 }
 	@Override
@@ -45,7 +45,7 @@ public class Ghosts extends GhostController {
 				moves.put(PPHUNTER,
 						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(PPHUNTER), pacmanPos,
 								game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
-			} else if (game.getNumberOfActivePowerPills() > 1) { //Si hay m�s de una PP intenta ir a la PP m�s cercana
+			} else if (game.getNumberOfActivePowerPills() > 1) { //Si hay mas de una PP intenta ir a la PP mas cercana
 				chasePowerPill(PPHUNTER, game);
 			} else {
 				if (game.getNumberOfActivePowerPills() == 1 && rnd.nextFloat() < 0.5) { //Si solo hay una o va a ella o hace otra cosa 1/2 de las veces
@@ -87,7 +87,7 @@ public class Ghosts extends GhostController {
 			
 		}
 		
-		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero tambi�n perseguir a Pacman
+		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero tambien perseguir a Pacman
 		{
 			
 			GHOST nearestGhost = getNearestGhost(game, game.getGhostCurrentNodeIndex(FLANKING), GHOSTCHASELIMIT);
@@ -184,7 +184,7 @@ public class Ghosts extends GhostController {
 	
 	private void chasePacman(Game game, int pacmanPos, GHOST ghostType) {
 		if (rnd.nextDouble() < SCATTERFRECUENCY && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghostType), game.getGhostLastMoveMade(ghostType), DM.EUCLID) < CHASINGCLOSE) {
-			//huye de Pacman seg�n el scatter frequency y si pacman est� lo suficientemente cerca
+			//huye de Pacman segun el scatter frequency y si pacman esta lo suficientemente cerca
 			moves.put(ghostType,
 					game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghostType), pacmanPos,
 							game.getGhostLastMoveMade(ghostType), DM.PATH));

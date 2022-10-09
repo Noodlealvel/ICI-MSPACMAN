@@ -27,7 +27,7 @@ public class MsPacMan extends PacmanController {
 			 
 			 closeChaseCounter = 0;
 
-			 setName("MsPacMan T");
+			 setName("MsPacMan04");
 
 			 setTeam("Team04");
 
