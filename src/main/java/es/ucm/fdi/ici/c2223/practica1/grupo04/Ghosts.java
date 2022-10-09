@@ -17,10 +17,10 @@ public class Ghosts extends GhostController {
 	private final static GHOST PPHUNTER = GHOST.PINKY;
 	private final static GHOST FLANKING = GHOST.SUE;
 	private final static GHOST CENTER = GHOST.INKY;
-	private static final int GHOSTCHASELIMIT = 50;
+	private static final int GHOSTCHASELIMIT = 40;
 	private static final int PPILLCLOSELIMIT = 40;
 	private static final double PACMANPPCLOSEFLEE = 40;
-	private static final double SCATTERFRECUENCY = 0.2;
+	private static final double SCATTERFRECUENCY = 0.1;
 	private static final double CHASINGCLOSE = 15;
 	
 	
@@ -40,46 +40,31 @@ public class Ghosts extends GhostController {
 		
 		if (game.doesGhostRequireAction(PPHUNTER)) // Fantasma que va hacia PPs excepto si queda solo una
 		{
+			//Si es comestible huye de pacman
 			if (game.isGhostEdible(PPHUNTER)) {
 				moves.put(PPHUNTER,
 						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(PPHUNTER), pacmanPos,
 								game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
-			} else if (game.getNumberOfActivePowerPills() > 1) {
+			} else if (game.getNumberOfActivePowerPills() > 1) { //Si hay más de una PP intenta ir a la PP más cercana
 				chasePowerPill(PPHUNTER, game);
 			} else {
-				if (game.getNumberOfActivePowerPills() == 1 && rnd.nextFloat() < 0.5) {
+				if (game.getNumberOfActivePowerPills() == 1 && rnd.nextFloat() < 0.5) { //Si solo hay una o va a ella o hace otra cosa 1/2 de las veces
 					chasePowerPill(PPHUNTER, game);
 				} else {
-					if (rnd.nextDouble() < SCATTERFRECUENCY && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(PPHUNTER), game.getGhostLastMoveMade(PPHUNTER), DM.EUCLID) < CHASINGCLOSE) {
-						moves.put(PPHUNTER,
-								game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(PPHUNTER), pacmanPos,
-										game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
-					}
-					else
-					moves.put(PPHUNTER,
-							game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(PPHUNTER),
-									pacmanPos, game.getGhostLastMoveMade(PPHUNTER), DM.PATH));
+					chasePacman(game, pacmanPos,PPHUNTER);
 				}
 			}
 		}
 
 		if (game.doesGhostRequireAction(AGGRESSIVE)) // Fantasma agresivo
 		{
-
+			//Si es comestible huye
 			if (game.isGhostEdible(AGGRESSIVE) || pacmanCloseToPPill(game)) {
 				moves.put(AGGRESSIVE,
 						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(AGGRESSIVE),
 								pacmanPos, game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID));
 			} else {
-				if(rnd.nextDouble() < SCATTERFRECUENCY && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(AGGRESSIVE), game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID) < CHASINGCLOSE) {
-					moves.put(AGGRESSIVE,
-							game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(AGGRESSIVE), pacmanPos,
-									game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID));
-				}
-				else
-					moves.put(AGGRESSIVE,
-						game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(AGGRESSIVE), pacmanPos,
-								game.getGhostLastMoveMade(AGGRESSIVE), DM.EUCLID));
+				chasePacman(game, pacmanPos,AGGRESSIVE);
 			}
 		}
 	
@@ -98,15 +83,15 @@ public class Ghosts extends GhostController {
 								nearestPPill, game.getGhostLastMoveMade(CENTER), DM.EUCLID));
 			}
 			else {
-				moves.put(CENTER,
-					game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(CENTER), pacmanPos,
-							game.getGhostLastMoveMade(CENTER), DM.EUCLID));}
+				chasePacman(game, pacmanPos,CENTER);}
 			
 		}
 		
 		if (game.doesGhostRequireAction(FLANKING)) //Fantasma que intenta ir alejado del resto pero también perseguir a Pacman
 		{
+			
 			GHOST nearestGhost = getNearestGhost(game, game.getGhostCurrentNodeIndex(FLANKING), GHOSTCHASELIMIT);
+			//Si es comestible huye
 			if(game.isGhostEdible(FLANKING)|| pacmanCloseToPPill(game)) {
 				moves.put(FLANKING,
 						game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos,
@@ -122,9 +107,7 @@ public class Ghosts extends GhostController {
 				moves.put(FLANKING,
 					allMoves[rnd.nextInt(3)]);
 			}
-			else{moves.put(FLANKING,
-					game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(FLANKING), pacmanPos,
-							game.getGhostLastMoveMade(FLANKING), DM.EUCLID));}
+			else chasePacman(game, pacmanPos,FLANKING);
 		}
 		
 		return moves;
@@ -175,14 +158,18 @@ public class Ghosts extends GhostController {
 		int ghostPos = game.getGhostCurrentNodeIndex(ghostType);
 		for (int PP: game.getActivePowerPillsIndices())
 		{
-			currentDistance = (int) game.getDistance(PP, game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
+			currentDistance = (int) game.getDistance(PP, game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.PATH);
 			if (currentDistance < minDistance)
 			{
 				chosenPP = PP;
 				minDistance = currentDistance;
 			}
 		}
-		moves.put(ghostType, game.getNextMoveTowardsTarget(ghostPos, chosenPP, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
+		if(game.getDistance(chosenPP, ghostPos,game.getGhostLastMoveMade(ghostType), DM.PATH) > minDistance) {
+			moves.put(ghostType, game.getNextMoveTowardsTarget(ghostPos, chosenPP, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
+		}
+		else
+			moves.put(ghostType, game.getNextMoveTowardsTarget(ghostPos, game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghostType), DM.EUCLID));
 
 	}
 	
@@ -193,5 +180,18 @@ public class Ghosts extends GhostController {
 			}
 		}
 		return false;
+	}
+	
+	private void chasePacman(Game game, int pacmanPos, GHOST ghostType) {
+		if (rnd.nextDouble() < SCATTERFRECUENCY && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghostType), game.getGhostLastMoveMade(ghostType), DM.EUCLID) < CHASINGCLOSE) {
+			//huye de Pacman según el scatter frequency y si pacman está lo suficientemente cerca
+			moves.put(ghostType,
+					game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghostType), pacmanPos,
+							game.getGhostLastMoveMade(ghostType), DM.PATH));
+		}
+		else //Persigue a pacman
+		moves.put(ghostType,
+				game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghostType),
+						pacmanPos, game.getGhostLastMoveMade(ghostType), DM.EUCLID));
 	}
 }
