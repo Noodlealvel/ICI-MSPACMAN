@@ -30,16 +30,37 @@ public class GhostsUtils {
 		return -1;
 	}
 	
-	static int NearestGhostToPacman(Game game) {
-		return 0;
+	static GHOST NearestGhostToPacman(Game game) {
+		GHOST nearest = null;
+		int minDist = Integer.MAX_VALUE;
+		for(GHOST ghost : GHOST.values()) {
+			int dist = game.getShortestPathDistance(game.getGhostCurrentNodeIndex(ghost),game.getPacmanCurrentNodeIndex());
+			if(dist < minDist) {
+				minDist = dist;
+				nearest = ghost;
+			}
+		}
+		return nearest;
 	}
 	
 	static boolean PacmanCloseToPPill(Game game, int dist) {
-		return false;
+		int[] indicesPowerPill = game.getActivePowerPillsIndices();
+		int nPowerPill = game.getNumberOfActivePowerPills();
+		int i = 0;
+		boolean isClose = false;
+		while((i < nPowerPill) && (isClose==false)) {
+			if(game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), indicesPowerPill[i]) <= dist)
+				isClose = true;
+			i++;
+		}
+		return isClose;	
 	}
 	
 	static boolean PacmanCloseToGhost(Game game,GHOST ghost, int dist) {
-		return false;
+		boolean isClose = false;
+		if(game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost)) <= dist)
+			isClose = true;
+		return isClose;	
 	}
 	
 }
