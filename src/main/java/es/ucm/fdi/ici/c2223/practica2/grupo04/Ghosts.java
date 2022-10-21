@@ -5,6 +5,8 @@ import java.util.EnumMap;
 
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
+import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
+import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
 import es.ucm.fdi.ici.practica2.demofsm.ghosts.GhostsInput;
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
