@@ -31,7 +31,7 @@ public class Ghosts extends GhostController {
 			SimpleState chase = new SimpleState(new ChaseAction(ghost));
 			SimpleState runAway = new SimpleState(new RunAwayAction(ghost));
 			
-			GhostsEdibleTransition edible = new GhostsEdibleTransition(ghost);
+			GhostsEdibleTransition edible = new GhostsEdibleTransition(ghost,this);
 			PacManNearPPillTransition near = new PacManNearPPillTransition();
 			GhostsNotEdibleAndPacManFarPPill toChaseTransition = new GhostsNotEdibleAndPacManFarPPill(ghost);
 			

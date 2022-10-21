@@ -27,6 +27,19 @@ public class GhostsUtils {
 		return -1;
 	}
 	static int NearestTunnelNode(Game game, GHOST ghost) {
-		return null;
+		return -1;
 	}
+	
+	static int NearestGhostToPacman(Game game) {
+		return 0;
+	}
+	
+	static boolean PacmanCloseToPPill(Game game, int dist) {
+		return false;
+	}
+	
+	static boolean PacmanCloseToGhost(Game game,GHOST ghost, int dist) {
+		return false;
+	}
+	
 }
