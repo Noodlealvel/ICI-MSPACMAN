@@ -13,7 +13,7 @@ public class GhostsFleeAction implements Action {
 		}
 	@Override
 	public String getActionId() {
-		return "GhostsFleeAction";
+		return "GhostsFlee";
 	}
 
 	@Override

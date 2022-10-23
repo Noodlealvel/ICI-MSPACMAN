@@ -14,7 +14,7 @@ public class GhostsFleeFromPPillAction implements Action {
 	
 	@Override
 	public String getActionId() {
-		return "GhostsFleeFromPPillAction";
+		return "GhostsFleeFromPPill";
 	}
 
 	@Override
