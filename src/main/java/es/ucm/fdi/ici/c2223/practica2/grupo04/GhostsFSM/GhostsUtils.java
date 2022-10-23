@@ -1,12 +1,18 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM;
 
 import pacman.game.Game;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 
 public class GhostsUtils {
 
-	static int NearestPill(Game game, GHOST ghost) {
+	static public int NearestPill(Game game, GHOST ghost) {
 		int nearest = Integer.MAX_VALUE;
 		int path;
 		for (int pill : game.getActivePillsIndices()) {
@@ -16,7 +22,7 @@ public class GhostsUtils {
 		}
 		return -1;
 	}
-	static int NearestActivePPill(Game game, GHOST ghost) {
+	static public int NearestActivePPill(Game game, GHOST ghost) {
 		int nearest = Integer.MAX_VALUE;
 		int path;
 		for (int powerpill : game.getActivePowerPillsIndices()) {
@@ -26,11 +32,28 @@ public class GhostsUtils {
 		}
 		return -1;
 	}
-	static int NearestTunnelNode(Game game, GHOST ghost) {
-		return -1;
+	static public int NearestTunnelNode(Game game, GHOST ghost) {
+		Queue<Integer> notExpanded = new ArrayDeque<Integer>();
+		List<Integer> expandedList = new ArrayList<Integer>();
+		notExpanded.add(Integer.valueOf(game.getGhostCurrentNodeIndex(ghost)));
+		int tunnel = -1;
+		while(!notExpanded.isEmpty()) {
+			int expanded = notExpanded.remove().intValue();
+			for(int node : game.getNeighbouringNodes(expanded)) {
+				if(expandedList.indexOf(node) == -1 && game.getGhostInitialNodeIndex() != node) {
+					notExpanded.add(node);
+					if(game.getDistance(expanded,node,DM.EUCLID) > 1) {
+						tunnel = expanded;
+						return tunnel;
+					}
+				}
+			}
+			expandedList.add(expanded);
+		}
+		return tunnel;
 	}
 	
-	static GHOST NearestGhostToPacman(Game game) {
+	static public GHOST NearestGhostToPacman(Game game) {
 		GHOST nearest = null;
 		int minDist = Integer.MAX_VALUE;
 		for(GHOST ghost : GHOST.values()) {
@@ -43,7 +66,7 @@ public class GhostsUtils {
 		return nearest;
 	}
 	
-	static boolean PacmanCloseToPPill(Game game, int dist) {
+	static public boolean PacmanCloseToPPill(Game game, int dist) {
 		int[] indicesPowerPill = game.getActivePowerPillsIndices();
 		int nPowerPill = game.getNumberOfActivePowerPills();
 		int i = 0;
@@ -56,7 +79,7 @@ public class GhostsUtils {
 		return isClose;	
 	}
 	
-	static boolean PacmanCloseToGhost(Game game,GHOST ghost, int dist) {
+	static public boolean PacmanCloseToGhost(Game game,GHOST ghost, int dist) {
 		boolean isClose = false;
 		if(game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost)) <= dist)
 			isClose = true;
