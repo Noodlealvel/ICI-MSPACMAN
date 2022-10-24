@@ -85,5 +85,21 @@ public class GhostsUtils {
 			isClose = true;
 		return isClose;	
 	}
+	public static int ClosestPointToAllGhosts(Game game) {
+		int point = 0;
+		double distance = 0;
+		double minDistance = Integer.MAX_VALUE;
+		for (int node : game.getPillIndices()) {
+			distance = 0;
+			for (GHOST g : GHOST.values()) {
+				distance += game.getDistance(game.getGhostCurrentNodeIndex(g), node, DM.EUCLID);
+			}
+			if (distance < minDistance) {
+				minDistance = distance;
+				point = node;
+			}
+		}
+		return point;
+	}
 	
 }
