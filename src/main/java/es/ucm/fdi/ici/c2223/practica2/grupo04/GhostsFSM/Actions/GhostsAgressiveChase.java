@@ -7,22 +7,25 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsFleeAction implements Action {
-	  GHOST ghost;
-		public GhostsFleeAction( GHOST ghost) {
-			this.ghost = ghost;
-		}
+public class GhostsAgressiveChase implements Action {
+
+	GHOST ghost;
+	public GhostsAgressiveChase( GHOST ghost) {
+		this.ghost = ghost;
+	}
+	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "Flee";
+		return "GhostsAgressiveChase";
 	}
+
 
 	@Override
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			return game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
-
+			//TODO Comportamiento por implementar 
+			return null;
         }
 		else
 			return MOVE.NEUTRAL;

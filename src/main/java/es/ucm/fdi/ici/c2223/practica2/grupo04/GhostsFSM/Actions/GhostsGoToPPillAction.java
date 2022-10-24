@@ -17,7 +17,7 @@ public class GhostsGoToPPillAction implements Action {
 
 	@Override
 	public String getActionId() {
-		return "GhostsToPPill";
+		return ghost.toString() + "GoToPPill";
 	}
 
 	@Override

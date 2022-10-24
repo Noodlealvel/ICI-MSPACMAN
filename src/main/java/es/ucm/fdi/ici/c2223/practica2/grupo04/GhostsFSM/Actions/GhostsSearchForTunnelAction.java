@@ -14,7 +14,7 @@ public class GhostsSearchForTunnelAction implements Action {
 		}
 	@Override
 	public String getActionId() {
-		return "GhostsSearchForTunnel";
+		return ghost.toString() + "SearchForTunnel";
 	}
 
 	@Override

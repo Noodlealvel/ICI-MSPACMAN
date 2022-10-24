@@ -7,22 +7,23 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsFleeAction implements Action {
-	  GHOST ghost;
-		public GhostsFleeAction( GHOST ghost) {
-			this.ghost = ghost;
-		}
+public class GhotsRegroupAction implements Action {
+
+	GHOST ghost;
+	public GhotsRegroupAction( GHOST ghost) {
+		this.ghost = ghost;
+	}
+	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "Flee";
+		return ghost.toString() + "FleeFromPPill";
 	}
 
 	@Override
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			return game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
-
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost),game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.EUCLID);
         }
 		else
 			return MOVE.NEUTRAL;

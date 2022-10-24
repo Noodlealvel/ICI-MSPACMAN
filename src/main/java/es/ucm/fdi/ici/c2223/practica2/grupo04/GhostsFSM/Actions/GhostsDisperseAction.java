@@ -16,7 +16,7 @@ public class GhostsDisperseAction implements Action {
 	
 	@Override
 	public String getActionId() {
-		return "GhostsDisperse";
+		return ghost.toString() + "Disperse";
 	}
 
 	@Override
