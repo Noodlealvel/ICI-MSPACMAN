@@ -21,7 +21,12 @@ public class GhostsDisperseAction implements Action {
 
 	@Override
 	public MOVE execute(Game game) {
-		return game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.ClosestPointToAllGhosts(game), game.getGhostLastMoveMade(ghost), DM.EUCLID);
-	}
+		if (game.doesGhostRequireAction(ghost))       
+        {
+			return game.getNextMoveAwayFromTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.ClosestPointToAllGhosts(game), game.getGhostLastMoveMade(ghost), DM.EUCLID);
+        }
+		else
+			return MOVE.NEUTRAL;
+		}
 
 }

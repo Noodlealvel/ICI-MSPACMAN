@@ -22,7 +22,12 @@ public class GhostsGoToPPillAction implements Action {
 
 	@Override
 	public MOVE execute(Game game) {
-		return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost),GhostsUtils.NearestActivePPill(game, ghost), game.getGhostLastMoveMade(ghost), DM.PATH);
+		if (game.doesGhostRequireAction(ghost))       
+        {
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost),GhostsUtils.NearestActivePPill(game, ghost), game.getGhostLastMoveMade(ghost), DM.PATH);
+        }
+		else
+			return MOVE.NEUTRAL;
 	}
 
 }

@@ -20,7 +20,13 @@ public class GhostsSearchForTunnelAction implements Action {
 	@Override
 	public MOVE execute(Game game) {
 		
-		return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost), DM.PATH);
-	}
+		if (game.doesGhostRequireAction(ghost))       
+        {
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost), DM.PATH);
+
+        }
+		else
+			return MOVE.NEUTRAL;
+		}
 
 }
