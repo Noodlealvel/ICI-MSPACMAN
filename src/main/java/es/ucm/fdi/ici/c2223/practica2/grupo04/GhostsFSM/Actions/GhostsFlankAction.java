@@ -7,28 +7,28 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsAgressiveChase implements Action {
+public class GhostsFlankAction implements Action {
+
 
 	GHOST ghost;
-	public GhostsAgressiveChase( GHOST ghost) {
+	public GhostsFlankAction( GHOST ghost) {
 		this.ghost = ghost;
 	}
 	
 	@Override
 	public String getActionId() {
-		return ghost + "AgressiveChase";
+		return ghost.toString() + "Disperse";
 	}
-
 
 	@Override
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			//TODO Comportamiento por implementar 
+			//TODO añadir comportamiento, quizás que vaya a punto intermedio entre Pacman y PPill más cercana salvo que esté a cierto radioy/o llegue antes a ella que este.
 			return null;
         }
 		else
 			return MOVE.NEUTRAL;
-	}
+		}
 
 }
