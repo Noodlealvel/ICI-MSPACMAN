@@ -5,10 +5,10 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsLevelChangeTransition implements Transition {
+public class GhostsPacmanAtePPillTransition implements Transition {
 
 	GHOST ghost;
-	public GhostsLevelChangeTransition(GHOST ghost) {
+	public GhostsPacmanAtePPillTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +16,11 @@ public class GhostsLevelChangeTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.levelChanged();
+		return input.PPillEaten();
 	}
 	
 	@Override
 	public String toString() {
-		return "Ghost is in another level";
+		return "Pacman just ate PPill";
 	}
-
 }
