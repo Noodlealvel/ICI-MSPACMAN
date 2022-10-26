@@ -10,11 +10,14 @@ public class GhostsInput extends Input {
 	private boolean inkyEdible;
 	private boolean pinkyEdible;
 	private boolean sueEdible;
+	private int currentLevel;
+	static private int storedLevel = -1;
 	public GhostsInput(Game game) {
 		super(game);
 	}
 	@Override
 	public void parseInput() {
+		currentLevel = game.getCurrentLevel();
 		blinkyEdible = game.isGhostEdible(GHOST.BLINKY);
 		pinkyEdible = game.isGhostEdible(GHOST.PINKY);
 		sueEdible = game.isGhostEdible(GHOST.SUE);
@@ -33,6 +36,13 @@ public class GhostsInput extends Input {
 		default:
 			return false;
 	}
+	}
+	public boolean levelChanged() {
+		if (currentLevel != storedLevel) {
+			storedLevel = currentLevel;
+			return true;
+		}
+		return false;
 	}
 
 }
