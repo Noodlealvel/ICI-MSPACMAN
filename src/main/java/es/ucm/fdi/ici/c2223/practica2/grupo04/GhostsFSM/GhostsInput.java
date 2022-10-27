@@ -78,8 +78,7 @@ public class GhostsInput extends Input {
 	}
 	
 	public boolean PacManNearPPill() {
-		
-		
+		return pacmanNearPPill;		
 	}
 
 }

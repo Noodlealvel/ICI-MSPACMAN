@@ -28,7 +28,8 @@ public class GhostsChaseAction implements Action {
 			int[] path = null;
 			path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost));
 			if (GhostsUtils.PathContainsGhosts(game, path) == false)
-				return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);				
+				return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
+			else return MOVE.NEUTRAL;
         }
 		else
 			return MOVE.NEUTRAL;

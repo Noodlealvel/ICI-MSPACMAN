@@ -107,7 +107,7 @@ public class GhostsUtils {
 		if (path != null) {
 			for (int node : path) {
 				for (GHOST ghosts : GHOST.values()) {
-					if (game.getGhostCurrentNodeIndex(ghosts) == node) {
+					if (game.getGhostCurrentNodeIndex(ghosts) == node && game.isGhostEdible(ghosts) == false) {
 						contains = true;
 					}
 				}
