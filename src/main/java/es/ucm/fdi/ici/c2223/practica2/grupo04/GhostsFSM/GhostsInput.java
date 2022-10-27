@@ -74,5 +74,8 @@ public class GhostsInput extends Input {
 	public boolean isPacmanInVecinity(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMANINVECINITY);
 	}
+	public boolean farFromPacman(GHOST ghost) {
+		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMANINVECINITY);
+	}
 }
 
