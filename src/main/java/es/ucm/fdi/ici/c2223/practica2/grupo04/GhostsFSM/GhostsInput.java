@@ -17,9 +17,9 @@ public class GhostsInput extends Input {
 	static private int storedLevel = -1;
 	private boolean pacmanNearPPill;
 	private GHOST nearestGhostToPacman;
-	private boolean lowEdibleTime;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int LOW_TIME = 10;
+	private static final int CLOSE_PACMAN_DISTANCE = 40;
 	public GhostsInput(Game game) {
 		super(game);
 	}
@@ -34,6 +34,7 @@ public class GhostsInput extends Input {
 			ghostMap.put(GhostsRelevantInfo.PACMAN_INVECINITY, game.getDistance(game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() , DM.PATH) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.GHOSTS_CLOSE, GhostsUtils.GhostCloseToRest(game,ghost));
 			ghostMap.put(GhostsRelevantInfo.LOW_EDIBLE_TIME, game.getGhostEdibleTime(ghost) <= LOW_TIME);
+			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.PATH) <= CLOSE_PACMAN_DISTANCE);
 			ghostsInfoMap.put(ghost, ghostMap);
 			
 		}
@@ -79,7 +80,7 @@ public class GhostsInput extends Input {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_INVECINITY);
 	}
 	public boolean farFromPacman(GHOST ghost) {
-		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_INVECINITY);
+		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
 	}
 	public boolean ghostsDispersed(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
@@ -89,6 +90,9 @@ public class GhostsInput extends Input {
 	}
 	public boolean closeToOtherGhosts(GHOST ghost) {
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
+	}
+	public boolean nearToPacman(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
 	}
 }
 
