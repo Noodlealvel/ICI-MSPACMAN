@@ -5,10 +5,10 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsFarAndCloseGhostsTransition implements Transition {
+public class GhostsLowEdibleTimeTransition implements Transition {
 
 	GHOST ghost;
-	public GhostsFarAndCloseGhostsTransition(GHOST ghost) {
+	public GhostsLowEdibleTimeTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +16,11 @@ public class GhostsFarAndCloseGhostsTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.farFromPacman(ghost) && input.ghostsDispersed(ghost);
+		return input.lowEdibleTime();
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " far from Pacman and close to brothers";
+		return "Low edible time";
 	}
-
 }
