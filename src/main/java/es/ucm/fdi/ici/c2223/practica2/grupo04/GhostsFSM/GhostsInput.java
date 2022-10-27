@@ -30,6 +30,7 @@ public class GhostsInput extends Input {
 			ghostMap.put(GhostsRelevantInfo.EDIBLE, game.isGhostEdible(ghost));
 			ghostMap.put(GhostsRelevantInfo.NEARTUNNEL, game.getDistance(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost),game.getGhostLastMoveMade(ghost), DM.EUCLID) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.PACMANINVECINITY, game.getDistance(game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() , DM.PATH) <= SECURITY_DISTANCE);
+			ghostMap.put(GhostsRelevantInfo.GHOSTSCLOSE, GhostsUtils.GhostCloseToRest(game,ghost));
 			ghostsInfoMap.put(ghost, ghostMap);
 			
 		}
@@ -76,6 +77,9 @@ public class GhostsInput extends Input {
 	}
 	public boolean farFromPacman(GHOST ghost) {
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMANINVECINITY);
+	}
+	public boolean ghostsDispersed(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTSCLOSE);
 	}
 }
 

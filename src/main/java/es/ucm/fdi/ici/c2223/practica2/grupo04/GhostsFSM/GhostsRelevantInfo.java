@@ -4,6 +4,6 @@ public enum GhostsRelevantInfo {
 	EDIBLE,
 	EATEN,
 	PACMANINVECINITY,
-	NEARTUNNEL;
+	NEARTUNNEL, GHOSTSCLOSE;
 }
 

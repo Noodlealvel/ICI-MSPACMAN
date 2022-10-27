@@ -16,6 +16,8 @@ import pacman.game.Constants.GHOST;
 
 public class GhostsUtils {
 
+	private static final double GHOSTCLOSEDISTANCE = 100;
+	
 	static public int NearestPill(Game game, GHOST ghost) {
 		int nearest = Integer.MAX_VALUE;
 		int path;
@@ -164,5 +166,14 @@ public class GhostsUtils {
 		}
 		return -1;
 		}
+	public static Boolean GhostCloseToRest(Game game, GHOST ghost) {
+		double distance = 0;
+		for(GHOST g : GHOST.values()) {
+			if (g != ghost){
+				distance += game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getGhostCurrentNodeIndex(g), DM.EUCLID);
+			}
+		}
+		return distance <= GHOSTCLOSEDISTANCE;
+	}
 	
 }
