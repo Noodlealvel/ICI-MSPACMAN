@@ -4,8 +4,12 @@ import pacman.game.Game;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
+import java.util.TreeMap;
 
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
@@ -115,5 +119,47 @@ public class GhostsUtils {
 		}
 		return contains;
 	}
+	public static int getNodeBetweenPacmanAndPpill(Game game) {
+		//Búsqueda heurística según distancia
+		TreeMap<Double,Integer> distanceMap = new TreeMap<Double, Integer>();
+		List<Integer> expandedList = new ArrayList<Integer>();
+		int closestActivePowerPill = NearestActivePPillToPacman(game);
+		distanceMap.put(game.getDistance(closestActivePowerPill,game.getPacmanCurrentNodeIndex(), DM.EUCLID),Integer.valueOf(game.getPacmanCurrentNodeIndex()));
+		double currentDistance = Double.MAX_VALUE;
+		boolean found = false;
+		int middlePoint = 0;
+		while(!found) {
+			int expanded = 0;
+			for(Double i :distanceMap.navigableKeySet()) {
+				if(expandedList.indexOf(distanceMap.get(i)) == -1) {
+					expanded = distanceMap.get(i);
+							break;
+				}
+			}
+			for(int node : game.getNeighbouringNodes(expanded)) {
+				if(expandedList.indexOf(node) == -1 && game.getGhostInitialNodeIndex() != node) {
+					currentDistance = -game.getDistance(game.getPacmanCurrentNodeIndex(),node,DM.EUCLID);
+					currentDistance += game.getDistance(closestActivePowerPill,node, DM.EUCLID);
+					distanceMap.put(Double.valueOf(Math.abs(currentDistance)), Integer.valueOf(node));
+				}
+			}
+			if (distanceMap.firstKey() < 5) {
+				found = true;
+				middlePoint = distanceMap.firstEntry().getValue();
+			}
+			expandedList.add(expanded);
+		}
+		return middlePoint;
+	}
+	private static int NearestActivePPillToPacman(Game game) {
+		int nearest = Integer.MAX_VALUE;
+		int path;
+		for (int powerpill : game.getActivePowerPillsIndices()) {
+			path = game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), powerpill);
+			if (path < nearest)
+				return powerpill;
+		}
+		return -1;
+		}
 	
 }
