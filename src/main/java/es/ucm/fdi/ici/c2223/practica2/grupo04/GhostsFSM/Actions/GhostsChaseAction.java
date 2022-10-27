@@ -1,6 +1,8 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions;
 
 import es.ucm.fdi.ici.Action;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
+import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
@@ -23,8 +25,10 @@ public class GhostsChaseAction implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			//TODO Añadir comportamiento para que no se cruce con otros fantasmas 
-			return null;
+			int[] path = null;
+			path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost));
+			if (GhostsUtils.PathContainsGhosts(game, path) == false)
+				return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);				
         }
 		else
 			return MOVE.NEUTRAL;

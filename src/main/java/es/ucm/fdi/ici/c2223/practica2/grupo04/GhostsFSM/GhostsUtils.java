@@ -102,4 +102,18 @@ public class GhostsUtils {
 		return point;
 	}
 	
+	static public boolean PathContainsGhosts(Game game, int[] path) {
+		boolean contains = false;
+		if (path != null) {
+			for (int node : path) {
+				for (GHOST ghosts : GHOST.values()) {
+					if (game.getGhostCurrentNodeIndex(ghosts) == node) {
+						contains = true;
+					}
+				}
+			}
+		}
+		return contains;
+	}
+	
 }

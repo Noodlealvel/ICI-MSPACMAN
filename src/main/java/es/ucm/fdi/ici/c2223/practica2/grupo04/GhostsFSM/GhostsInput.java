@@ -3,6 +3,8 @@ package es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM;
 import es.ucm.fdi.ici.Input;
 import pacman.game.Constants.GHOST;
 import pacman.game.Game;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
+
 
 public class GhostsInput extends Input {
 
@@ -13,10 +15,12 @@ public class GhostsInput extends Input {
 	private int currentLevel;
 	private boolean eatenPPill;
 	private boolean blinkyEaten;
-	private Boolean pinkyEaten;
-	private Boolean sueEaten;
+	private boolean pinkyEaten;
+	private boolean sueEaten;
 	private boolean inkyEaten;
 	static private int storedLevel = -1;
+	private boolean pacmanNearPPill;
+	private static final int SECURITY_DISTANCE = 60;
 	public GhostsInput(Game game) {
 		super(game);
 	}
@@ -32,6 +36,7 @@ public class GhostsInput extends Input {
 		sueEdible = game.isGhostEdible(GHOST.SUE);
 		inkyEaten = game.wasGhostEaten(GHOST.INKY);
 		inkyEdible = game.isGhostEdible(GHOST.INKY);
+		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,SECURITY_DISTANCE);
 	}
 	public boolean isGhostEdible(GHOST ghost) {
 		switch(ghost) {
@@ -70,6 +75,11 @@ public class GhostsInput extends Input {
 		default:
 			return false;
 	}
+	}
+	
+	public boolean PacManNearPPill() {
+		
+		
 	}
 
 }
