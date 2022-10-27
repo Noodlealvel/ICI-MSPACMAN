@@ -87,5 +87,8 @@ public class GhostsInput extends Input {
 	public boolean lowEdibleTime(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.LOW_EDIBLE_TIME);
 	}
+	public boolean closeToOtherGhosts(GHOST ghost) {
+		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
+	}
 }
 
