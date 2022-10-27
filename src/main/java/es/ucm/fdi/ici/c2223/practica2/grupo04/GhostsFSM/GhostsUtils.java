@@ -143,7 +143,6 @@ public class GhostsUtils {
 					distanceMap.put(Double.valueOf(Math.abs(currentDistance)), Integer.valueOf(node));
 				}
 			}
-			distanceMap.pollFirstEntry();
 			if (distanceMap.firstKey() < 5) {
 				found = true;
 				middlePoint = distanceMap.firstEntry().getValue();
