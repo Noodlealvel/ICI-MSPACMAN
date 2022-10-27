@@ -28,7 +28,6 @@ public class SearchPathWithoutGhostsAction implements Action {
 	//Si no hay, supuestamente no hay escapatoria, asi que se queda con el valor de la linea 33
 	private int pathWithNoGhosts(Game game) {
 
-		int i = 0;
 		int currentScore;
 		int chosenPath = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getPillIndices(), DM.PATH);
 		List<Integer> nearPills = new ArrayList<Integer>();
