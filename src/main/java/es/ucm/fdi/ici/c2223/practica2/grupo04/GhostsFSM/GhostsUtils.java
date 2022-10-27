@@ -128,6 +128,9 @@ public class GhostsUtils {
 		double currentDistance = Double.MAX_VALUE;
 		boolean found = false;
 		int middlePoint = 0;
+		if (closestActivePowerPill == -1) {
+			return game.getPacmanCurrentNodeIndex();
+		}
 		while(!found) {
 			int expanded = 0;
 			for(Double i :distanceMap.navigableKeySet()) {
