@@ -17,6 +17,7 @@ public class GhostsInput extends Input {
 	static private int storedLevel = -1;
 	private boolean pacmanNearPPill;
 	private GHOST nearestGhostToPacman;
+	private boolean noPPills;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int LOW_TIME = 10;
 	private static final int CLOSE_PACMAN_DISTANCE = 40;
@@ -38,6 +39,7 @@ public class GhostsInput extends Input {
 			ghostsInfoMap.put(ghost, ghostMap);
 			
 		}
+		noPPills = game.getNumberOfActivePowerPills() > 0;
 		eatenPPill = game.wasPowerPillEaten();
 		currentLevel = game.getCurrentLevel();
 		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,SECURITY_DISTANCE);
@@ -93,6 +95,9 @@ public class GhostsInput extends Input {
 	}
 	public boolean nearToPacman(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
+	}
+	public boolean noPowerPills() {
+		return noPPills;
 	}
 }
 
