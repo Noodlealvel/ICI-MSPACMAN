@@ -7,10 +7,10 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsAgressiveChase implements Action {
+public class GhostsKillPacman implements Action {
 
 	GHOST ghost;
-	public GhostsAgressiveChase( GHOST ghost) {
+	public GhostsKillPacman( GHOST ghost) {
 		this.ghost = ghost;
 	}
 	
@@ -24,8 +24,7 @@ public class GhostsAgressiveChase implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			//TODO Comportamiento por implementar 
-			return null;
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.EUCLID);
         }
 		else
 			return MOVE.NEUTRAL;
