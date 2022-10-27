@@ -7,16 +7,16 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class GhostsKillPacman implements Action {
+public class GhostsKillPacmanAction implements Action {
 
 	GHOST ghost;
-	public GhostsKillPacman( GHOST ghost) {
+	public GhostsKillPacmanAction( GHOST ghost) {
 		this.ghost = ghost;
 	}
 	
 	@Override
 	public String getActionId() {
-		return ghost + "AgressiveChase";
+		return ghost + "KillPacMan";
 	}
 
 
