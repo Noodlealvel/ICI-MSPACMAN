@@ -21,7 +21,7 @@ public class GhostsLevelChangeTransition implements Transition {
 	
 	@Override
 	public String toString() {
-		return "Ghost is in another level";
+		return ghost.toString() + "is in another level";
 	}
 
 }

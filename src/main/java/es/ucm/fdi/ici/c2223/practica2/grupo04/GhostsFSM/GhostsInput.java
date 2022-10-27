@@ -20,6 +20,7 @@ public class GhostsInput extends Input {
 	private boolean inkyEaten;
 	static private int storedLevel = -1;
 	private boolean pacmanNearPPill;
+	private GHOST nearestGhostToPacman;
 	private static final int SECURITY_DISTANCE = 60;
 	public GhostsInput(Game game) {
 		super(game);
@@ -37,6 +38,7 @@ public class GhostsInput extends Input {
 		inkyEaten = game.wasGhostEaten(GHOST.INKY);
 		inkyEdible = game.isGhostEdible(GHOST.INKY);
 		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,SECURITY_DISTANCE);
+		nearestGhostToPacman = GhostsUtils.NearestGhostToPacman(game);
 	}
 	public boolean isGhostEdible(GHOST ghost) {
 		switch(ghost) {
@@ -77,8 +79,17 @@ public class GhostsInput extends Input {
 	}
 	}
 	
-	public boolean PacManNearPPill() {
-		return pacmanNearPPill;		
+	public boolean danger(GHOST ghost) {
+		if (pacmanNearPPill || (game.isGhostEdible(ghost) && ghost==nearestGhostToPacman) )
+			return true;
+		else 
+			return false;
 	}
 
+	public boolean isOutOfLair(GHOST ghost) {
+		if (game.getGhostLairTime(ghost) > 0)
+			return false;
+		else 
+			return true;		
+	}
 }
