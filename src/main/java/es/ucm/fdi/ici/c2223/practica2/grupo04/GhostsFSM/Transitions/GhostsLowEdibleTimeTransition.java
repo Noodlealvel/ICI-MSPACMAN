@@ -16,7 +16,7 @@ public class GhostsLowEdibleTimeTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.lowEdibleTime();
+		return input.lowEdibleTime(ghost);
 	}
 	
 	@Override
