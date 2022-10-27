@@ -25,11 +25,7 @@ public class GhostsChaseAction implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			int[] path = null;
-			path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost));
-			if (GhostsUtils.PathContainsGhosts(game, path) == false)
-				return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
-			else return MOVE.NEUTRAL;
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
         }
 		else
 			return MOVE.NEUTRAL;
