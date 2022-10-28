@@ -17,6 +17,7 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsStopChasin
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsWaitAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsDangerTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEatenTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEdibleTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndCloseGhostsTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndNotEdibleTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsInPacmanRadiusTransition;
@@ -33,13 +34,12 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacman
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanTunnelTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPathWithGhostsTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPathWithoutGhostsTransition;
+import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
 import es.ucm.fdi.ici.practica2.demofsm.ghosts.GhostsInput;
-import es.ucm.fdi.ici.practica2.demofsm.ghosts.transitions.GhostsNotEdibleAndPacManFarPPill;
-import es.ucm.fdi.ici.practica2.demofsm.ghosts.transitions.PacManNearPPillTransition;
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
@@ -101,20 +101,68 @@ public class Ghosts extends GhostController {
 			
 			GhostsFarAndNotEdibleTransition farAndNoEdible = new GhostsFarAndNotEdibleTransition(ghost);
 			
-			GhostsLevelChangeTransition levelTransition = new GhostsLevelChangeTransition(ghost);
+			GhostsLevelChangeTransition levelChange = new GhostsLevelChangeTransition(ghost);
 			
 			GhostsEatenTransition eaten = new GhostsEatenTransition(ghost);
 			
 			GhostsOutOfLairTransition outOfLair = new GhostsOutOfLairTransition(ghost);
 			
+			GhostsEdibleTransition edible = new GhostsEdibleTransition(ghost);
+			
 			GhostsInPacmanRadiusTransition inPacmanRadius = new GhostsInPacmanRadiusTransition(ghost);
 
-					
-			fsm.add(chase, edible, runAway);
-			fsm.add(chase, near, runAway);
-			fsm.add(runAway, toChaseTransition, chase);
+			//ataque
+			FSM ataque = new FSM("Ataque");
+			GraphFSMObserver ataqueObserver = new GraphFSMObserver(ataque.toString());
+			ataque.addObserver(ataqueObserver);
 			
-			fsm.ready(chase);
+			ataque.add(stopChase, pacmanTunnel, chase);
+			ataque.add(stopChase, pathWithGhosts, flank);
+			ataque.add(chase, justBehindPacman, stopChase);
+			ataque.add(flank, pathWithoutGhosts, chase);
+			
+			ataque.ready(chase);
+			CompoundState ataqueState = new CompoundState("Ataque", ataque);
+			
+			//defensa
+			FSM defensa = new FSM("Defensa");
+			GraphFSMObserver defensaObserver = new GraphFSMObserver(defensa.toString());
+			defensa.addObserver(defensaObserver);
+			
+			defensa.add(flee, farAndCloseGhosts, disperse);
+			defensa.add(flee, lowEdibleTime, goToPP);
+			defensa.add(flee, pacmanFar, fleeFromPP);
+			defensa.add(flee, pacmanAndTunnelNear, tunnel);
+			defensa.add(disperse, otherGhostsFar, flee);
+			defensa.add(fleeFromPP, pacmanNear, flee);
+			defensa.add(tunnel, pacmanFar, fleeFromPP);
+
+			defensa.ready(flee);
+			CompoundState defensaState = new CompoundState("Defensa", defensa);
+			
+			//agresivo
+			FSM agresivo = new FSM("Agresivo");
+			GraphFSMObserver agresivoObserver = new GraphFSMObserver(agresivo.toString());
+			agresivo.addObserver(agresivoObserver);
+			
+			agresivo.add(defendPills, pacmanFar, kill);
+			agresivo.add(kill, pacmanNear, defendPills);
+		
+			agresivo.ready(defendPills);
+			CompoundState agresivoState = new CompoundState("Agresivo", agresivo);
+			
+			//externos			
+			fsm.add(defensaState, notEdible, ataqueState);
+			fsm.add(ataqueState, danger, defensaState);
+			fsm.add(defensaState, noPP, agresivoState);
+			fsm.add(agresivoState, levelChange , wait);
+			fsm.add(wait, outOfLair, ataqueState);
+			fsm.add(defensaState, eaten, wait);
+			fsm.add(defensaState, farAndNoEdible, regroup);
+			fsm.add(regroup, edible, defensaState );
+			fsm.add(regroup, inPacmanRadius , ataqueState);	
+			
+			fsm.ready(wait);
 			
 			graphObserver.showInFrame(new Dimension(800,600));
 			
