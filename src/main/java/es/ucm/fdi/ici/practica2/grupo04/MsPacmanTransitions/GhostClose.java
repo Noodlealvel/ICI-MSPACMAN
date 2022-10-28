@@ -4,7 +4,7 @@ import es.ucm.fdi.ici.Input;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
 import es.ucm.fdi.ici.fsm.Transition;
 
-public class GhostNearPacman implements Transition {
+public class GhostClose implements Transition {
 
 	@Override
 	public boolean evaluate(Input in) {
