@@ -18,9 +18,10 @@ public class MsPacmanInput extends Input{
 	private GHOST nearestEdibleGhost;
 	
 	//private final static int ghostCloseRange = 15;
-	private final static int ghostCloseMedium = 30;
-	private final static int PPDistance = 30;
-	private final static int EatLimit = 80;
+	private final int ghostCloseMedium = 30;
+	private final int PPDistance = 30;
+	private final int EatLimit = 80;
+	private final int PPDistanceInZone = 50;
 	private int[] activePowerPills;
 	private int[] activePills;
 	private int[] pacmanNeighbors;
@@ -29,9 +30,7 @@ public class MsPacmanInput extends Input{
 	private boolean ghostsApart;
 	private Map <GHOST,Integer> ghostEdibleTimes;
 	private boolean PPeaten;
-	private boolean noPPsleft;
-	private boolean lotsofPPinZone;
-	private boolean levelchange;
+	private boolean multiplePPsInZone;
 	private boolean ghostInPath;
 	private int nextScore;
 	private boolean ghostClose;
@@ -39,9 +38,13 @@ public class MsPacmanInput extends Input{
 	private boolean noPillsNear;
 	private boolean dontChase;
 	private boolean multipleGhostsClose;
+	private boolean lessGhostsClose;
 	private boolean PPClose;
 	private boolean ghostsFlanking;
-	
+	private boolean levelChange;
+	private boolean PPBlocked;
+	private boolean noPPsleft;
+	private boolean fewPillsleft;
 	
 	public MsPacmanInput(Game game) {
 		super(game);
@@ -51,138 +54,175 @@ public class MsPacmanInput extends Input{
 
 	@Override
 	public void parseInput() {
-		
-		this.PPeaten=false;
-		this.noPillsNear=true;
-		this.dontChase=false;
-		this.ghostsFlanking =false;
-		
-		activePowerPills=game.getActivePowerPillsIndices();
-		pacmanPos=game.getPacmanCurrentNodeIndex();
-		for (int pill: activePowerPills)
-		{
-			if (pacmanPos == pill)
-			{
-				this.PPeaten=true;
+
+		this.PPeaten = false;
+		this.noPillsNear = true;
+		this.dontChase = false;
+		this.ghostsFlanking = false;
+
+		this.activePowerPills = game.getActivePowerPillsIndices();
+		this.pacmanPos = game.getPacmanCurrentNodeIndex();
+		for (int pill : activePowerPills) {
+			if (pacmanPos == pill) {
+				this.PPeaten = true;
 			}
 		}
-		
-		activePills=game.getActivePillsIndices();
-		pacmanNeighbors= game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade());
-		for (int node: pacmanNeighbors)
-		{
-			if (Arrays.asList(activePills).contains(node))
-			{
-				noPillsNear=false;
+
+		this.activePills = game.getActivePillsIndices();
+		pacmanNeighbors = game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade());
+		for (int node : pacmanNeighbors) {
+			if (Arrays.asList(activePills).contains(node)) {
+				noPillsNear = false;
 			}
-			
+
+		}
+		
+		if (activePowerPills.length==0)
+			this.noPPsleft=true;
+		
+		if (activePills.length<=15)
+		{
+			this.fewPillsleft=true;
 		}
 		
 		GHOST nearestGhost = null;
-			double shortestDistance = -1;
-			double distanceGhost = 0;
-			for (GHOST ghost : GHOST.values()) {
-					distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
-					if((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium) {
-						nearestGhost = ghost;
-						shortestDistance = distanceGhost;
-					}
+		double shortestDistance = -1;
+		double distanceGhost = 0;
+		for (GHOST ghost : GHOST.values()) {
+			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost)) {
+				nearestGhost = ghost;
+				shortestDistance = distanceGhost;
+			}
+		}
+
+		if (nearestGhost != null) {
+			this.nearestGhost = nearestGhost;
+			this.ghostClose = true;
+		} else {
+			this.ghostClose = false;
+		}
+
+		shortestDistance = -1;
+		distanceGhost = 0;
+		for (GHOST ghost : GHOST.values()) {
+			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && game.isGhostEdible(ghost)
+					&& distanceGhost <= EatLimit) {
+				nearestGhost = ghost;
+				shortestDistance = distanceGhost;
+			}
+		}
+
+		if (nearestGhost != null) {
+			this.nearestEdibleGhost = nearestGhost;
+			this.edibleGhostClose = true;
+		} else {
+			this.edibleGhostClose = false;
+		}
+
+		// Para saber cuando no merece la pena perseguir y pasar de ataque a standard
+		if (nearestEdibleGhost == null) {
+			if (game.getGhostCurrentEdibleScore() < 800) {
+				this.dontChase = true;
+			}
+		}
+
+		// Cuantos fantasmas hay cerca de pacman
+		int ghostsNearPacman = 0;
+		for (GHOST ghost : GHOST.values()) {
+			if (game.isGhostEdible(ghost) == false) {
+				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(),
+						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.EUCLID);
+				if (distance <= ghostCloseMedium) {
+					ghostsNearPacman++;
 				}
-			
-			if (nearestGhost!=null)
+			}
+		}
+
+		if (ghostsNearPacman >= 2)
+			this.multipleGhostsClose = true;
+		else
+			this.lessGhostsClose=true;
+		
+		// Para saber si pacman tiene cerca una PP
+		double powerPillDistance;
+		shortestDistance = -1;
+		int nearestPPill = -1;
+		for (int pillNode : activePowerPills) {
+			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.EUCLID);
+			if (powerPillDistance < shortestDistance || shortestDistance == -1) {
+				shortestDistance = powerPillDistance;
+				nearestPPill = pillNode;
+				this.PPClose = true;
+			}
+		}
+
+		// Para saber si dicha PP está bloqueada por fantasmas
+
+		int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), nearestPPill,
+				game.getPacmanLastMoveMade());
+		for (int node : PPpath) {
+			for (GHOST ghosts : GHOST.values()) {
+				if (game.getGhostCurrentNodeIndex(ghosts) == node) {
+					this.PPBlocked = true;
+					break;
+				}
+			}
+		}
+
+		// Para saber si hay muchas PPs en la zona de Pacman
+		
+		int PPsinzone = 0;
+		for (int PPillnode: activePowerPills)
+		{
+			if (game.getShortestPathDistance(pacmanPos, PPillnode, game.getPacmanLastMoveMade()) < PPDistanceInZone)
 			{
-				this.nearestGhost=nearestGhost;
-				this.ghostClose=true;
+				PPsinzone++;
 			}
-			else 
-			{
-				this.ghostClose=false;
+		}
+		
+		if (PPsinzone>=2)
+		{
+			this.multiplePPsInZone=true;
+		}
+		
+		// Para saber si hay fantasmas flanqueando
+		List<Integer> nearPills = new ArrayList<Integer>();
+
+		int ghostsInPath = 0;
+		for (int pillNode : game.getPillIndices()) {
+			if (game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, game.getPacmanLastMoveMade(),
+					DM.EUCLID) <= 30) {
+				nearPills.add(Integer.valueOf(pillNode));
 			}
-			
-			shortestDistance = -1;
-			distanceGhost = 0;
-			for (GHOST ghost : GHOST.values()) {
-					distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
-					if((shortestDistance == -1 || distanceGhost < shortestDistance) && game.isGhostEdible(ghost) && distanceGhost <= EatLimit) {
-						nearestGhost = ghost;
-						shortestDistance = distanceGhost;
-					}
-				}
-			
-			if (nearestGhost!=null)
-			{
-				this.nearestEdibleGhost=nearestGhost;
-				this.edibleGhostClose=true;
-			}
-			else 
-			{
-				this.edibleGhostClose=false;
-			}
-			
-			//Para saber cuando no merece la pena perseguir y pasar de ataque a standard
-			if(nearestEdibleGhost==null)
-			{
-				if (game.getGhostCurrentEdibleScore() < 800)
-				{
-					this.dontChase=true;
-				}
-			}
-			
-			//Cuantos fantasmas hay cerca de pacman
-			int ghostsNearPacman = 0;
-			for(GHOST ghost: GHOST.values()) {
-				if(game.isGhostEdible(ghost)==false) {
-					double distance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.EUCLID); 
-					if(distance <= ghostCloseMedium) {
-						ghostsNearPacman++;
+		}
+
+		for (Integer pillNode : nearPills) {
+
+			ghostsInPath = 0;
+			int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), pillNode.intValue(),
+					game.getPacmanLastMoveMade());
+			for (int node1 : ghostspath) {
+				for (GHOST ghosts : GHOST.values()) {
+					if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
+						ghostsInPath++;
 					}
 				}
 			}
-			
-			if (ghostsNearPacman >=2)
-				this.multipleGhostsClose = true;
-			
-			//Para saber si pacman tiene cerca una PP
-				double powerPillDistance;
-				shortestDistance = -1;
-				int nearestPPill = -1;
-				for(int pillNode : game.getActivePowerPillsIndices()) {
-					powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.EUCLID);
-					if(powerPillDistance < shortestDistance || shortestDistance == -1) {
-						shortestDistance = powerPillDistance;
-						nearestPPill = pillNode;
-						this.PPClose=true;
-					}
-				}
-				
-				//Para saber si hay fantasmas flanqueando
-				List<Integer> nearPills = new ArrayList<Integer>();
-				
-				int ghostsInPath = 0;
-				for(int pillNode : game.getPillIndices()) {
-					if (game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, game.getPacmanLastMoveMade(), DM.EUCLID) <= 30 ) {
-						nearPills.add(Integer.valueOf(pillNode));
-					}
-				}
-				
-				for (Integer pillNode : nearPills) {
-					
-					ghostsInPath = 0;
-					int[] path = game.getShortestPath(game.getPacmanCurrentNodeIndex(), pillNode.intValue(), game.getPacmanLastMoveMade());
-					for(int node : path) {
-						for (GHOST ghosts : GHOST.values()) {
-							if(game.getGhostCurrentNodeIndex(ghosts) == node) {
-								ghostsInPath++;
-							}
-						}
-					}
-				}
-				//Posible mejora
-				if (ghostsInPath >= 2)
-				{
-					this.ghostsFlanking=true;
-				}
-			
+		}
+		// Posible mejora
+		if (ghostsInPath >= 2) {
+			this.ghostsFlanking = true;
+		}
+
+		if ((game.getNumberOfActivePills() == game.getNumberOfPills())
+				&& (game.getNumberOfActivePowerPills() == game.getNumberOfPowerPills())) {
+			this.levelChange = true;
+		}
+		
+		
+
 	}
 
 	//Getters
@@ -213,6 +253,11 @@ public class MsPacmanInput extends Input{
 	{
 		return multipleGhostsClose;
 	}
+	
+	public boolean getLessGhostsClose()
+	{
+		return lessGhostsClose;
+	}
 
 	public boolean getPPClose()
 	{
@@ -223,4 +268,28 @@ public class MsPacmanInput extends Input{
 	{
 		return ghostsFlanking;
 	}
+	
+	public boolean getLevelChange()
+	{
+		return levelChange;
+	}
+	
+	public boolean getPPBlocked()
+	{
+		return PPBlocked;
+	}
+
+	public boolean getNoPPsleft() {
+		return noPPsleft;
+	}
+
+	public boolean getFewPillsleft() {
+		return fewPillsleft;
+	}
+	
+	public boolean getMultiplePPsInZone()
+	{
+		return multiplePPsInZone;
+	}
+	
 }
