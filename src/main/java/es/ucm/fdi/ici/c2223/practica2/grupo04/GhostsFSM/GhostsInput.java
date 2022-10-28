@@ -85,13 +85,13 @@ public class GhostsInput extends Input {
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
 	}
 	public boolean ghostsDispersed(GHOST ghost) {
-		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
+		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
 	}
 	public boolean lowEdibleTime(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.LOW_EDIBLE_TIME);
 	}
 	public boolean closeToOtherGhosts(GHOST ghost) {
-		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
 	}
 	public boolean nearToPacman(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
