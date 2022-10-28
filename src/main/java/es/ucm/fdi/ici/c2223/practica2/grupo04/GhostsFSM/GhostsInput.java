@@ -36,7 +36,7 @@ public class GhostsInput extends Input {
 			ghostMap.put(GhostsRelevantInfo.GHOSTS_CLOSE, GhostsUtils.GhostCloseToRest(game,ghost));
 			ghostMap.put(GhostsRelevantInfo.LOW_EDIBLE_TIME, game.getGhostEdibleTime(ghost) <= LOW_TIME);
 			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.PATH) <= CLOSE_PACMAN_DISTANCE);
-			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, GhostsUtils.PathContainsGhosts(game, game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH)));
+			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, GhostsUtils.PathContainsGhosts(game, game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost))));
 			ghostsInfoMap.put(ghost, ghostMap);
 			
 		}
