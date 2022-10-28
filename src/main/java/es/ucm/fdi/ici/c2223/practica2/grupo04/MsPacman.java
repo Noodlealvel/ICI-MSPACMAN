@@ -55,14 +55,14 @@ public class MsPacman extends PacmanController {
     	SimpleState eatLastPills = new SimpleState("eatLastPills", new EatLastPillsAction());
     	
     	//Transiciones internas de standard
-    	Transition = new GhostNearPacman();
-    	Transition = new PowerPillEaten();
-    	Transition = new noPillsNearPacman();
+    	Transition fewPPsInZone = new FewPPsInZone();
+    	Transition multiplePPsInZone = new MultiplePPsInZone();
+    	Transition fewPillsAndNoPPsLeft = new FewPillsAndNoPPsleft();
     	
     	//Creamos las relaciones de estado - transicion - estado
-    	cfsm1.add(searchBetterZone, muvhsahha, searchOptimalPath);
-    	cfsm1.add(searchOptimalPath, muvhsahha, searchBetterZone);
-    	cfsm1.add(searchOptimalPath, muvhsahha, eatLastPills);
+    	cfsm1.add(searchBetterZone, multiplePPsInZone, searchOptimalPath);
+    	cfsm1.add(searchOptimalPath, fewPPsInZone, searchBetterZone);
+    	cfsm1.add(searchOptimalPath, fewPillsAndNoPPsLeft, eatLastPills);
     	cfsm1.ready(searchOptimalPath);
     	
     	CompoundState standard = new CompoundState("STANDARD", cfsm1);
@@ -79,13 +79,13 @@ public class MsPacman extends PacmanController {
     	SimpleState ediblesButApart = new SimpleState("ediblesButApart", new EdiblesButApartAction());
     	
     	//Transiciones internas de ataque
-    	Transition = new GhostNearPacman();
-    	Transition = new PowerPillEaten();
-    	Transition = new noPillsNearPacman();
+    	//Transition = new GhostNearPacman();
+    	//Transition = new PowerPillEaten();
+    	Transition edibleGhostClose = new EdibleGhostClose();
     	
     	//Creamos las relaciones de estado - transicion - estado
     	cfsm2.add(searchOptimalPathTowardsEdibles, muvhsahha, ediblesAndTogether);
-    	cfsm2.add(ediblesButApart, muvhsahha, searchOptimalPathTowardsEdibles);
+    	cfsm2.add(ediblesButApart, edibleGhostClose, searchOptimalPathTowardsEdibles);
     	cfsm2.add(ediblesButApart, muvhsahha, ediblesAndTogether);
     	cfsm2.add(ediblesAndTogether, muvhsahha, ediblesButApart);
     	cfsm2.ready(searchOptimalPathTowardsEdibles);
@@ -108,14 +108,16 @@ public class MsPacman extends PacmanController {
     	Transition ghostsFlanking = new GhostsFlanking();
     	Transition severalGhostsCloseAndPP = new SeveralGhostsCloseAndPP();
     	Transition severalGhostsCloseNoPP = new SeveralGhostsCloseNoPP();
+    	Transition powerpillBlocked = new PowerPillBlocked();
+    	Transition lessGhostsClose = new LessGhostsClose();
     	
     	//Creamos las relaciones de estado - transicion - estado
     	cfsm3.add(flee, ghostsFlanking, searchPathWithoutGhosts);
-    	cfsm3.add(searchPathWithoutGhosts, muvhsahha, flee);
-    	cfsm3.add(chasePowerPill, muvhsahha, flee);
+    	cfsm3.add(searchPathWithoutGhosts, ghostNearPacman, flee);
+    	cfsm3.add(chasePowerPill, powerpillBlocked, flee);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseAndPP, chasePowerPill);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseNoPP, searchZoneWithPPAndNoGhosts);
-    	cfsm3.add(searchZoneWithPPAndNoGhosts, muvhsahha, flee);
+    	cfsm3.add(searchZoneWithPPAndNoGhosts, lessGhostsClose, flee);
     	cfsm3.ready(flee);
     	
     	CompoundState defense = new CompoundState("DEFENSE", cfsm3);
@@ -130,11 +132,12 @@ public class MsPacman extends PacmanController {
     	
     	
     	Transition standardToAttack = new StandardToAttackTransition();
+    	Transition levelChange = new LevelChange();
     	
     	//Desde standard
     	fsm.add(standard, standardToAttack, attack);
     	fsm.add(standard, ghostNearPacman, defense);
-    	fsm.add(standard, tran4, beginMap);
+    	fsm.add(standard, levelChange, beginMap);
     	
     	
     	Transition attackToStandard = new AttackToStandardTransition();
@@ -142,14 +145,18 @@ public class MsPacman extends PacmanController {
     	//Desde ataque
     	fsm.add(attack, attackToStandard, standard);
     	fsm.add(attack, ghostNearPacman, defense);
-    	fsm.add(attack, tran4, beginMap);
+    	fsm.add(attack, levelChange, beginMap);
     
+    	
+    	Transition ghostsTooFar = new GhostsTooFar();
+    	
     	//Desde defensa
-    	fsm.add(defense, tran4, standard);
+    	fsm.add(defense, ghostsTooFar, standard);
     	fsm.add(defense, powerpillEaten, attack);
-    	fsm.add(defense, tran4, beginMap);
+    	fsm.add(defense, levelChange, beginMap);
 
     	fsm.ready(beginMap);
+    	
     	
     	
     	JFrame frame = new JFrame();
