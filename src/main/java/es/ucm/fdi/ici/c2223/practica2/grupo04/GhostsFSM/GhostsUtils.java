@@ -175,5 +175,13 @@ public class GhostsUtils {
 		}
 		return distance <= GHOSTCLOSEDISTANCE;
 	}
+	public static boolean PacmanInTunnel(Game game) {
+		int toExpand = game.getPacmanCurrentNodeIndex();
+		for (int node : game.getNeighbouringNodes(toExpand, game.getPacmanLastMoveMade())) {
+			if (game.getDistance(node, toExpand, DM.EUCLID) > 1)
+				return true;
+		}
+		return false;
+	}
 	
 }

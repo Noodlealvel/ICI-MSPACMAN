@@ -21,6 +21,7 @@ public class GhostsInput extends Input {
 	private boolean noPPills;
 	private HashMap<GHOST,MOVE> ghostsLastMovementMade;
 	private MOVE pacmanLastMovement;
+	private boolean pacmanInTunnel;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int LOW_TIME = 10;
 	private static final int CLOSE_PACMAN_DISTANCE = 40;
@@ -46,6 +47,7 @@ public class GhostsInput extends Input {
 			
 		}
 		pacmanLastMovement = game.getPacmanLastMoveMade();
+		pacmanInTunnel = GhostsUtils.PacmanInTunnel(game);
 		noPPills = game.getNumberOfActivePowerPills() > 0;
 		eatenPPill = game.wasPowerPillEaten();
 		currentLevel = game.getCurrentLevel();
@@ -114,6 +116,9 @@ public class GhostsInput extends Input {
 	}
 	public boolean sameLastMovement(GHOST ghost) {
 		return ghostsLastMovementMade.get(ghost) == pacmanLastMovement;
+	}
+	public boolean pacmanInTunnel() {
+		return pacmanInTunnel;
 	}
 }
 

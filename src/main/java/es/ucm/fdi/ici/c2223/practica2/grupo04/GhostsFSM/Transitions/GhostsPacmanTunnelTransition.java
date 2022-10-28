@@ -16,11 +16,11 @@ public class GhostsPacmanTunnelTransition implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.danger(ghost);
+		return input.pacmanInTunnel();
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " ";
+		return "pacman is in tunnel";
 	}
 }
