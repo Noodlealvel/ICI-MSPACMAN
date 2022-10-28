@@ -13,20 +13,20 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
 public class GhostsInput extends Input {
 
 	private HashMap<GHOST,HashMap<GhostsRelevantInfo, Boolean>> ghostsInfoMap;
-	private int currentLevel;
 	private boolean eatenPPill;
-	static private int storedLevel = -1;
 	private boolean pacmanNearPPill;
 	private GHOST nearestGhostToPacman;
 	private boolean noPPills;
 	private HashMap<GHOST,MOVE> ghostsLastMovementMade;
 	private MOVE pacmanLastMovement;
 	private boolean pacmanInTunnel;
+	private GameMemory gameMemory;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int LOW_TIME = 10;
 	private static final int CLOSE_PACMAN_DISTANCE = 40;
-	public GhostsInput(Game game) {
+	public GhostsInput(Game game, GameMemory mem) {
 		super(game);
+		gameMemory = mem;
 	}
 	@Override
 	public void parseInput() {
@@ -53,16 +53,18 @@ public class GhostsInput extends Input {
 		currentLevel = game.getCurrentLevel();
 		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,SECURITY_DISTANCE);
 		nearestGhostToPacman = GhostsUtils.NearestGhostToPacman(game);
+		fillMemory();
+	}
+	private void fillMemory() {
+		gameMemory.setLastLevel();
+		gameMemory.setCurrentLevel(game.getCurrentLevel());
+		
 	}
 	public boolean isGhostEdible(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EDIBLE);
 	}
 	public boolean levelChanged() {
-		if (currentLevel != storedLevel) {
-			storedLevel = currentLevel;
-			return true;
-		}
-		return false;
+		return gameMemory.getCurrentLevel() != gameMemory.getLastLevel();
 	}
 	public boolean PPillEaten() {
 		return eatenPPill;
@@ -72,17 +74,11 @@ public class GhostsInput extends Input {
 	}
 	
 	public boolean danger(GHOST ghost) {
-		if (pacmanNearPPill || (game.isGhostEdible(ghost) && ghost==nearestGhostToPacman) )
-			return true;
-		else 
-			return false;
+		return pacmanNearPPill || (game.isGhostEdible(ghost) && ghost==nearestGhostToPacman);
 	}
 
 	public boolean isOutOfLair(GHOST ghost) {
-		if (game.getGhostLairTime(ghost) > 0)
-			return false;
-		else 
-			return true;		
+		return game.getGhostLairTime(ghost) > 0;		
 	}
 	public boolean isTunnelNear(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.NEAR_TUNNEL);
