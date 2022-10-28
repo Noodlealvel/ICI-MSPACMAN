@@ -3,6 +3,8 @@ package es.ucm.fdi.ici.c2223.practica2.grupo04;
 import java.awt.Dimension;
 import java.util.EnumMap;
 
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsChaseAction;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsDangerTransition;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
@@ -18,7 +20,7 @@ public class Ghosts extends GhostController {
 	EnumMap<GHOST,FSM> fsms;
 	public Ghosts()
 	{
-		setName("Ghosts XX");
+		setName("Ghosts 04");
 
 		fsms = new EnumMap<GHOST,FSM>(GHOST.class);
 		for(GHOST ghost: GHOST.values()) {
@@ -28,10 +30,11 @@ public class Ghosts extends GhostController {
 			fsm.addObserver(graphObserver);
 
 			
-			SimpleState chase = new SimpleState(new ChaseAction(ghost));
+			SimpleState chase = new SimpleState(new GhostsChaseAction(ghost));
+			SimpleState 
 			SimpleState runAway = new SimpleState(new RunAwayAction(ghost));
 			
-			GhostsDangerTransition edible = new GhostsDangerTransition(ghost,this);
+			GhostsDangerTransition edible = new GhostsDangerTransition(ghost);
 			PacManNearPPillTransition near = new PacManNearPPillTransition();
 			GhostsNotEdibleAndPacManFarPPill toChaseTransition = new GhostsNotEdibleAndPacManFarPPill(ghost);
 			
