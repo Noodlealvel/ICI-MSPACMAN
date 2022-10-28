@@ -16,7 +16,7 @@ public class GhostsInPacmanRadiusTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.isPacmanInVecinity(ghost) && input.isGhostEdible(ghost);
+		return input.isPacmanInVecinity(ghost) && !input.isGhostEdible(ghost);
 	}
 	
 	@Override
