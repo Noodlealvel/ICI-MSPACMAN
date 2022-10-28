@@ -39,7 +39,7 @@ public class MsPacman extends PacmanController {
     	SimpleState beginMap = new SimpleState("beginMap", new BeginMapAction());
     	
     	//Con sus transiciones
-    	Transition ghostNearPacman = new GhostNearPacman();
+    	Transition ghostClose = new GhostClose();
     	Transition powerpillEaten = new PowerPillEaten();
     	Transition noPillsNearPacman = new noPillsNearPacman();
  
@@ -113,7 +113,7 @@ public class MsPacman extends PacmanController {
     	
     	//Creamos las relaciones de estado - transicion - estado
     	cfsm3.add(flee, ghostsFlanking, searchPathWithoutGhosts);
-    	cfsm3.add(searchPathWithoutGhosts, ghostNearPacman, flee);
+    	cfsm3.add(searchPathWithoutGhosts, ghostClose, flee);
     	cfsm3.add(chasePowerPill, powerpillBlocked, flee);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseAndPP, chasePowerPill);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseNoPP, searchZoneWithPPAndNoGhosts);
@@ -126,7 +126,7 @@ public class MsPacman extends PacmanController {
     	//Creamos relaciones externas de los estados compuestos y el suelto
     	
     	//Desde el estado exterior
-    	fsm.add(beginMap, ghostNearPacman, defense);
+    	fsm.add(beginMap, ghostClose, defense);
     	fsm.add(beginMap, noPillsNearPacman, standard);
     	fsm.add(beginMap, powerpillEaten, attack);
     	
@@ -136,7 +136,7 @@ public class MsPacman extends PacmanController {
     	
     	//Desde standard
     	fsm.add(standard, standardToAttack, attack);
-    	fsm.add(standard, ghostNearPacman, defense);
+    	fsm.add(standard, ghostClose, defense);
     	fsm.add(standard, levelChange, beginMap);
     	
     	
@@ -144,7 +144,7 @@ public class MsPacman extends PacmanController {
     	
     	//Desde ataque
     	fsm.add(attack, attackToStandard, standard);
-    	fsm.add(attack, ghostNearPacman, defense);
+    	fsm.add(attack, ghostClose, defense);
     	fsm.add(attack, levelChange, beginMap);
     
     	
