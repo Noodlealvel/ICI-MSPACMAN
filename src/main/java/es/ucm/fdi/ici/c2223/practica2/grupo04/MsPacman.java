@@ -133,10 +133,11 @@ public class MsPacman extends PacmanController {
     	
     	Transition standardToAttack = new StandardToAttackTransition();
     	Transition levelChange = new LevelChange();
+    	Transition ghostClose2 = new GhostClose2();
     	
     	//Desde standard
     	fsm.add(standard, standardToAttack, attack);
-    	//fsm.add(standard, ghostClose, defense);
+    	fsm.add(standard, ghostClose2, defense);
     	fsm.add(standard, levelChange, beginMap);
     	
     	
