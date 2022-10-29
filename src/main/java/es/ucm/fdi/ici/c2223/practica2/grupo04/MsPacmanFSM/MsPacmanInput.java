@@ -148,14 +148,17 @@ public class MsPacmanInput extends Input{
 		//Para saber si esos fantasmas están flanqueando	
 		if (ghostsNearPacman != null) {
 			for (GHOST ghost : ghostsNearPacman) {
-				int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(),
-						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade());
-				for (int node1 : ghostspath) {
-					for (GHOST ghosts : GHOST.values()) {
-						if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
-							ghostsNearPacman.remove(ghosts);
+				if (ghost!=null)
+				{   //La siguiente linea crashea y no entiendo pq
+					int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(),
+							game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade());
+					for (int node1 : ghostspath) {
+						for (GHOST ghosts : GHOST.values()) {
+							if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
+								ghostsNearPacman.remove(ghosts);
+							}
 						}
-					}
+					}	
 				}
 			}
 

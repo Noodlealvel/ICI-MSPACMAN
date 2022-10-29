@@ -4,16 +4,18 @@ import es.ucm.fdi.ici.Input;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
 import es.ucm.fdi.ici.fsm.Transition;
 
-public class LessGhostsClose implements Transition {
+public class EdibleGhostsTogether2 implements Transition{
 
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacmanInput input = (MsPacmanInput) in;
-		return input.getLessGhostsClose();
+		return input.getEdibleGhostsTogether();
 	}
-
+	
 	public String toString()
 	{
-		return "LESS GHOSTS ARE CLOSE";
+		return "EDIBLE GHOSTS ARE TOGETHER 2";
 	}
+
 }
+
