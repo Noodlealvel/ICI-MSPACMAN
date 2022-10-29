@@ -7,14 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.ici.Input;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
 import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.Transition;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
-import es.ucm.fdi.ici.practica2.demofsm.mspacman.MsPacManInput;
-import es.ucm.fdi.ici.practica2.demofsm.mspacman.actions.RandomAction;
-import es.ucm.fdi.ici.practica2.demofsm.mspacman.transitions.RandomTransition;
 import es.ucm.fdi.ici.practica2.grupo04.MsPacmanActions.*;
 import es.ucm.fdi.ici.practica2.grupo04.MsPacmanTransitions.*;
 import pacman.controllers.PacmanController;
@@ -82,12 +80,14 @@ public class MsPacman extends PacmanController {
     	//Transition = new GhostNearPacman();
     	//Transition = new PowerPillEaten();
     	Transition edibleGhostClose = new EdibleGhostClose();
+    	Transition edibleGhostsTogether = new EdibleGhostsTogether();
+    	Transition edibleGhostsApart = new EdibleGhostsApart();
     	
     	//Creamos las relaciones de estado - transicion - estado
-    	cfsm2.add(searchOptimalPathTowardsEdibles, muvhsahha, ediblesAndTogether);
+    	cfsm2.add(searchOptimalPathTowardsEdibles, edibleGhostsTogether, ediblesAndTogether);
     	cfsm2.add(ediblesButApart, edibleGhostClose, searchOptimalPathTowardsEdibles);
-    	cfsm2.add(ediblesButApart, muvhsahha, ediblesAndTogether);
-    	cfsm2.add(ediblesAndTogether, muvhsahha, ediblesButApart);
+    //	cfsm2.add(ediblesButApart, edibleGhostsTogether, ediblesAndTogether);
+    	cfsm2.add(ediblesAndTogether, edibleGhostsApart, ediblesButApart);
     	cfsm2.ready(searchOptimalPathTowardsEdibles);
     	
     	CompoundState attack = new CompoundState("ATTACK", cfsm2);
@@ -117,7 +117,7 @@ public class MsPacman extends PacmanController {
     	cfsm3.add(chasePowerPill, powerpillBlocked, flee);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseAndPP, chasePowerPill);
     	cfsm3.add(searchPathWithoutGhosts, severalGhostsCloseNoPP, searchZoneWithPPAndNoGhosts);
-    	cfsm3.add(searchZoneWithPPAndNoGhosts, lessGhostsClose, flee);
+    //	cfsm3.add(searchZoneWithPPAndNoGhosts, lessGhostsClose, flee);
     	cfsm3.ready(flee);
     	
     	CompoundState defense = new CompoundState("DEFENSE", cfsm3);
@@ -136,7 +136,7 @@ public class MsPacman extends PacmanController {
     	
     	//Desde standard
     	fsm.add(standard, standardToAttack, attack);
-    	fsm.add(standard, ghostClose, defense);
+    	//fsm.add(standard, ghostClose, defense);
     	fsm.add(standard, levelChange, beginMap);
     	
     	
@@ -144,16 +144,16 @@ public class MsPacman extends PacmanController {
     	
     	//Desde ataque
     	fsm.add(attack, attackToStandard, standard);
-    	fsm.add(attack, ghostClose, defense);
-    	fsm.add(attack, levelChange, beginMap);
+    	//fsm.add(attack, ghostClose, defense);
+    //	fsm.add(attack, levelChange, beginMap);
     
     	
     	Transition ghostsTooFar = new GhostsTooFar();
     	
     	//Desde defensa
     	fsm.add(defense, ghostsTooFar, standard);
-    	fsm.add(defense, powerpillEaten, attack);
-    	fsm.add(defense, levelChange, beginMap);
+    	//fsm.add(defense, powerpillEaten, attack);
+    //	fsm.add(defense, levelChange, beginMap);
 
     	fsm.ready(beginMap);
     	
@@ -181,7 +181,7 @@ public class MsPacman extends PacmanController {
      */
     @Override
     public MOVE getMove(Game game, long timeDue) {
-       	Input in = new MsPacManInput(game); 
+       	Input in = new MsPacmanInput(game); 
     	return fsm.run(in);
     }
 

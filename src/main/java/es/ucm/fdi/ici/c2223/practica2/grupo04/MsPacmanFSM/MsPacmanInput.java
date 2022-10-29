@@ -45,7 +45,7 @@ public class MsPacmanInput extends Input{
 	private boolean PPBlocked;
 	private boolean noPPsleft;
 	private boolean fewPillsleft;
-	
+	private boolean edibleGhostsTogether;
 	public MsPacmanInput(Game game) {
 		super(game);
 		// TODO Auto-generated constructor stub
@@ -59,7 +59,7 @@ public class MsPacmanInput extends Input{
 		this.noPillsNear = true;
 		this.dontChase = false;
 		this.ghostsFlanking = false;
-
+		this.edibleGhostsTogether=false;
 		this.activePowerPills = game.getActivePowerPillsIndices();
 		this.pacmanPos = game.getPacmanCurrentNodeIndex();
 		for (int pill : activePowerPills) {
@@ -129,21 +129,74 @@ public class MsPacmanInput extends Input{
 		}
 
 		// Cuantos fantasmas hay cerca de pacman
-		int ghostsNearPacman = 0;
+		List<GHOST> ghostsNearPacman = new ArrayList<GHOST>();
 		for (GHOST ghost : GHOST.values()) {
 			if (game.isGhostEdible(ghost) == false) {
 				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(),
 						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.EUCLID);
 				if (distance <= ghostCloseMedium) {
-					ghostsNearPacman++;
+					ghostsNearPacman.add(ghost);
 				}
 			}
 		}
 
-		if (ghostsNearPacman >= 2)
+		if (ghostsNearPacman.size() >= 2)
 			this.multipleGhostsClose = true;
 		else
 			this.lessGhostsClose=true;
+		
+		//Para saber si esos fantasmas están flanqueando	
+		if (ghostsNearPacman != null) {
+			for (GHOST ghost : ghostsNearPacman) {
+				int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(),
+						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade());
+				for (int node1 : ghostspath) {
+					for (GHOST ghosts : GHOST.values()) {
+						if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
+							ghostsNearPacman.remove(ghosts);
+						}
+					}
+				}
+			}
+
+			switch (game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade()).length) {
+			case 2:
+				if (ghostsNearPacman.size() >= 2) {
+					this.ghostsFlanking = true;
+					break;
+				}
+			case 3: {
+				if (ghostsNearPacman.size() >= 3) {
+					this.ghostsFlanking = true;
+					break;
+				}
+			}
+			case 1:
+			default:
+			}
+		}
+		
+		//Para saber si hay fantasmas comestibles juntos
+		List<GHOST> ghostsNearghost;
+		for (GHOST ghost : GHOST.values()) {
+			ghostsNearghost = new ArrayList<GHOST>();
+			if (game.isGhostEdible(ghost) == true && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID) < EatLimit) {
+				for (GHOST ghosts : GHOST.values()) {
+					double distance = game.getDistance(game.getGhostCurrentNodeIndex(ghost),
+							game.getGhostCurrentNodeIndex(ghosts), game.getGhostLastMoveMade(ghost), DM.EUCLID);
+					if (distance <= ghostCloseMedium) {
+						ghostsNearghost.add(ghost);
+					}
+				}
+
+				if (ghostsNearghost.size() >= 3) {
+					this.edibleGhostsTogether = true;
+					break;
+				}
+			}
+		}
+		
+		
 		
 		// Para saber si pacman tiene cerca una PP
 		double powerPillDistance;
@@ -187,35 +240,7 @@ public class MsPacmanInput extends Input{
 			this.multiplePPsInZone=true;
 		}
 		
-		// Para saber si hay fantasmas flanqueando
-		List<Integer> nearPills = new ArrayList<Integer>();
-
-		int ghostsInPath = 0;
-		for (int pillNode : game.getPillIndices()) {
-			if (game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, game.getPacmanLastMoveMade(),
-					DM.EUCLID) <= 30) {
-				nearPills.add(Integer.valueOf(pillNode));
-			}
-		}
-
-		for (Integer pillNode : nearPills) {
-
-			ghostsInPath = 0;
-			int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), pillNode.intValue(),
-					game.getPacmanLastMoveMade());
-			for (int node1 : ghostspath) {
-				for (GHOST ghosts : GHOST.values()) {
-					if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
-						ghostsInPath++;
-					}
-				}
-			}
-		}
-		// Posible mejora
-		if (ghostsInPath >= 2) {
-			this.ghostsFlanking = true;
-		}
-
+		// Para saber si cambiamos de nivel
 		if ((game.getNumberOfActivePills() == game.getNumberOfPills())
 				&& (game.getNumberOfActivePowerPills() == game.getNumberOfPowerPills())) {
 			this.levelChange = true;
@@ -290,6 +315,11 @@ public class MsPacmanInput extends Input{
 	public boolean getMultiplePPsInZone()
 	{
 		return multiplePPsInZone;
+	}
+	
+	public boolean getEdibleGhostsTogether()
+	{
+		return edibleGhostsTogether;
 	}
 	
 }
