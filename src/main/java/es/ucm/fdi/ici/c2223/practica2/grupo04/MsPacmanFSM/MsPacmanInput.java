@@ -46,6 +46,7 @@ public class MsPacmanInput extends Input{
 	private boolean noPPsleft;
 	private boolean fewPillsleft;
 	private boolean edibleGhostsTogether;
+	private boolean lessPPsInZone;
 	public MsPacmanInput(Game game) {
 		super(game);
 		// TODO Auto-generated constructor stub
@@ -125,8 +126,9 @@ public class MsPacmanInput extends Input{
 		if (nearestEdibleGhost == null) {
 			if (game.getGhostCurrentEdibleScore() < 800) {
 				this.dontChase = true;
+				}
 			}
-		}
+		
 
 		// Cuantos fantasmas hay cerca de pacman
 		List<GHOST> ghostsNearPacman = new ArrayList<GHOST>();
@@ -219,31 +221,42 @@ public class MsPacmanInput extends Input{
 
 		// Para saber si dicha PP está bloqueada por fantasmas
 
-		int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), nearestPPill,
-				game.getPacmanLastMoveMade());
-		for (int node : PPpath) {
-			for (GHOST ghosts : GHOST.values()) {
-				if (game.getGhostCurrentNodeIndex(ghosts) == node) {
-					this.PPBlocked = true;
-					break;
+		if(nearestPPill!=-1)
+		{
+			int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), nearestPPill,
+					game.getPacmanLastMoveMade());
+			for (int node : PPpath) {
+				for (GHOST ghosts : GHOST.values()) {
+					if (game.getGhostCurrentNodeIndex(ghosts) == node) {
+						this.PPBlocked = true;
+						break;
+					}
 				}
 			}
 		}
+	
 
 		// Para saber si hay muchas PPs en la zona de Pacman
 		
 		int PPsinzone = 0;
-		for (int PPillnode: activePowerPills)
+		if(activePowerPills.length>=2)
 		{
-			if (game.getShortestPathDistance(pacmanPos, PPillnode, game.getPacmanLastMoveMade()) < PPDistanceInZone)
+			for (int PPillnode: activePowerPills)
 			{
-				PPsinzone++;
+				if (game.getShortestPathDistance(pacmanPos, PPillnode, game.getPacmanLastMoveMade()) < PPDistanceInZone)
+				{
+					PPsinzone++;
+				}
 			}
-		}
-		
-		if (PPsinzone>=2)
-		{
-			this.multiplePPsInZone=true;
+			
+			if (PPsinzone>=2)
+			{
+				this.multiplePPsInZone=true;
+			}	
+			else
+			{
+				this.lessPPsInZone=true;
+			}
 		}
 		
 		// Para saber si cambiamos de nivel
@@ -321,6 +334,11 @@ public class MsPacmanInput extends Input{
 	public boolean getMultiplePPsInZone()
 	{
 		return multiplePPsInZone;
+	}
+	
+	public boolean getLessPPsInZone()
+	{
+		return lessPPsInZone;
 	}
 	
 	public boolean getEdibleGhostsTogether()

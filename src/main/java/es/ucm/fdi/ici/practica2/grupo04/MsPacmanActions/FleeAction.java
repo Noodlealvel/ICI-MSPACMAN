@@ -17,8 +17,12 @@ public class FleeAction implements Action {
 	public MOVE execute(Game game) {
 		GHOST nearestghost;
 		nearestghost = getNearestGhost(game, game.getPacmanCurrentNodeIndex(), 30, false);
-		return game.getApproximateNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),
-				game.getGhostCurrentNodeIndex(nearestghost), game.getPacmanLastMoveMade(), DM.EUCLID);
+		if(nearestghost!=null)
+		{
+			return game.getApproximateNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),
+					game.getGhostCurrentNodeIndex(nearestghost), game.getPacmanLastMoveMade(), DM.EUCLID);
+		}
+		return MOVE.NEUTRAL;
 	}
 
 	private GHOST getNearestGhost(Game game, int nodeIndex, int limit, boolean edible) {

@@ -9,7 +9,7 @@ public class FewPPsInZone implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		MsPacmanInput input = (MsPacmanInput) in;
-		return input.getMultiplePPsInZone()==false;
+		return input.getLessPPsInZone();
 	}
 
 	public String toString()
