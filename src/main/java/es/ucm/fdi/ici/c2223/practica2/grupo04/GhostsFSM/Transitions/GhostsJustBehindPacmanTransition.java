@@ -21,7 +21,7 @@ public class GhostsJustBehindPacmanTransition implements Transition {
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + "is just behind pacman.";
+		return ghost.toString() + " is just behind pacman.";
 	}
 
 }

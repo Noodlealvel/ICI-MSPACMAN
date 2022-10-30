@@ -21,7 +21,7 @@ public class GhostsNotEdibleTransition implements Transition {
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is no  edible";
+		return ghost.toString() + " is not edible";
 	}
 
 }

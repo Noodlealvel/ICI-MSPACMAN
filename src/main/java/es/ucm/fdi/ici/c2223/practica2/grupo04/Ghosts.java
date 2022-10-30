@@ -1,7 +1,6 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.EnumMap;
 
 import javax.swing.JFrame;

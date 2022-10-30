@@ -21,7 +21,7 @@ public class GhostsNoPowerPillsTransition implements Transition {
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is no longer edible";
+		return "There are no PPills";
 	}
 
 }
