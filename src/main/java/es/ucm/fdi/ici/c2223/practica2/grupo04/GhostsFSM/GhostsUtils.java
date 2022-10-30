@@ -163,7 +163,7 @@ public class GhostsUtils {
 			if (path < nearest)
 				return powerpill;
 		}
-		return -1;
+		return game.getPacmanCurrentNodeIndex();
 		}
 	public static Boolean GhostCloseToRest(Game game, GHOST ghost) {
 		double distance = 0;

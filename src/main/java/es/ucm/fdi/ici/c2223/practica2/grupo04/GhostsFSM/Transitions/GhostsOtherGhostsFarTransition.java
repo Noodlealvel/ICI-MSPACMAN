@@ -16,7 +16,7 @@ public class GhostsOtherGhostsFarTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.closeToOtherGhosts(ghost);
+		return !input.closeToOtherGhosts(ghost);
 	}
 	
 	@Override

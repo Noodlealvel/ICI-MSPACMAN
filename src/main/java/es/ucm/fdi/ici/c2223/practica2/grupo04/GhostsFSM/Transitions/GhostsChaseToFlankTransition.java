@@ -15,7 +15,7 @@ public class GhostsChaseToFlankTransition implements Transition{
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.ghostsInPath(ghost);
+		return input.ghostsInPath(ghost) && !(input.nearToPacman(ghost) && input.sameLastMovement(ghost));
 	}
 	
 	@Override
