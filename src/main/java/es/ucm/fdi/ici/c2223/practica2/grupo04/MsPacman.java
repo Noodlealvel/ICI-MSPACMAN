@@ -166,6 +166,8 @@ public class MsPacman extends PacmanController {
     	main.setLayout(new BorderLayout());
     	main.add(observer.getAsPanel(true, null), BorderLayout.CENTER);
     	main.add(c1observer.getAsPanel(true, null), BorderLayout.SOUTH);
+    	main.add(c2observer.getAsPanel(true, null), BorderLayout.NORTH);
+    	main.add(c3observer.getAsPanel(true, null), BorderLayout.WEST);
     	frame.getContentPane().add(main);
     	frame.pack();
     	frame.setVisible(true);

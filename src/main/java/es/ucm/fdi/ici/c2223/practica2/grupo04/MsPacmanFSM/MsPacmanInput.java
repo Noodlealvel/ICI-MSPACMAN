@@ -90,7 +90,7 @@ public class MsPacmanInput extends Input{
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
 			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
-			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost)) {
+			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost) && game.getGhostLairTime(ghost) == 0) {
 				nearestGhost = ghost;
 				shortestDistance = distanceGhost;
 			}
@@ -145,21 +145,24 @@ public class MsPacmanInput extends Input{
 		else
 			this.lessGhostsClose=true;
 		
+		List<GHOST> eliminado = new ArrayList<GHOST>();
 		//Para saber si esos fantasmas están flanqueando	
 		if (ghostsNearPacman != null) {
 			for (GHOST ghost : ghostsNearPacman) {
-				if (ghost!=null)
-				{   //La siguiente linea crashea y no entiendo pq
+				if (ghost != null && game.getGhostLairTime(ghost) == 0) {
 					int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(),
 							game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade());
 					for (int node1 : ghostspath) {
 						for (GHOST ghosts : GHOST.values()) {
 							if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
-								ghostsNearPacman.remove(ghosts);
+								eliminado.add(ghosts);
 							}
 						}
-					}	
+					}
 				}
+			}
+			for(GHOST g : eliminado) {
+				ghostsNearPacman.remove(g);
 			}
 
 			switch (game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade()).length) {
