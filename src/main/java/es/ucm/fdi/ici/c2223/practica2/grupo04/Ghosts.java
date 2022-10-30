@@ -1,7 +1,11 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.EnumMap;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsChaseAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsDefendLastPillsAction;
@@ -164,8 +168,19 @@ public class Ghosts extends GhostController {
 			
 			fsm.ready(wait);
 			
-			graphObserver.showInFrame(new Dimension(800,600));
+			//graphObserver.showInFrame(new Dimension(800,600));
 			
+			JFrame frame = new JFrame();
+	    	JPanel main = new JPanel();
+	    	main.setLayout(new BorderLayout());
+	    	main.add(ataqueObserver.getAsPanel(true, null), BorderLayout.NORTH);
+	    	main.add(defensaObserver.getAsPanel(true, null), BorderLayout.SOUTH);
+	    	main.add(agresivoObserver.getAsPanel(true, null), BorderLayout.EAST);
+	    	main.add(graphObserver.getAsPanel(true, null), BorderLayout.CENTER);
+	    	frame.getContentPane().add(main);
+	    	frame.pack();
+	    	frame.setVisible(true);
+	    	
 			fsms.put(ghost, fsm);
 		}
 	}
@@ -189,8 +204,6 @@ public class Ghosts extends GhostController {
 		}
 		
 		return result;
-		
-	
 		
 	}
 

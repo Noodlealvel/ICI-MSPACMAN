@@ -50,7 +50,6 @@ public class GhostsInput extends Input {
 		pacmanInTunnel = GhostsUtils.PacmanInTunnel(game);
 		noPPills = game.getNumberOfActivePowerPills() > 0;
 		eatenPPill = game.wasPowerPillEaten();
-		currentLevel = game.getCurrentLevel();
 		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,SECURITY_DISTANCE);
 		nearestGhostToPacman = GhostsUtils.NearestGhostToPacman(game);
 		fillMemory();
