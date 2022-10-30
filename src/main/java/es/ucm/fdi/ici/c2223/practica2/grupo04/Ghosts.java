@@ -33,6 +33,7 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsOtherG
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsOutOfLairTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanAndTunnelNearTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanFarTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanFarTransition2;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanNearTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanTunnelTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPathWithGhostsTransition;
@@ -43,6 +44,7 @@ import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
 import es.ucm.fdi.ici.practica2.demofsm.ghosts.GhostsInput;
+import gate.fsm.Transition;
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
@@ -96,6 +98,7 @@ public class Ghosts extends GhostController {
 			GhostsFarAndCloseGhostsTransition farAndCloseGhosts = new GhostsFarAndCloseGhostsTransition(ghost);
 			GhostsOtherGhostsFarTransition otherGhostsFar = new GhostsOtherGhostsFarTransition(ghost);
 			GhostsPacmanFarTransition pacmanFar = new GhostsPacmanFarTransition(ghost);
+			GhostsPacmanFarTransition2 pacmanFar2 = new GhostsPacmanFarTransition2(ghost);
 			GhostsPacmanNearTransition pacmanNear = new GhostsPacmanNearTransition(ghost);
 			GhostsLowEdibleTimeTransition lowEdibleTime = new GhostsLowEdibleTimeTransition(ghost);
 			GhostsPacmanAndTunnelNearTransition pacmanAndTunnelNear = new GhostsPacmanAndTunnelNearTransition(ghost);
@@ -138,7 +141,7 @@ public class Ghosts extends GhostController {
 			defensa.add(flee, pacmanAndTunnelNear, tunnel);
 			defensa.add(disperse, otherGhostsFar, flee);
 			defensa.add(fleeFromPP, pacmanNear, flee);
-			defensa.add(tunnel, pacmanFar, fleeFromPP);
+			defensa.add(tunnel,pacmanFar2 , fleeFromPP);
 
 			defensa.ready(flee);
 			CompoundState defensaState = new CompoundState("Defensa", defensa);
