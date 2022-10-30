@@ -24,9 +24,9 @@ public class GhostsInput extends Input {
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int LOW_TIME = 10;
 	private static final int CLOSE_PACMAN_DISTANCE = 40;
-	public GhostsInput(Game game, GameMemory mem) {
+	public GhostsInput(Game game) {
 		super(game);
-		gameMemory = mem;
+		gameMemory = new GameMemory();
 	}
 	@Override
 	public void parseInput() {
