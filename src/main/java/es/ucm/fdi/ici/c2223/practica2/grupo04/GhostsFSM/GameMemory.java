@@ -15,7 +15,6 @@ public class GameMemory {
 
 	public void setLastLevel() {
 		this.lastLevel = this.currentLevel;
-		
 	}
 
 	public int getLastLevel() {

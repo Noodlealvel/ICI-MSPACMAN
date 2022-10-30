@@ -17,7 +17,7 @@ public class GhostsChaseAction implements Action {
 	
 	@Override
 	public String getActionId() {
-		return ghost + "AgressiveChase";
+		return ghost + "Chase";
 	}
 
 
@@ -25,7 +25,7 @@ public class GhostsChaseAction implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH);
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.EUCLID);
         }
 		else
 			return MOVE.NEUTRAL;

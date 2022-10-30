@@ -6,6 +6,8 @@ import java.util.EnumMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GameMemory;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsChaseAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsDefendLastPillsAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsDisperseAction;
@@ -18,11 +20,14 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsRegroupAct
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsSearchForTunnelAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsStopChasingAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsWaitAction;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsAttackToAgressiveTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsChaseToFlankTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsDangerTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEatenTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEdibleTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndCloseGhostsTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndNotEdibleTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarEdibleFarOthersTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsInPacmanRadiusTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsJustBehindPacmanTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsLevelChangeTransition;
@@ -43,8 +48,6 @@ import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
-import es.ucm.fdi.ici.practica2.demofsm.ghosts.GhostsInput;
-import gate.fsm.Transition;
 import pacman.controllers.GhostController;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
@@ -53,10 +56,11 @@ import pacman.game.Game;
 public class Ghosts extends GhostController {
 
 	EnumMap<GHOST,FSM> fsms;
+	private GameMemory mem;
 	public Ghosts()
 	{
 		setName("Ghosts 04");
-
+		mem = new GameMemory();
 		fsms = new EnumMap<GHOST,FSM>(GHOST.class);
 		for(GHOST ghost: GHOST.values()) {
 			FSM fsm = new FSM(ghost.name());
@@ -90,6 +94,7 @@ public class Ghosts extends GhostController {
 			GhostsPathWithGhostsTransition pathWithGhosts = new GhostsPathWithGhostsTransition(ghost);
 			GhostsPacmanTunnelTransition pacmanTunnel = new GhostsPacmanTunnelTransition(ghost);
 			GhostsJustBehindPacmanTransition justBehindPacman = new GhostsJustBehindPacmanTransition(ghost);
+			GhostsChaseToFlankTransition chaseToFlank = new GhostsChaseToFlankTransition(ghost);
 			
 			GhostsNotEdibleTransition notEdible = new GhostsNotEdibleTransition(ghost);
 			GhostsDangerTransition danger = new GhostsDangerTransition(ghost);
@@ -102,6 +107,7 @@ public class Ghosts extends GhostController {
 			GhostsPacmanNearTransition pacmanNear = new GhostsPacmanNearTransition(ghost);
 			GhostsLowEdibleTimeTransition lowEdibleTime = new GhostsLowEdibleTimeTransition(ghost);
 			GhostsPacmanAndTunnelNearTransition pacmanAndTunnelNear = new GhostsPacmanAndTunnelNearTransition(ghost);
+			GhostsFarEdibleFarOthersTransition fromDisperseToFleePPill = new GhostsFarEdibleFarOthersTransition(ghost);
 			
 			GhostsNoPowerPillsTransition noPP = new GhostsNoPowerPillsTransition(ghost);
 			
@@ -110,6 +116,8 @@ public class Ghosts extends GhostController {
 			GhostsLevelChangeTransition levelChange = new GhostsLevelChangeTransition(ghost);
 			
 			GhostsEatenTransition eaten = new GhostsEatenTransition(ghost);
+			
+			GhostsAttackToAgressiveTransition attackAgressive = new GhostsAttackToAgressiveTransition(ghost);
 			
 			GhostsOutOfLairTransition outOfLair = new GhostsOutOfLairTransition(ghost);
 			
@@ -126,6 +134,7 @@ public class Ghosts extends GhostController {
 			ataque.add(stopChase, pathWithGhosts, flank);
 			ataque.add(chase, justBehindPacman, stopChase);
 			ataque.add(flank, pathWithoutGhosts, chase);
+			ataque.add(chase, chaseToFlank, flank);
 			
 			ataque.ready(chase);
 			CompoundState ataqueState = new CompoundState("Ataque", ataque);
@@ -142,6 +151,7 @@ public class Ghosts extends GhostController {
 			defensa.add(disperse, otherGhostsFar, flee);
 			defensa.add(fleeFromPP, pacmanNear, flee);
 			defensa.add(tunnel,pacmanFar2 , fleeFromPP);
+			defensa.add(disperse, fromDisperseToFleePPill, fleeFromPP);
 
 			defensa.ready(flee);
 			CompoundState defensaState = new CompoundState("Defensa", defensa);
@@ -158,7 +168,6 @@ public class Ghosts extends GhostController {
 			CompoundState agresivoState = new CompoundState("Agresivo", agresivo);
 			
 			//externos			
-			fsm.add(defensaState, notEdible, ataqueState);
 			fsm.add(ataqueState, danger, defensaState);
 			fsm.add(defensaState, noPP, agresivoState);
 			fsm.add(agresivoState, levelChange , wait);
@@ -166,6 +175,8 @@ public class Ghosts extends GhostController {
 			fsm.add(defensaState, eaten, wait);
 			fsm.add(defensaState, farAndNoEdible, regroup);
 			fsm.add(regroup, edible, defensaState );
+			fsm.add(defensaState, notEdible, ataqueState);
+			fsm.add(ataqueState, attackAgressive, agresivoState);
 			fsm.add(regroup, inPacmanRadius , ataqueState);	
 			
 			fsm.ready(wait);
@@ -176,7 +187,7 @@ public class Ghosts extends GhostController {
 	    	JPanel main = new JPanel();
 	    	main.setLayout(new BorderLayout());
 	    	main.add(ataqueObserver.getAsPanel(true, null), BorderLayout.NORTH);
-	    	main.add(defensaObserver.getAsPanel(true, null), BorderLayout.SOUTH);
+	    	main.add(defensaObserver.getAsPanel(true, null), BorderLayout.WEST);
 	    	main.add(agresivoObserver.getAsPanel(true, null), BorderLayout.EAST);
 	    	main.add(graphObserver.getAsPanel(true, null), BorderLayout.CENTER);
 	    	frame.getContentPane().add(main);
@@ -195,8 +206,9 @@ public class Ghosts extends GhostController {
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		EnumMap<GHOST,MOVE> result = new EnumMap<GHOST,MOVE>(GHOST.class);
-		
-		GhostsInput in = new GhostsInput(game);
+		mem.setLastLevel();
+		mem.setCurrentLevel(game.getCurrentLevel());
+		GhostsInput in = new GhostsInput(game, mem);
 		
 		for(GHOST ghost: GHOST.values())
 		{

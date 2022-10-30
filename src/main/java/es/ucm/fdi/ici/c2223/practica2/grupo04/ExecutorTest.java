@@ -10,12 +10,12 @@ public class ExecutorTest {
 		Executor executor = new Executor.Builder()
 				 .setTickLimit(4000)
 				 .setVisual(true)
-				 .setScaleFactor(3.0)
+				 .setScaleFactor(2.0)
 				 .setSightLimit(0)
 				 .build();
 		PacmanController pacMan = new MsPacMan();
 		GhostController ghosts = new Ghosts();
 
-		System.out.println(executor.runGame(pacMan, ghosts, 40));
+		System.out.println(executor.runGame(pacMan, ghosts, 150));
 	}
 }

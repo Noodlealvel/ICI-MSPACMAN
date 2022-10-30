@@ -5,10 +5,9 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsNotEdibleTransition implements Transition {
-
+public class GhostsChaseToFlankTransition implements Transition{
 	GHOST ghost;
-	public GhostsNotEdibleTransition(GHOST ghost) {
+	public GhostsChaseToFlankTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +15,11 @@ public class GhostsNotEdibleTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return !input.isGhostEdible(ghost) && !input.danger(ghost);
+		return input.ghostsInPath(ghost);
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is not edible";
+		return ghost.toString() + " has other ghosts in the closest path to Pacman";
 	}
-
 }

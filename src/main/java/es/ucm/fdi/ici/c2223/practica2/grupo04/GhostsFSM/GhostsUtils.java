@@ -26,7 +26,7 @@ public class GhostsUtils {
 			if (path < nearest)
 				return pill;
 		}
-		return -1;
+		return game.getPacmanCurrentNodeIndex();
 	}
 	static public int NearestActivePPill(Game game, GHOST ghost) {
 		int nearest = Integer.MAX_VALUE;
@@ -36,7 +36,7 @@ public class GhostsUtils {
 			if (path < nearest)
 				return powerpill;
 		}
-		return -1;
+		return game.getPacmanCurrentNodeIndex();
 	}
 	static public int NearestTunnelNode(Game game, GHOST ghost) {
 		Queue<Integer> notExpanded = new ArrayDeque<Integer>();
@@ -109,17 +109,16 @@ public class GhostsUtils {
 	}
 	
 	static public boolean PathContainsGhosts(Game game, int[] path) {
-		boolean contains = false;
 		if (path != null) {
 			for (int node : path) {
 				for (GHOST ghosts : GHOST.values()) {
 					if (game.getGhostCurrentNodeIndex(ghosts) == node && game.isGhostEdible(ghosts) == false) {
-						contains = true;
+						return true;
 					}
 				}
 			}
 		}
-		return contains;
+		return false;
 	}
 	public static int getNodeBetweenPacmanAndPpill(Game game) {
 		//Búsqueda heurística según distancia

@@ -15,7 +15,7 @@ public class GhostsRegroupAction implements Action {
 	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "FleeFromPPill";
+		return ghost.toString() + "Regroup";
 	}
 
 	@Override
