@@ -21,7 +21,7 @@ public class MsPacmanInput extends Input{
 	private final int ghostCloseMedium = 40;
 	private final int PPDistance = 60;
 	private final int EatLimit = 55;
-	private final int PPDistanceInZone = 70;
+	private final int PPDistanceInZone = 130;
 	private int[] activePowerPills;
 	private int[] activePills;
 	private int[] pacmanNeighbors;
@@ -61,6 +61,7 @@ public class MsPacmanInput extends Input{
 		this.dontChase = false;
 		this.ghostsFlanking = false;
 		this.edibleGhostsTogether=false;
+		this.lessPPsInZone=false;
 		this.activePowerPills = game.getActivePowerPillsIndices();
 		this.pacmanPos = game.getPacmanCurrentNodeIndex();
 		for (int pill : activePowerPills) {
@@ -85,27 +86,9 @@ public class MsPacmanInput extends Input{
 		{
 			this.fewPillsleft=true;
 		}
-		
-		GHOST nearestGhost = null;
+
 		double shortestDistance = -1;
 		double distanceGhost = 0;
-		for (GHOST ghost : GHOST.values()) {
-			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
-			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost) && game.getGhostLairTime(ghost) == 0) {
-				nearestGhost = ghost;
-				shortestDistance = distanceGhost;
-			}
-		}
-
-		if (nearestGhost != null) {
-			this.nearestGhost = nearestGhost;
-			this.ghostClose = true;
-		} else {
-			this.ghostClose = false;
-		}
-
-		shortestDistance = -1;
-		distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
 			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
 			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && game.isGhostEdible(ghost)
@@ -214,7 +197,7 @@ public class MsPacmanInput extends Input{
 		int nearestPPill = -1;
 		for (int pillNode : activePowerPills) {
 			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.PATH);
-			if (powerPillDistance < shortestDistance || shortestDistance == -1) {
+			if ((powerPillDistance < shortestDistance && powerPillDistance < PPDistance) || shortestDistance == -1 ) {
 				shortestDistance = powerPillDistance;
 				nearestPPill = pillNode;
 				this.PPClose = true;
@@ -267,7 +250,23 @@ public class MsPacmanInput extends Input{
 			this.levelChange = true;
 		}
 		
-		
+		GHOST nearestGhost = null;
+		shortestDistance = -1;
+		distanceGhost = 0;
+		for (GHOST ghost : GHOST.values()) {
+			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
+			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost) && game.getGhostLairTime(ghost) == 0) {
+				nearestGhost = ghost;
+				shortestDistance = distanceGhost;
+			}
+		}
+
+		if (nearestGhost != null) {
+			this.nearestGhost = nearestGhost;
+			this.ghostClose = true;
+		} else {
+			this.ghostClose = false;
+		}
 
 	}
 
