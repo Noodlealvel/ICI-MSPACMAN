@@ -5,10 +5,10 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsEdibleTransition implements Transition {
+public class GhostsHighTimeTransition implements Transition {
 
 	GHOST ghost;
-	public GhostsEdibleTransition(GHOST ghost) {
+	public GhostsHighTimeTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +16,12 @@ public class GhostsEdibleTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.isGhostEdible(ghost) || input.nearPPill();
+		return !input.lowEdibleTime(ghost) && input.isGhostEdible(ghost);
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is edible";
+		return ghost + " edible time is high";
 	}
 
 }

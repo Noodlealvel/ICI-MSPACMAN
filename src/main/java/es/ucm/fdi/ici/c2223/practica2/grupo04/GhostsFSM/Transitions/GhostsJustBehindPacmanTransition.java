@@ -16,7 +16,7 @@ public class GhostsJustBehindPacmanTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.nearToPacman(ghost) && input.sameLastMovement(ghost);
+		return input.isJustBehindPacman(ghost) && input.isNearestGhost(ghost);
 	}
 	
 	@Override

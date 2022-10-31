@@ -4,19 +4,13 @@ import pacman.game.Game;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.TreeMap;
-
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 
 public class GhostsUtils {
-
-	private static final double GHOSTCLOSEDISTANCE = 100;
 	
 	static public int NearestPill(Game game, GHOST ghost) {
 		int nearest = Integer.MAX_VALUE;
@@ -74,15 +68,11 @@ public class GhostsUtils {
 	
 	static public boolean PacmanCloseToPPill(Game game, int dist) {
 		int[] indicesPowerPill = game.getActivePowerPillsIndices();
-		int nPowerPill = game.getNumberOfActivePowerPills();
-		int i = 0;
-		boolean isClose = false;
-		while((i < nPowerPill) && (isClose==false)) {
-			if(game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), indicesPowerPill[i]) <= dist)
-				isClose = true;
-			i++;
+		for (int i :indicesPowerPill) {
+			if(game.getDistance(game.getPacmanCurrentNodeIndex(), i, DM.PATH) <= dist)
+				return true;
 		}
-		return isClose;	
+		return false;	
 	}
 	
 	static public boolean PacmanCloseToGhost(Game game,GHOST ghost, int dist) {
@@ -108,13 +98,15 @@ public class GhostsUtils {
 		return point;
 	}
 	
-	static public boolean PathContainsGhosts(Game game, int[] path) {
+	static public boolean PathContainsGhosts(Game game, GHOST ghost) {
+		int[] path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost));
 		if (path != null) {
 			for (int node : path) {
 				for (GHOST ghosts : GHOST.values()) {
-					if (game.getGhostCurrentNodeIndex(ghosts) == node && game.isGhostEdible(ghosts) == false) {
-						return true;
-					}
+					if (ghosts != ghost)
+						if (game.getGhostCurrentNodeIndex(ghosts) == node && game.isGhostEdible(ghosts) == false) {
+							return true;
+						}
 				}
 			}
 		}
@@ -165,14 +157,14 @@ public class GhostsUtils {
 		}
 		return game.getPacmanCurrentNodeIndex();
 		}
-	public static Boolean GhostCloseToRest(Game game, GHOST ghost) {
+	public static Boolean GhostCloseToRest(Game game, GHOST ghost, int closeGhosts) {
 		double distance = 0;
 		for(GHOST g : GHOST.values()) {
 			if (g != ghost){
 				distance += game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getGhostCurrentNodeIndex(g), DM.EUCLID);
 			}
 		}
-		return distance <= GHOSTCLOSEDISTANCE;
+		return distance <= closeGhosts;
 	}
 	public static boolean PacmanInTunnel(Game game) {
 		int toExpand = game.getPacmanCurrentNodeIndex();
@@ -180,6 +172,12 @@ public class GhostsUtils {
 			if (game.getDistance(node, toExpand, DM.EUCLID) > 1)
 				return true;
 		}
+		return false;
+	}
+	public static boolean JustBehindPacman(Game game, GHOST ghost) {
+		if (game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost), DM.PATH) 
+				!=game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.PATH))
+			return true;
 		return false;
 	}
 	

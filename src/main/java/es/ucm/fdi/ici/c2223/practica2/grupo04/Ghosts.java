@@ -22,13 +22,14 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsStopChasin
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Actions.GhostsWaitAction;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsAttackToAgressiveTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsChaseToFlankTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsChaseableDistanceTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsDangerTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEatenTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsEdibleTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndCloseGhostsTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarAndNotEdibleTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsFarEdibleFarOthersTransition;
-import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsInPacmanRadiusTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsHighTimeTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsJustBehindPacmanTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsLevelChangeTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsLowEdibleTimeTransition;
@@ -40,12 +41,14 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacman
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanFarTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanFarTransition2;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanNearTransition;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanNoChaseableTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPacmanTunnelTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPathWithGhostsTransition;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.Transitions.GhostsPathWithoutGhostsTransition;
 import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
+import es.ucm.fdi.ici.fsm.Transition;
 import es.ucm.fdi.ici.fsm.observers.ConsoleFSMObserver;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
 import pacman.controllers.GhostController;
@@ -109,6 +112,8 @@ public class Ghosts extends GhostController {
 			GhostsPacmanAndTunnelNearTransition pacmanAndTunnelNear = new GhostsPacmanAndTunnelNearTransition(ghost);
 			GhostsFarEdibleFarOthersTransition fromDisperseToFleePPill = new GhostsFarEdibleFarOthersTransition(ghost);
 			
+			GhostsChaseableDistanceTransition chaseableDistance = new GhostsChaseableDistanceTransition(ghost);
+			
 			GhostsNoPowerPillsTransition noPP = new GhostsNoPowerPillsTransition(ghost);
 			
 			GhostsFarAndNotEdibleTransition farAndNoEdible = new GhostsFarAndNotEdibleTransition(ghost);
@@ -121,9 +126,11 @@ public class Ghosts extends GhostController {
 			
 			GhostsOutOfLairTransition outOfLair = new GhostsOutOfLairTransition(ghost);
 			
-			GhostsEdibleTransition edible = new GhostsEdibleTransition(ghost);
+			GhostsPacmanNoChaseableTransition pacmanNoChaseable = new GhostsPacmanNoChaseableTransition(ghost);
 			
-			GhostsInPacmanRadiusTransition inPacmanRadius = new GhostsInPacmanRadiusTransition(ghost);
+			GhostsHighTimeTransition highTime = new GhostsHighTimeTransition(ghost);
+			
+			GhostsEdibleTransition edible = new GhostsEdibleTransition(ghost);
 
 			//ataque
 			FSM ataque = new FSM("Ataque");
@@ -152,6 +159,7 @@ public class Ghosts extends GhostController {
 			defensa.add(fleeFromPP, pacmanNear, flee);
 			defensa.add(tunnel,pacmanFar2 , fleeFromPP);
 			defensa.add(disperse, fromDisperseToFleePPill, fleeFromPP);
+			defensa.add(goToPP, highTime, flee);
 
 			defensa.ready(flee);
 			CompoundState defensaState = new CompoundState("Defensa", defensa);
@@ -162,7 +170,7 @@ public class Ghosts extends GhostController {
 			agresivo.addObserver(agresivoObserver);
 			
 			agresivo.add(defendPills, pacmanFar, kill);
-			agresivo.add(kill, pacmanNear, defendPills);
+			agresivo.add(kill, justBehindPacman, defendPills);
 		
 			agresivo.ready(defendPills);
 			CompoundState agresivoState = new CompoundState("Agresivo", agresivo);
@@ -177,13 +185,12 @@ public class Ghosts extends GhostController {
 			fsm.add(regroup, edible, defensaState );
 			fsm.add(defensaState, notEdible, ataqueState);
 			fsm.add(ataqueState, attackAgressive, agresivoState);
-			fsm.add(regroup, inPacmanRadius , ataqueState);	
+			fsm.add(regroup, chaseableDistance , ataqueState);	
+			fsm.add(ataqueState, pacmanNoChaseable, regroup);
 			
 			fsm.ready(wait);
 			
-			//graphObserver.showInFrame(new Dimension(800,600));
-			
-			JFrame frame = new JFrame();
+			/*JFrame frame = new JFrame();
 	    	JPanel main = new JPanel();
 	    	main.setLayout(new BorderLayout());
 	    	main.add(ataqueObserver.getAsPanel(true, null), BorderLayout.NORTH);
@@ -192,7 +199,8 @@ public class Ghosts extends GhostController {
 	    	main.add(graphObserver.getAsPanel(true, null), BorderLayout.CENTER);
 	    	frame.getContentPane().add(main);
 	    	frame.pack();
-	    	frame.setVisible(true);
+	    	frame.setVisible(true);*/
+	    	
 	    	
 			fsms.put(ghost, fsm);
 		}
