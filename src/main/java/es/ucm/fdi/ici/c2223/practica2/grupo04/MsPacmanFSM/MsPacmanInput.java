@@ -18,10 +18,10 @@ public class MsPacmanInput extends Input{
 	private GHOST nearestEdibleGhost;
 	
 	//private final static int ghostCloseRange = 15;
-	private final int ghostCloseMedium = 30;
-	private final int PPDistance = 30;
-	private final int EatLimit = 80;
-	private final int PPDistanceInZone = 50;
+	private final int ghostCloseMedium = 40;
+	private final int PPDistance = 60;
+	private final int EatLimit = 55;
+	private final int PPDistanceInZone = 70;
 	private int[] activePowerPills;
 	private int[] activePills;
 	private int[] pacmanNeighbors;
@@ -90,7 +90,7 @@ public class MsPacmanInput extends Input{
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
 			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost) && game.getGhostLairTime(ghost) == 0) {
 				nearestGhost = ghost;
 				shortestDistance = distanceGhost;
@@ -107,7 +107,7 @@ public class MsPacmanInput extends Input{
 		shortestDistance = -1;
 		distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
 			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && game.isGhostEdible(ghost)
 					&& distanceGhost <= EatLimit) {
 				nearestGhost = ghost;
@@ -133,9 +133,9 @@ public class MsPacmanInput extends Input{
 		// Cuantos fantasmas hay cerca de pacman
 		List<GHOST> ghostsNearPacman = new ArrayList<GHOST>();
 		for (GHOST ghost : GHOST.values()) {
-			if (game.isGhostEdible(ghost) == false) {
+			if (game.isGhostEdible(ghost) == false && game.getGhostLairTime(ghost) == 0) {
 				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(),
-						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.EUCLID);
+						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.PATH);
 				if (distance <= ghostCloseMedium) {
 					ghostsNearPacman.add(ghost);
 				}
@@ -190,10 +190,12 @@ public class MsPacmanInput extends Input{
 			ghostsNearghost = new ArrayList<GHOST>();
 			if (game.isGhostEdible(ghost) == true && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID) < EatLimit) {
 				for (GHOST ghosts : GHOST.values()) {
-					double distance = game.getDistance(game.getGhostCurrentNodeIndex(ghost),
-							game.getGhostCurrentNodeIndex(ghosts), game.getGhostLastMoveMade(ghost), DM.EUCLID);
-					if (distance <= ghostCloseMedium) {
-						ghostsNearghost.add(ghost);
+					if (game.isGhostEdible(ghost) == false && game.getGhostLairTime(ghost) == 0) {
+						double distance = game.getDistance(game.getGhostCurrentNodeIndex(ghost),
+								game.getGhostCurrentNodeIndex(ghosts), game.getGhostLastMoveMade(ghost), DM.PATH);
+						if (distance <= ghostCloseMedium) {
+							ghostsNearghost.add(ghost);
+						}
 					}
 				}
 
@@ -211,7 +213,7 @@ public class MsPacmanInput extends Input{
 		shortestDistance = -1;
 		int nearestPPill = -1;
 		for (int pillNode : activePowerPills) {
-			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.EUCLID);
+			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.PATH);
 			if (powerPillDistance < shortestDistance || shortestDistance == -1) {
 				shortestDistance = powerPillDistance;
 				nearestPPill = pillNode;

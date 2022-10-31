@@ -12,11 +12,11 @@ public class Prac2Test {
 		 .setScaleFactor(3.0)
 		 .setSightLimit(0)
 		 .build();
-		 PacmanController pacMan = new MsPacman();
+		 PacmanController pacMan = new MsPacMan();
 		 GhostController ghosts = new es.ucm.fdi.ici.c2122.practica1.grupo01.Ghosts();
 
 		 System.out.println(
-		 executor.runGame(pacMan, ghosts, 40)
+		 executor.runGame(pacMan, ghosts, 10)
 		 );
 		 }
 }

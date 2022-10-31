@@ -19,13 +19,14 @@ import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class MsPacman extends PacmanController {
+public class MsPacMan extends PacmanController {
 
 	FSM fsm;
-	public MsPacman() {
+	public MsPacMan() {
 		
 		//Nombre de PacMan
-		setName("MsPacMan 05");
+		setName("MsPacMan04");
+		setTeam("Team04");
 		
 		//Creamos maquina de estados
     	fsm = new FSM("MsPacMan");
@@ -160,17 +161,17 @@ public class MsPacman extends PacmanController {
     	fsm.ready(beginMap);
     	
     	
-    	
+    	/*
     	JFrame frame = new JFrame();
     	JPanel main = new JPanel();
     	main.setLayout(new BorderLayout());
-    	main.add(observer.getAsPanel(true, null), BorderLayout.CENTER);
+    	main.add(observer.getAsPanel(true, null), BorderLayout.EAST);
     	main.add(c1observer.getAsPanel(true, null), BorderLayout.SOUTH);
     	main.add(c2observer.getAsPanel(true, null), BorderLayout.NORTH);
     	main.add(c3observer.getAsPanel(true, null), BorderLayout.WEST);
     	frame.getContentPane().add(main);
     	frame.pack();
-    	frame.setVisible(true);
+    	frame.setVisible(true);*/
 	}
 	
 	
