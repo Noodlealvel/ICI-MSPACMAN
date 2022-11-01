@@ -8,13 +8,13 @@ import javax.swing.JPanel;
 
 import es.ucm.fdi.ici.Input;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanActions.*;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanTransitions.*;
 import es.ucm.fdi.ici.fsm.CompoundState;
 import es.ucm.fdi.ici.fsm.FSM;
 import es.ucm.fdi.ici.fsm.SimpleState;
 import es.ucm.fdi.ici.fsm.Transition;
 import es.ucm.fdi.ici.fsm.observers.GraphFSMObserver;
-import es.ucm.fdi.ici.practica2.grupo04.MsPacmanActions.*;
-import es.ucm.fdi.ici.practica2.grupo04.MsPacmanTransitions.*;
 import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
