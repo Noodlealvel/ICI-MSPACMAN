@@ -18,7 +18,7 @@ public class SearchOptimalPathAction implements Action {
 	@Override
 	public MOVE execute(Game game) {
 		
-		return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), getBestPath(game), game.getPacmanLastMoveMade(), DM.EUCLID);	
+		return game.getNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), getBestPath(game), game.getPacmanLastMoveMade(), DM.EUCLID);	
 	}
 	
 	private boolean nodeHasActivePill(Game game, int node) {
@@ -27,7 +27,6 @@ public class SearchOptimalPathAction implements Action {
 			
 	private int getBestPath(Game game) {
 			
-		int i = 0;
 		int currentScore;
 		int maxScore = Integer.MIN_VALUE;
 		int chosenPath = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.PATH);
