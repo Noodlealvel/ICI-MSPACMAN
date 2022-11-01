@@ -5,10 +5,10 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsEdibleTransition implements Transition {
+public class GhostsFarAndNotInDangerTransition implements Transition {
 
 	GHOST ghost;
-	public GhostsEdibleTransition(GHOST ghost) {
+	public GhostsFarAndNotInDangerTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +16,12 @@ public class GhostsEdibleTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.isGhostEdible(ghost) || input.nearPPill();
+		return !input.chaseableDistance(ghost) && !input.danger(ghost);
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is edible";
+		return ghost.toString() + " is far and not in danger.";
 	}
 
 }

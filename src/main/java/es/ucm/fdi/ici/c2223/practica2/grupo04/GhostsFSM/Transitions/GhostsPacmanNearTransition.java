@@ -16,7 +16,7 @@ public class GhostsPacmanNearTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.nearToPacman(ghost);
+		return input.nearToPacmanPath(ghost);
 	}
 	
 	@Override

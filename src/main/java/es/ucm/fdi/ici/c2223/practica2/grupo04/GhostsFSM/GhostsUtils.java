@@ -161,7 +161,10 @@ public class GhostsUtils {
 		double distance = 0;
 		for(GHOST g : GHOST.values()) {
 			if (g != ghost){
-				distance += game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getGhostCurrentNodeIndex(g), DM.EUCLID);
+				if(game.getGhostLairTime(g) <= 0)
+					distance += game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getGhostCurrentNodeIndex(g), DM.EUCLID);
+				else
+					distance += closeGhosts/4;
 			}
 		}
 		return distance <= closeGhosts;

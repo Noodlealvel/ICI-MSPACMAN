@@ -16,7 +16,7 @@ public class GhostsFarAndCloseGhostsTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.farFromPacman(ghost) && input.ghostsDispersed(ghost);
+		return input.farFromPacmanPath(ghost) && input.closeToOtherGhosts(ghost);
 	}
 	
 	@Override

@@ -16,7 +16,7 @@ public class GhostsChaseableDistanceTransition implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.chaseableDistance(ghost) && !input.isGhostEdible(ghost);
+		return input.chaseableDistance(ghost) && !input.danger(ghost);
 	}
 	
 	@Override

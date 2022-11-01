@@ -5,10 +5,10 @@ import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsInput;
 import es.ucm.fdi.ici.fsm.Transition;
 import pacman.game.Constants.GHOST;
 
-public class GhostsPacmanFarTransition2 implements Transition {
+public class GhostsPacmanFarPathTransition implements Transition {
 
 	GHOST ghost;
-	public GhostsPacmanFarTransition2(GHOST ghost) {
+	public GhostsPacmanFarPathTransition(GHOST ghost) {
 		super();
 		this.ghost = ghost;
 	}
@@ -16,12 +16,12 @@ public class GhostsPacmanFarTransition2 implements Transition {
 	@Override
 	public boolean evaluate(Input in) {
 		GhostsInput input = (GhostsInput)in;
-		return input.farFromPacman(ghost);
+		return input.farFromPacmanPath(ghost);
 	}
 	
 	@Override
 	public String toString() {
-		return ghost.toString() + " is far from Pacman 2";
+		return ghost.toString() + " is far from Pacman";
 	}
 
 }

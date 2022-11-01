@@ -39,12 +39,13 @@ public class GhostsInput extends Input {
 			ghostMap.put(GhostsRelevantInfo.EATEN, game.wasGhostEaten(ghost));
 			ghostMap.put(GhostsRelevantInfo.EDIBLE, game.isGhostEdible(ghost));
 			ghostMap.put(GhostsRelevantInfo.IN_LAIR, game.getGhostLairTime(ghost) > 0);
+			ghostMap.put(GhostsRelevantInfo.EUCLID_PACMAN, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.EUCLID) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.NEAR_TUNNEL, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost),game.getGhostLastMoveMade(ghost), DM.EUCLID) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.PACMAN_INVECINITY, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() , DM.PATH) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.GHOSTS_CLOSE,  game.getGhostLairTime(ghost) <= 0 && GhostsUtils.GhostCloseToRest(game,ghost, CLOSE_GHOSTS));
 			ghostMap.put(GhostsRelevantInfo.CHASE_DISTANCE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(),game.getGhostLastMoveMade(ghost), DM.PATH) <= CHASE);
 			ghostMap.put(GhostsRelevantInfo.LOW_EDIBLE_TIME, game.getGhostEdibleTime(ghost) <= LOW_TIME);
-			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.EUCLID) <= CLOSE_PACMAN_DISTANCE);
+			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.PATH) <= CLOSE_PACMAN_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, game.getGhostLairTime(ghost) <= 0 && !GhostsUtils.PathContainsGhosts(game, ghost));
 			ghostMap.put(GhostsRelevantInfo.JUST_BEHIND, game.getGhostLairTime(ghost) <= 0 && GhostsUtils.JustBehindPacman(game,ghost));
 			ghostsInfoMap.put(ghost, ghostMap);
@@ -93,11 +94,8 @@ public class GhostsInput extends Input {
 	public boolean isPacmanInVecinity(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_INVECINITY);
 	}
-	public boolean farFromPacman(GHOST ghost) {
+	public boolean farFromPacmanPath(GHOST ghost) {
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
-	}
-	public boolean ghostsDispersed(GHOST ghost) {
-		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
 	}
 	public boolean lowEdibleTime(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.LOW_EDIBLE_TIME);
@@ -105,7 +103,7 @@ public class GhostsInput extends Input {
 	public boolean closeToOtherGhosts(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.GHOSTS_CLOSE);
 	}
-	public boolean nearToPacman(GHOST ghost) {
+	public boolean nearToPacmanPath(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_CLOSE);
 	}
 	public boolean noPowerPills() {
@@ -136,7 +134,10 @@ public class GhostsInput extends Input {
 		return pacmanNearPPill;
 	}
 	public boolean isGhostEdible(GHOST ghost) {
-		return  ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EDIBLE);
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EDIBLE);
+	}
+	public boolean farFromPacmanEuclid(GHOST ghost) {
+		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EUCLID_PACMAN);
 	}
 }
 
