@@ -61,7 +61,8 @@ public class Ghosts extends GhostController {
 	private GameMemory mem;
 	public Ghosts()
 	{
-		setName("Ghosts 04");
+		setName("Ghosts 04 T");
+		setTeam("Team04");
 		mem = new GameMemory();
 		fsms = new EnumMap<GHOST,FSM>(GHOST.class);
 		for(GHOST ghost: GHOST.values()) {

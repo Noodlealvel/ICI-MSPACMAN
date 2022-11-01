@@ -25,7 +25,7 @@ public class MsPacMan extends PacmanController {
 	public MsPacMan() {
 		
 		//Nombre de PacMan
-		setName("MsPacMan04");
+		setName("MsPacMan 04 T");
 		setTeam("Team04");
 		
 		//Creamos maquina de estados
