@@ -62,7 +62,7 @@ public class MsPacmanInput extends Input{
 
 		pacmanNeighbors = game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade());
 		for (int node : pacmanNeighbors) {
-			if (game.isPillStillAvailable(node)) {
+			if (game.isPillStillAvailable(game.getPillIndex(node))) {
 				noPillsNear = false;
 			}
 
