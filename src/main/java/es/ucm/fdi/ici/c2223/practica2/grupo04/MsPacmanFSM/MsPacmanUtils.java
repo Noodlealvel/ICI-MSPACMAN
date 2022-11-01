@@ -27,14 +27,14 @@ public class MsPacmanUtils {
 		return game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.EUCLID);
 	}
 
-	public static GHOST getNearestGhost(Game game, int nodeIndex, int limit, boolean edible) {
+	public static GHOST getNearestGhost(Game game, int nodeIndex, int timeLimit, boolean edible) {
 		GHOST nearestGhost = null;
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 && game.getGhostLairTime(ghost) == 0)) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0)) {
 				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
-				if((shortestDistance == -1 || distanceGhost < shortestDistance) && game.getGhostEdibleTime(ghost) <= limit) {
+				if((shortestDistance == -1 || distanceGhost < shortestDistance) && game.getGhostEdibleTime(ghost) <= timeLimit) {
 					nearestGhost = ghost;
 					shortestDistance = distanceGhost;
 				}
@@ -48,9 +48,25 @@ public class MsPacmanUtils {
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 && game.getGhostLairTime(ghost) == 0)) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0)) {
 				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
 				if((shortestDistance == -1 || distanceGhost < shortestDistance)) {
+					nearestGhost = ghost;
+					shortestDistance = distanceGhost;
+				}
+			}
+		}
+		return nearestGhost;
+	}
+
+	public static GHOST getNearestGhostAtDistance(Game game, int nodeIndex, int i, boolean edible) {
+		GHOST nearestGhost = null;
+		double shortestDistance = -1;
+		double distanceGhost = 0;
+		for (GHOST ghost : GHOST.values()) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0)) {
+				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
+				if((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= i) {
 					nearestGhost = ghost;
 					shortestDistance = distanceGhost;
 				}

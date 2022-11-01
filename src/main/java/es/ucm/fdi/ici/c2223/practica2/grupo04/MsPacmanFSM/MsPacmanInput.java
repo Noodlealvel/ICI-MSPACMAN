@@ -213,7 +213,7 @@ public class MsPacmanInput extends Input{
 			this.levelChange = true;
 		}
 		
-		GHOST nearestGhost = MsPacmanUtils.getNearestGhost(game, pacmanPos, ghostCloseMedium, false);
+		GHOST nearestGhost = MsPacmanUtils.getNearestGhostAtDistance(game, pacmanPos, ghostCloseMedium, false);
 
 		if (nearestGhost != null) {
 			this.nearestGhost = nearestGhost;

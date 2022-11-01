@@ -17,10 +17,10 @@ public class FleeAction implements Action {
 	@Override
 	public MOVE execute(Game game) {
 		GHOST nearestghost;
-		nearestghost = MsPacmanUtils.getNearestGhost(game, game.getPacmanCurrentNodeIndex(), 30, false);
+		nearestghost = MsPacmanUtils.getNearestGhostAtDistance(game, game.getPacmanCurrentNodeIndex(), 40, false);
 		if(nearestghost!=null)
 		{
-			return game.getApproximateNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),
+			return game.getNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),
 					game.getGhostCurrentNodeIndex(nearestghost), game.getPacmanLastMoveMade(), DM.EUCLID);
 		}
 		return MOVE.NEUTRAL;
