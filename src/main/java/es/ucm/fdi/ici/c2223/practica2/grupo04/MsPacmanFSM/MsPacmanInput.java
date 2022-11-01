@@ -17,15 +17,13 @@ public class MsPacmanInput extends Input{
 	private GHOST nearestGhost;
 	private GHOST nearestEdibleGhost;
 	
-	//private final static int ghostCloseRange = 15;
 	public final static int ghostCloseMedium = 40;
-	public final static int PPDistance = 60;
+	public final static int PPDistance = 40;
 	public final static int EatLimit = 55;
 	public final static int PPDistanceInZone = 130;
 	public final static int fewPillsLimit = 15;
 	
 	private int[] activePowerPills;
-	private int[] pacmanNeighbors;
 	private int pacmanPos;
 	private boolean PPeaten;
 	private boolean multiplePPsInZone;
