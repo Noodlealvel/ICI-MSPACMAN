@@ -32,7 +32,7 @@ public class MsPacmanUtils {
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 )) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 && game.getGhostLairTime(ghost) == 0)) {
 				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
 				if((shortestDistance == -1 || distanceGhost < shortestDistance) && game.getGhostEdibleTime(ghost) <= limit) {
 					nearestGhost = ghost;
@@ -48,7 +48,7 @@ public class MsPacmanUtils {
 		double shortestDistance = -1;
 		double distanceGhost = 0;
 		for (GHOST ghost : GHOST.values()) {
-			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 )) {
+			if((game.isGhostEdible(ghost) == edible && game.getGhostLairTime(ghost) == 0 && game.getGhostLairTime(ghost) == 0)) {
 				distanceGhost = game.getDistance(nodeIndex, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID);
 				if((shortestDistance == -1 || distanceGhost < shortestDistance)) {
 					nearestGhost = ghost;

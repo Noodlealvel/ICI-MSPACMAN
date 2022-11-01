@@ -23,16 +23,10 @@ public class MsPacmanInput extends Input{
 	private final int EatLimit = 55;
 	private final int PPDistanceInZone = 130;
 	private int[] activePowerPills;
-	private int[] activePills;
 	private int[] pacmanNeighbors;
 	private int pacmanPos;
-	private boolean ghostsTogether;
-	private boolean ghostsApart;
-	private Map <GHOST,Integer> ghostEdibleTimes;
 	private boolean PPeaten;
 	private boolean multiplePPsInZone;
-	private boolean ghostInPath;
-	private int nextScore;
 	private boolean ghostClose;
 	private boolean edibleGhostClose;
 	private boolean noPillsNear;
@@ -49,54 +43,32 @@ public class MsPacmanInput extends Input{
 	private boolean lessPPsInZone;
 	public MsPacmanInput(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
 		
 	}
 
 	@Override
 	public void parseInput() {
 
-		this.PPeaten = false;
 		this.noPillsNear = true;
 		this.dontChase = false;
 		this.ghostsFlanking = false;
 		this.edibleGhostsTogether=false;
 		this.lessPPsInZone=false;
+		this.fewPillsleft= game.getNumberOfActivePills() <= 15;
+		this.noPPsleft = game.getNumberOfActivePowerPills() == 0;
 		this.activePowerPills = game.getActivePowerPillsIndices();
 		this.pacmanPos = game.getPacmanCurrentNodeIndex();
-		for (int pill : activePowerPills) {
-			if (pacmanPos == pill) {
-				this.PPeaten = true;
-			}
-		}
+		this.PPeaten = game.wasPowerPillEaten();
 
-		this.activePills = game.getActivePillsIndices();
 		pacmanNeighbors = game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade());
 		for (int node : pacmanNeighbors) {
-			if (Arrays.asList(activePills).contains(node)) {
+			if (game.isPillStillAvailable(node)) {
 				noPillsNear = false;
 			}
 
 		}
 		
-		if (activePowerPills.length==0)
-			this.noPPsleft=true;
-		
-		if (activePills.length<=15)
-		{
-			this.fewPillsleft=true;
-		}
-
-		double shortestDistance = -1;
-		double distanceGhost = 0;
-		for (GHOST ghost : GHOST.values()) {
-			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
-			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && game.isGhostEdible(ghost)
-					&& distanceGhost <= EatLimit) {
-				nearestGhost = ghost;
-				shortestDistance = distanceGhost;
-			}
-		}
+		nearestGhost = MsPacmanUtils.getNearestGhost(game, game.getPacmanCurrentNodeIndex(), true);
 
 		if (nearestGhost != null) {
 			this.nearestEdibleGhost = nearestGhost;
@@ -192,23 +164,14 @@ public class MsPacmanInput extends Input{
 		
 		
 		// Para saber si pacman tiene cerca una PP
-		double powerPillDistance;
-		shortestDistance = -1;
-		int nearestPPill = -1;
-		for (int pillNode : activePowerPills) {
-			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, DM.PATH);
-			if ((powerPillDistance < shortestDistance && powerPillDistance < PPDistance) || shortestDistance == -1 ) {
-				shortestDistance = powerPillDistance;
-				nearestPPill = pillNode;
-				this.PPClose = true;
-			}
-		}
+		int closestPP = MsPacmanUtils.getNearestPP(game, PPDistance);
+		this.PPClose = closestPP != -1;
 
 		// Para saber si dicha PP está bloqueada por fantasmas
 
-		if(nearestPPill!=-1)
+		if(closestPP!=-1)
 		{
-			int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), nearestPPill,
+			int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), closestPP,
 					game.getPacmanLastMoveMade());
 			for (int node : PPpath) {
 				for (GHOST ghosts : GHOST.values()) {
@@ -250,16 +213,7 @@ public class MsPacmanInput extends Input{
 			this.levelChange = true;
 		}
 		
-		GHOST nearestGhost = null;
-		shortestDistance = -1;
-		distanceGhost = 0;
-		for (GHOST ghost : GHOST.values()) {
-			distanceGhost = game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.PATH);
-			if ((shortestDistance == -1 || distanceGhost < shortestDistance) && distanceGhost <= ghostCloseMedium && !game.isGhostEdible(ghost) && game.getGhostLairTime(ghost) == 0) {
-				nearestGhost = ghost;
-				shortestDistance = distanceGhost;
-			}
-		}
+		GHOST nearestGhost = MsPacmanUtils.getNearestGhost(game, pacmanPos, ghostCloseMedium, false);
 
 		if (nearestGhost != null) {
 			this.nearestGhost = nearestGhost;
