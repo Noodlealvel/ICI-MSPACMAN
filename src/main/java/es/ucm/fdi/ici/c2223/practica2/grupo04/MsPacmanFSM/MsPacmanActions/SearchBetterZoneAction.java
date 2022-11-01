@@ -1,6 +1,7 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanActions;
 
 import es.ucm.fdi.ici.Action;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
 import pacman.game.Game;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
@@ -32,7 +33,7 @@ public class SearchBetterZoneAction implements Action {
 				pill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePowerPillsIndices(), DM.EUCLID);
 				break;
 			case 2:
-				if(game.getShortestPathDistance(powerpills[0], powerpills[1]) > 100) {
+				if(game.getShortestPathDistance(powerpills[0], powerpills[1]) > MsPacmanInput.PPDistanceInZone) {
 					pill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePowerPillsIndices(), DM.EUCLID);
 				}
 				else {
@@ -41,15 +42,15 @@ public class SearchBetterZoneAction implements Action {
 				}
 				break;
 			case 3:
-				if(game.getShortestPathDistance(powerpills[0], powerpills[1]) < 50) {
+				if(game.getShortestPathDistance(powerpills[0], powerpills[1]) < 70) {
 					path = game.getShortestPath(powerpills[0], powerpills[1]);
 					pill = path[path.length/2];
 				}
-				if(game.getShortestPathDistance(powerpills[1], powerpills[2]) < 50) {
+				if(game.getShortestPathDistance(powerpills[1], powerpills[2]) < 70) {
 					path = game.getShortestPath(powerpills[1], powerpills[2]);
 					pill = path[path.length/2];
 				}
-				if(game.getShortestPathDistance(powerpills[2], powerpills[0]) < 50) {
+				if(game.getShortestPathDistance(powerpills[2], powerpills[0]) < 70) {
 					path = game.getShortestPath(powerpills[2], powerpills[0]);
 					pill = path[path.length/2];
 				}

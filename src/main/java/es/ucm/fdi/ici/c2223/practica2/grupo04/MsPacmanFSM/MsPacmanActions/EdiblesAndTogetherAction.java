@@ -1,6 +1,7 @@
 package es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanActions;
 
 import es.ucm.fdi.ici.Action;
+import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanInput;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanUtils;
 import pacman.game.Game;
 import pacman.game.Constants.DM;
@@ -17,7 +18,7 @@ public class EdiblesAndTogetherAction implements Action {
 	@Override
 	public MOVE execute(Game game) {
 		GHOST nearestedibleghost;
-		nearestedibleghost= MsPacmanUtils.getNearestGhost(game, game.getPacmanCurrentNodeIndex(), 20, true);
+		nearestedibleghost= MsPacmanUtils.getNearestGhost(game, game.getPacmanCurrentNodeIndex(), MsPacmanInput.EatLimit, true);
 		if (nearestedibleghost!=null)
 		{
 			return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestedibleghost), game.getPacmanLastMoveMade(), DM.EUCLID);	

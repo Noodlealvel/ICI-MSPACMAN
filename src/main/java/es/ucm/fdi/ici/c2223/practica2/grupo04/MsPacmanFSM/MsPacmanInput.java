@@ -18,10 +18,12 @@ public class MsPacmanInput extends Input{
 	private GHOST nearestEdibleGhost;
 	
 	//private final static int ghostCloseRange = 15;
-	private final int ghostCloseMedium = 40;
-	private final int PPDistance = 60;
-	private final int EatLimit = 55;
-	private final int PPDistanceInZone = 130;
+	public final static int ghostCloseMedium = 40;
+	public final static int PPDistance = 60;
+	public final static int EatLimit = 55;
+	public final static int PPDistanceInZone = 130;
+	public final static int fewPillsLimit = 15;
+	
 	private int[] activePowerPills;
 	private int[] pacmanNeighbors;
 	private int pacmanPos;
@@ -41,33 +43,34 @@ public class MsPacmanInput extends Input{
 	private boolean fewPillsleft;
 	private boolean edibleGhostsTogether;
 	private boolean lessPPsInZone;
+	
+	
 	public MsPacmanInput(Game game) {
 		super(game);
-		
 	}
-
+	
 	@Override
 	public void parseInput() {
 
+		//Valores iniciales antes de los calculos
 		this.noPillsNear = true;
 		this.dontChase = false;
 		this.ghostsFlanking = false;
 		this.edibleGhostsTogether=false;
 		this.lessPPsInZone=false;
-		this.fewPillsleft= game.getNumberOfActivePills() <= 15;
+		this.fewPillsleft= game.getNumberOfActivePills() <= fewPillsLimit;
 		this.noPPsleft = game.getNumberOfActivePowerPills() == 0;
 		this.activePowerPills = game.getActivePowerPillsIndices();
 		this.pacmanPos = game.getPacmanCurrentNodeIndex();
 		this.PPeaten = game.wasPowerPillEaten();
-
-		pacmanNeighbors = game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade());
-		for (int node : pacmanNeighbors) {
-			if (game.isPillStillAvailable(game.getPillIndex(node))) {
-				noPillsNear = false;
-			}
-
-		}
 		
+		List<GHOST> ghostsNearPacman = new ArrayList<GHOST>();
+		
+		//Calculamos si PacMan tiene pills al lado
+		noPillsNear = MsPacmanUtils.getNoPillsNear(game);
+		
+		
+		//Miramos el fantasma mas cercano no comestible
 		nearestGhost = MsPacmanUtils.getNearestGhost(game, game.getPacmanCurrentNodeIndex(), true);
 
 		if (nearestGhost != null) {
@@ -77,6 +80,7 @@ public class MsPacmanInput extends Input{
 			this.edibleGhostClose = false;
 		}
 
+		
 		// Para saber cuando no merece la pena perseguir y pasar de ataque a standard
 		if (nearestEdibleGhost == null) {
 			if (game.getGhostCurrentEdibleScore() < 800) {
@@ -86,42 +90,17 @@ public class MsPacmanInput extends Input{
 		
 
 		// Cuantos fantasmas hay cerca de pacman
-		List<GHOST> ghostsNearPacman = new ArrayList<GHOST>();
-		for (GHOST ghost : GHOST.values()) {
-			if (game.isGhostEdible(ghost) == false && game.getGhostLairTime(ghost) == 0) {
-				double distance = game.getDistance(game.getPacmanCurrentNodeIndex(),
-						game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.PATH);
-				if (distance <= ghostCloseMedium) {
-					ghostsNearPacman.add(ghost);
-				}
-			}
-		}
-
+		ghostsNearPacman = MsPacmanUtils.getGhostsNearPacman(game);
 		if (ghostsNearPacman.size() >= 2)
 			this.multipleGhostsClose = true;
 		else
 			this.lessGhostsClose=true;
 		
-		List<GHOST> eliminado = new ArrayList<GHOST>();
-		//Para saber si esos fantasmas están flanqueando	
+		
+		//Para saber si esos fantasmas están flanqueando
+		ghostsNearPacman = MsPacmanUtils.getGhostsFlanking(game, ghostsNearPacman);
+		
 		if (ghostsNearPacman != null) {
-			for (GHOST ghost : ghostsNearPacman) {
-				if (ghost != null && game.getGhostLairTime(ghost) == 0) {
-					int[] ghostspath = game.getShortestPath(game.getPacmanCurrentNodeIndex(),
-							game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade());
-					for (int node1 : ghostspath) {
-						for (GHOST ghosts : GHOST.values()) {
-							if (game.getGhostCurrentNodeIndex(ghosts) == node1) {
-								eliminado.add(ghosts);
-							}
-						}
-					}
-				}
-			}
-			for(GHOST g : eliminado) {
-				ghostsNearPacman.remove(g);
-			}
-
 			switch (game.getNeighbouringNodes(pacmanPos, game.getPacmanLastMoveMade()).length) {
 			case 2:
 				if (ghostsNearPacman.size() >= 2) {
@@ -139,36 +118,17 @@ public class MsPacmanInput extends Input{
 			}
 		}
 		
-		//Para saber si hay fantasmas comestibles juntos
-		List<GHOST> ghostsNearghost;
-		for (GHOST ghost : GHOST.values()) {
-			ghostsNearghost = new ArrayList<GHOST>();
-			if (game.isGhostEdible(ghost) == true && game.getDistance(pacmanPos, game.getGhostCurrentNodeIndex(ghost), DM.EUCLID) < EatLimit) {
-				for (GHOST ghosts : GHOST.values()) {
-					if (game.isGhostEdible(ghost) == false && game.getGhostLairTime(ghost) == 0) {
-						double distance = game.getDistance(game.getGhostCurrentNodeIndex(ghost),
-								game.getGhostCurrentNodeIndex(ghosts), game.getGhostLastMoveMade(ghost), DM.PATH);
-						if (distance <= ghostCloseMedium) {
-							ghostsNearghost.add(ghost);
-						}
-					}
-				}
-
-				if (ghostsNearghost.size() >= 3) {
-					this.edibleGhostsTogether = true;
-					break;
-				}
-			}
-		}
 		
+		//Para saber si hay fantasmas comestibles juntos
+		this.edibleGhostsTogether = MsPacmanUtils.getNearGhosts(game);
 		
 		
 		// Para saber si pacman tiene cerca una PP
 		int closestPP = MsPacmanUtils.getNearestPP(game, PPDistance);
 		this.PPClose = closestPP != -1;
 
+		
 		// Para saber si dicha PP está bloqueada por fantasmas
-
 		if(closestPP!=-1)
 		{
 			int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), closestPP,
@@ -185,7 +145,6 @@ public class MsPacmanInput extends Input{
 	
 
 		// Para saber si hay muchas PPs en la zona de Pacman
-		
 		int PPsinzone = 0;
 		if(activePowerPills.length>=2)
 		{
@@ -213,6 +172,8 @@ public class MsPacmanInput extends Input{
 			this.levelChange = true;
 		}
 		
+		
+		//Miramos los fantasmas no comestibles que hay dentro de un rango
 		GHOST nearestGhost = MsPacmanUtils.getNearestGhostAtDistance(game, pacmanPos, ghostCloseMedium, false);
 
 		if (nearestGhost != null) {
@@ -224,6 +185,8 @@ public class MsPacmanInput extends Input{
 
 	}
 
+	
+	
 	//Getters
 	public boolean getGhostClose() {
 		return ghostClose;
