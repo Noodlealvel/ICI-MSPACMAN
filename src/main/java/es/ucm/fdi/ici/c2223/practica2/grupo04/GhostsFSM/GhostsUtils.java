@@ -82,21 +82,22 @@ public class GhostsUtils {
 		return isClose;	
 	}
 	public static int ClosestPointToAllGhosts(Game game, GHOST ghost) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for (GHOST g : GHOST.values()) {
-			if (g != ghost) {
-				if (game.getGhostLairTime(g) <= 0)
-					list.add(game.getGhostCurrentNodeIndex(g));
-				else
-					list.add(game.getGhostCurrentNodeIndex(ghost));
+		int point = 0;
+		double distance = 0;
+		double minDistance = Integer.MAX_VALUE;
+		for (int node : game.getPillIndices()) {
+			distance = 0;
+			for (GHOST g : GHOST.values()) {
+				if (ghost != g && game.getGhostLairTime(g) == 0) {
+					distance += game.getDistance(game.getGhostCurrentNodeIndex(g), node, DM.EUCLID);
+				}
+			}
+			if (distance < minDistance) {
+				minDistance = distance;
+				point = node;
 			}
 		}
-
-		int[] ghostsNodes = new int[list.size()];
-		for (int i = 0; i < ghostsNodes.length ;i++) {
-			ghostsNodes[i] = list.get(i);
-		}
-		return game.getClosestNodeIndexFromNodeIndex(game.getGhostCurrentNodeIndex(ghost),ghostsNodes, DM.EUCLID);
+		return point;
 	}
 	
 	static public boolean PathContainsGhosts(Game game, GHOST ghost) {
