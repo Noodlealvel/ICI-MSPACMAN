@@ -129,32 +129,18 @@ public class MsPacmanInput extends Input{
 
 		
 		// Para saber si dicha PP está bloqueada por fantasmas
+		
 		if(closestPP!=-1)
 		{
-			int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), closestPP,
-					game.getPacmanLastMoveMade());
-			for (int node : PPpath) {
-				for (GHOST ghosts : GHOST.values()) {
-					if (game.getGhostCurrentNodeIndex(ghosts) == node) {
-						this.PPBlocked = true;
-						break;
-					}
-				}
-			}
+			this.PPBlocked=MsPacmanUtils.getPPBlocked(game, closestPP);
 		}
 	
 
 		// Para saber si hay muchas PPs en la zona de Pacman
-		int PPsinzone = 0;
+		int PPsinzone;
 		if(activePowerPills.length>=2)
 		{
-			for (int PPillnode: activePowerPills)
-			{
-				if (game.getShortestPathDistance(pacmanPos, PPillnode, game.getPacmanLastMoveMade()) < PPDistanceInZone)
-				{
-					PPsinzone++;
-				}
-			}
+			PPsinzone=MsPacmanUtils.getPPsinzone(game, activePowerPills);
 			
 			if (PPsinzone>=2)
 			{

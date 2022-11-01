@@ -184,4 +184,32 @@ public class MsPacmanUtils {
 		return edibleGhostsTogether;
 	}
 	
+	// Para saber si la PP más cercana está bloqueada por fantasmas
+	public static boolean getPPBlocked(Game game, int closestPP) {
+		boolean PPBlocked=false;
+		int[] PPpath = game.getShortestPath(game.getPacmanCurrentNodeIndex(), closestPP,
+				game.getPacmanLastMoveMade());
+		for (int node : PPpath) {
+			for (GHOST ghosts : GHOST.values()) {
+				if (game.getGhostCurrentNodeIndex(ghosts) == node) {
+					PPBlocked = true;
+					break;
+				}
+			}
+		}
+		return PPBlocked;
+	}
+
+	public static int getPPsinzone(Game game, int[] activePowerPills) {
+		int PPsinzone=0;
+		for (int PPillnode: activePowerPills)
+		{
+			if (game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), PPillnode, game.getPacmanLastMoveMade()) < MsPacmanInput.PPDistanceInZone)
+			{
+				PPsinzone++;
+			}
+		}
+		return PPsinzone;
+	}
+	
 }
