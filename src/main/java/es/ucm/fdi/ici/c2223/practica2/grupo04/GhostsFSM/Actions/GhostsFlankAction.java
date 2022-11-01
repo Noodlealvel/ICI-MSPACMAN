@@ -24,7 +24,6 @@ public class GhostsFlankAction implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			//TODO añadir comportamiento, quizás que vaya a punto intermedio entre Pacmany PPpill.
 			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.getNodeBetweenPacmanAndPpill(game),game.getGhostLastMoveMade(ghost) ,DM.PATH);
         }
 		else
