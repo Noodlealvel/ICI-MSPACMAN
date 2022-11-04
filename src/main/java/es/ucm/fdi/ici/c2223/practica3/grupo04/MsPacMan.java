@@ -1,16 +1,63 @@
 package es.ucm.fdi.ici.c2223.practica3.grupo04;
 
+import java.util.HashMap;
+
+import es.ucm.fdi.ici.Action;
+import es.ucm.fdi.ici.Input;
+import es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRules.MsPacmanInput;
+import es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRulesActions.*;
+import es.ucm.fdi.ici.rules.RuleEngine;
 import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 public class MsPacMan extends PacmanController {
 
-	@Override
-	public MOVE getMove(Game game, long timeDue) {
+	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica3\\grupo04\\";
+	HashMap<String,Action> map;
+	private RuleEngine pacmanEngine;
+	
+	public MsPacMan() {
+		
 		setName("MsPacMan 04");
 		setTeam("Team04");
-		return null;
+		
+		map = new HashMap<String,Action>();
+		
+		map.put("BeginMap", new BeginMapAction());
+		map.put("ChasePowerPill", new ChasePowerPillAction());
+		map.put("EatLastPills", new EatLastPillsAction());
+		map.put("EdiblesAndTogether", new EdiblesAndTogetherAction());
+		map.put("EdiblesButApart", new EdiblesButApartAction());
+		map.put("Flee", new FleeAction());
+		map.put("SearchBetterZone", new SearchBetterZoneAction());
+		map.put("SearchOptimalPath", new SearchOptimalPathAction());
+		map.put("SearchOptimalPathTowardsEdibles", new SearchOptimalPathTowardsEdiblesAction());
+		map.put("SearchPathWithoutGhosts", new SearchPathWithoutGhostsAction());
+		map.put("SearchZoneWithPPAndNoGhosts", new SearchZoneWithPPAndNoGhostsAction());
+		
+		String rulesFile = String.format("%s/%srules.clp", RULES_PATH, "pacman");
+		pacmanEngine  = new RuleEngine("pacman",rulesFile, map);
+	}
+	
+	
+	@Override
+	public MOVE getMove(Game game, long timeDue) {
+		
+		// Process input
+		Input input = new MsPacmanInput(game);
+
+		// load facts
+		input.parseInput();
+
+		// reset the rule engine
+		pacmanEngine.reset();
+		pacmanEngine.assertFacts(input.getFacts());
+
+		MOVE move = pacmanEngine.run(game);
+
+		return move;
+
 	}
 
 }
