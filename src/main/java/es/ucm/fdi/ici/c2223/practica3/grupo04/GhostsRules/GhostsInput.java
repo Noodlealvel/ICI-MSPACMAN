@@ -1,5 +1,6 @@
 package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import es.ucm.fdi.ici.Input;
@@ -8,9 +9,10 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
+import es.ucm.fdi.ici.rules.RulesInput;
 
 
-public class GhostsInput extends Input {
+public class GhostsInput extends RulesInput {
 
 	private HashMap<GHOST,HashMap<GhostsRelevantInfo, Boolean>> ghostsInfoMap;
 	private boolean eatenPPill;
@@ -138,6 +140,11 @@ public class GhostsInput extends Input {
 	}
 	public boolean farFromPacmanEuclid(GHOST ghost) {
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EUCLID_PACMAN);
+	}
+	@Override
+	public Collection<String> getFacts() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
