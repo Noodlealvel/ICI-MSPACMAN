@@ -20,6 +20,7 @@
 	<classpathentry kind="lib" path="lib/jFuzzyLogic.jar"/>
 	<classpathentry kind="lib" path="lib/jsr94.jar"/>
 	<classpathentry kind="lib" path="lib/ici-c2122-practica1.jar"/>
+	<classpathentry kind="lib" path="lib/jess.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="test" value="true"/>
