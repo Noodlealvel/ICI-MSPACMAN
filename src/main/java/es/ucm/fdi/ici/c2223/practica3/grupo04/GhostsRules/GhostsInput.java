@@ -3,12 +3,10 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules;
 import java.util.Collection;
 import java.util.HashMap;
 
-import es.ucm.fdi.ici.Input;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
-import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
 import es.ucm.fdi.ici.rules.RulesInput;
 
 
