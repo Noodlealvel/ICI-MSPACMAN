@@ -1,0 +1,13 @@
+package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules;
+
+public enum GhostsRelevantInfo {
+	EDIBLE,
+	EATEN,
+	PACMAN_INVECINITY,
+	NEAR_TUNNEL, 
+	GHOSTS_CLOSE, 
+	LOW_EDIBLE_TIME, 
+	PACMAN_CLOSE,
+	NO_GHOSTS_IN_PATH, IN_LAIR, CHASE_DISTANCE, JUST_BEHIND, EUCLID_PACMAN;
+}
+
