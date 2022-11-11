@@ -43,5 +43,114 @@ en el MsPacMan.java
 (defrule EdibleGhostsClose
 	(MSPACMAN (edibleGhostClose true))
 	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOSTS CLOSE") ))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") ))
 )
+
+(defrule EdibleGhostsApart
+    (MSPACMAN (edibleGhostsTogether false))
+    =>
+    (assert (ACTION (id ediblesButApart) (info "EDIBLE GHOSTS APART") ))
+)
+
+(defrule EdibleGhostsTogether
+	(MSPACMAN (edibleGhostsTogether true))
+	=> 
+	(assert (ACTION (id ediblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") ))
+)
+
+(defrule FewPillsAndNoPPsLeft
+	(MSPACMAN (fewPillsleft true))
+    (and
+        MSPACMAN (NoPPsleft true)))
+	=> 
+	(assert (ACTION (id eatLastPills) (info "FEW PILLS AND NO PPS LEFT") ))
+)
+
+(defrule FewPillsInZone
+	(MSPACMAN (lessPPsInZone true))
+	=> 
+	(assert (ACTION (id searchBetterZone) (info "FEW PPS IN ZONE") ))
+)
+
+(defrule GhostClose
+	(MSPACMAN (ghostsClose true))
+	=> 
+	(assert (ACTION (id flee) (info "GHOST CLOSE") ))
+)
+
+(defrule GhostsFlanking
+	(MSPACMAN (ghostsFlanking true))
+	=> 
+	(assert (ACTION (id searchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") ))
+)
+
+(defrule GhostsTooFar
+	(MSPACMAN (ghostClose false))
+	=> 
+	(assert (ACTION (id searchOptimalPath) (info "GHOSTS ARE OUTSIDE DANGER RADIUS") ))
+)
+
+(defrule LessGhostsClose
+	(MSPACMAN (lessGhostsClose true))
+	=> 
+	(assert (ACTION (id flee) (info "FEW PPS IN ZONE") ))
+)
+
+(defrule LevelChange
+	(MSPACMAN (levelChange true))
+	=> 
+	(assert (ACTION (id beginMap) (info "LEVEL CHANGED") ))
+)
+
+(defrule MultiplePPsInZone
+	(MSPACMAN (multiplePPsInZone true))
+	=> 
+	(assert (ACTION (id searchOptimalPath) (info "MULTIPLE PPS IN ZONE") ))
+)
+
+(defrule NoPillsNearPacman
+	(MSPACMAN (noPillsNear true))
+	=> 
+	(assert (ACTION (id searchOptimalPath) (info "NO PILLS NEXT TO PACMAN") ))
+)
+
+(defrule PowerPillBlocked
+	(MSPACMAN (PPBlocked true))
+	=> 
+	(assert (ACTION (id flee) (info "POWER PILL IS BLOCKED") ))
+)
+
+(defrule PowerPillEaten
+	(MSPACMAN (PPeaten true))
+	=> 
+	(assert (ACTION (id searchOptimalPathTowardsEdibles) (info "POWER PILL EATEN") ))
+)
+
+(defrule SeveralGhostsCloseAndPP
+	(MSPACMAN (multipleGhostsClose true))
+    (and
+        MSPACMAN (PPClose true)))
+	=> 
+	(assert (ACTION (id chasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") ))
+)
+
+(defrule SeveralGhostsCloseNoPP
+	(MSPACMAN (multipleGhostsClose true))
+    (and
+        MSPACMAN (PPClose false)))
+	=> 
+	(assert (ACTION (id searchZoneWithPPAndNoGhosts) (info "SEVERAL GHOSTS CLOSE AND FAR FROM PP") ))
+)
+
+(defrule StandardToAttackTransition
+	(MSPACMAN (PPeaten true))
+    (or
+        MSPACMAN (EdibleGhostClose true)))
+	=> 
+	(assert (ACTION (id searchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") ))
+)
+
+
+
+
+
