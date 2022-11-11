@@ -209,7 +209,7 @@ public class GhostsInput extends RulesInput {
 		}
 		Collections.sort(temp);
 		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) (nearestGhost %d) (secondNearestGhost %d) (secondFurthestGhost %d) (furthestGhost %d) (levelChanged %s) )", 
-				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill, temp.get(0), temp.get(1), temp.get(2), temp.get(3)));
+				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill, temp.get(0), temp.get(1), temp.get(2), temp.get(3), levelChanged()));
 		return facts;
 	}
 }
