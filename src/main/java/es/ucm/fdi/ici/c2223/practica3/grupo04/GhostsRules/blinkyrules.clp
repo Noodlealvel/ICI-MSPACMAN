@@ -71,6 +71,7 @@
     (slot furthestGhost (type NUMBER))
     (slot levelChanged (type Symbol)))
     
-;DEFINITION OF THE ACTION FACT
+;ACTION FACT
 (deftemplate ACTION
-	(slot id) (slot info (default "")) ) 
+	(slot id) (slot info (default "")) (slot priority (type NUMBER) )
+	(slot runawaystrategy (type SYMBOL))
