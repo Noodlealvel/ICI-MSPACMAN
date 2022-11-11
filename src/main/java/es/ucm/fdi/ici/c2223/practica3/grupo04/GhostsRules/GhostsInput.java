@@ -1,6 +1,7 @@
 package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -145,6 +146,7 @@ public class GhostsInput extends RulesInput {
 	}
 	@Override
 	public Collection<String> getFacts() {
+		Vector<Float> temp = new Vector<Float>();
 		Vector<String> facts = new Vector<String>();
 		facts.add(String.format("(BLINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EDIBLE), 
@@ -202,9 +204,13 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.JUST_BEHIND),
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EUCLID_PACMAN),
 				(int)ghostsDistances.get(GHOST.SUE).floatValue() ));
+		for (GHOST ghost : GHOST.values()) {
+			temp.add(ghostsDistances.get(ghost).floatValue());
+		}
+		Collections.sort(temp);
 		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) (nearestGhost %d) (secondNearestGhost %d) (secondFurthestGhost %d) (furthestGhost %d))", 
 )))
-		return null;
+		return facts;
 	}
 }
 
