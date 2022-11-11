@@ -2,6 +2,7 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Vector;
 
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
@@ -141,7 +142,8 @@ public class GhostsInput extends RulesInput {
 	}
 	@Override
 	public Collection<String> getFacts() {
-		// TODO Auto-generated method stub
+		Vector<String> facts = new Vector<String>();
+		facts.add(String.format("(BLINKY ())", null))
 		return null;
 	}
 }
