@@ -68,7 +68,8 @@
     (slot nearestGhost (type NUMBER))
     (slot secondNearestGhost (type NUMBER))
     (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER)))
+    (slot furthestGhost (type NUMBER))
+    (slot levelChanged (type Symbol)))
     
 ;DEFINITION OF THE ACTION FACT
 (deftemplate ACTION
