@@ -3,7 +3,6 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04;
 import java.util.EnumMap;
 
 import es.ucm.fdi.ici.rules.RulesInput;
-import es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules.GameMemory;
 import es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules.GhostsInput;
 import es.ucm.fdi.ici.rules.RuleEngine;
 import pacman.controllers.GhostController;
@@ -23,8 +22,7 @@ public class Ghosts extends GhostController {
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		
-		GameMemory mem = new GameMemory();
-		RulesInput input = new GhostsInput(game, mem);
+		RulesInput input = new GhostsInput(game);
 		input.parseInput();
 		for(RuleEngine engine: ghostRuleEngines.values()) {
 			engine.reset();

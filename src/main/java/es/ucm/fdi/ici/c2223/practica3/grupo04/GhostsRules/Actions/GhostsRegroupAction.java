@@ -16,7 +16,7 @@ public class GhostsRegroupAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "Regroup";
+		return ghost.toString() + "regroup";
 	}
 
 	@Override

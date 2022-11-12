@@ -21,7 +21,6 @@ public class GhostsInput extends RulesInput {
 	private HashMap<GHOST,MOVE> ghostsLastMovementMade;
 	private MOVE pacmanLastMovement;
 	private boolean pacmanInTunnel;
-	private GameMemory gameMemory;
 	private GHOST nearestGhostToPacman;
 	private HashMap<GHOST, Double> ghostsDistances;
 	private static final int SECURITY_DISTANCE = 60;
@@ -29,9 +28,8 @@ public class GhostsInput extends RulesInput {
 	private static final int LOW_TIME = 10;
 	private static final int CLOSE_PACMAN_DISTANCE = 20;
 	private static final int CLOSE_GHOSTS = 120;
-	public GhostsInput(Game game, GameMemory mem) {
+	public GhostsInput(Game game) {
 		super(game);
-		gameMemory = mem;
 	}
 	@Override
 	public void parseInput() {
@@ -63,22 +61,8 @@ public class GhostsInput extends RulesInput {
 		eatenPPill = game.wasPowerPillEaten();
 		pacmanNearPPill = GhostsUtils.PacmanCloseToPPill(game,CLOSE_PACMAN_DISTANCE);
 		nearestGhostToPacman = GhostsUtils.NearestGhostToPacman(game);
-		fillMemory();
-	}
-	private void fillMemory() {
-		if (gameMemory != null) {
-			gameMemory.setLastLevel();
-			gameMemory.setCurrentLevel(game.getCurrentLevel());
-		}
-		else {
-			gameMemory = new GameMemory();
-		}
-		
 	}
 	
-	public boolean levelChanged() {
-		return gameMemory.getCurrentLevel() != gameMemory.getLastLevel();
-	}
 	public boolean PPillEaten() {
 		return eatenPPill;
 	}
@@ -208,8 +192,8 @@ public class GhostsInput extends RulesInput {
 			temp.add(ghostsDistances.get(ghost).floatValue());
 		}
 		Collections.sort(temp);
-		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) (nearestGhost %d) (secondNearestGhost %d) (secondFurthestGhost %d) (furthestGhost %d) (levelChanged %s) )", 
-				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill, temp.get(0), temp.get(1), temp.get(2), temp.get(3), levelChanged()));
+		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) (nearestGhost %d) (secondNearestGhost %d) (secondFurthestGhost %d) (furthestGhost %d))", 
+				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill, temp.get(0), temp.get(1), temp.get(2), temp.get(3)));
 		return facts;
 	}
 }

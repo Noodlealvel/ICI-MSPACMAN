@@ -80,12 +80,12 @@
     (slot nearestGhost (type NUMBER))
     (slot secondNearestGhost (type NUMBER))
     (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER))
-    (slot levelChanged (type Symbol)))
+    (slot furthestGhost (type NUMBER)))
     
 ;Action Fact
 (deftemplate ACTION
-	(slot id) (slot info (default "")) (slot priority (type NUMBER)))
+	(slot id) (slot info (default "")) (slot priority (type NUMBER))
+	(slot flanks (type SYMBOL))
 	
 ;Rules
 
@@ -94,6 +94,24 @@
 	=>  
 	(assert 
 		(ACTION (id BLINKYwait) (info "BLINKY espera en lair") (priority 100))
+	)
+)
+
+(defrule BLINKYAgressive
+	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
+	(MSPACMAN (noPPills true)) 
+	=>  
+	(assert 
+		(BLINKY (inAgressive true))
+	)
+)
+
+(defrule BLINKYAttacks
+	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
+	(MSPACMAN (pacmanNearPPill false)) 
+	=>  
+	(assert 
+		(BLINKY (inAgressive true))
 	)
 )
 
@@ -111,6 +129,15 @@
 	=>
 	(assert
 		(BLINKY (inDefense true))
+	)
+)
+
+(defrule BLINKYregroup
+	(BLINKY (chaseDistance false) (edible false) (inAgressive false)) 
+	(MSPACMAN (pacmanNearPPill true))
+	=>  
+	(assert 
+		(ACTION (id BLINKYregroup) (info "BLINKY se acerca a pacman porque no es comestible y esta lejos") (priority 90))
 	)
 )
 

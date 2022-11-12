@@ -39,7 +39,7 @@ public class Ghosts  extends GhostController  {
 		RulesAction PINKYrunsAway = new RunAwayAction(GHOST.PINKY);
 		RulesAction SUErunsAway = new RunAwayAction(GHOST.SUE);
 		
-		map.put("BLINKYchases", BLINKYchases);
+		map.put(BLINKYchases.getActionId(), BLINKYchases);
 		map.put("INKYchases", INKYchases);
 		map.put("PINKYchases", PINKYchases);
 		map.put("SUEchases", SUEchases);	
