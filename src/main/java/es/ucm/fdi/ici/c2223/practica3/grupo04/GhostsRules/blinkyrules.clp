@@ -86,6 +86,7 @@
 (deftemplate ACTION
 	(slot id) (slot info (default "")) (slot priority (type NUMBER))
 	(slot flanks (type SYMBOL))
+)
 	
 ;Rules
 
@@ -111,7 +112,7 @@
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
 	(assert 
-		(BLINKY (inAgressive true))
+		(BLINKY (inAttack true))
 	)
 )
 
@@ -132,6 +133,55 @@
 	)
 )
 
+(defrule BLINKYchasesNoGhosts
+	(BLINKY (inAttack true) (noGhostsInPath true))
+	=>
+	(assert
+		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+	)
+)
+
+(defrule BLINKYchasesTunnel
+	(BLINKY (inAttack true))
+	(MSPACMAN (pacmanInTunnel true))
+	=>
+	(assert
+		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar en túnel") (priority 40) (flanks false))
+	)
+)
+
+(defrule BLINKYflanks
+	(BLINKY (inAttack true) (noGhostsInPath false) (justBehind false))
+	=>
+	(assert
+		(ACTION (id BLINKYchase) (info "BLINKY flanquea") (priority 40) (flanks false))
+	)
+)
+
+(defrule BLINKYstopsChasing
+	(BLINKY (inAttack true) (justBehind true))
+	=>
+	(assert
+		(ACTION (id BLINKYstopChasing) (info "BLINKY para de perseguir") (priority 60))
+	)
+)
+
+(defrule BLINKYdefendLastPills
+	(BLINKY (inAgressive true) (justDistance false))
+	=>
+	(assert
+		(ACTION (id BLINKYdefendLastPills) (info "BLINKY protege las últimas pills") (priority 50))
+	)
+)
+
+(defrule BLINKYkillPacman
+	(BLINKY (inAgressive true) (chaseDistance false))
+	=>
+	(assert
+		(ACTION (id BLINKYkillPacman) (info "BLINKY va a terminar con pacman") (priority 50))
+	)
+)
+
 (defrule BLINKYregroup
 	(BLINKY (chaseDistance false) (edible false) (inAgressive false)) 
 	(MSPACMAN (pacmanNearPPill true))
@@ -140,4 +190,5 @@
 		(ACTION (id BLINKYregroup) (info "BLINKY se acerca a pacman porque no es comestible y esta lejos") (priority 90))
 	)
 )
+
 

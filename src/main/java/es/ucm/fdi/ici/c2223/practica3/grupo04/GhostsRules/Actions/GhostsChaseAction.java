@@ -20,7 +20,7 @@ public class GhostsChaseAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost + "Chase";
+		return ghost + "chase";
 	}
 
 

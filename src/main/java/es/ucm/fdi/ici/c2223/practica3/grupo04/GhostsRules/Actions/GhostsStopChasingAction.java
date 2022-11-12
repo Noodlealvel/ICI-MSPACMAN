@@ -15,7 +15,7 @@ public class GhostsStopChasingAction implements RulesAction {
 			}
 		@Override
 		public String getActionId() {
-			return ghost.toString() + "StopChasing";
+			return ghost.toString() + "stopChasing";
 		}
 
 		@Override

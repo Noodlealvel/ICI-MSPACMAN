@@ -17,7 +17,7 @@ public class GhostsDefendLastPillsAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost + "DefendLastPills";
+		return ghost + "defendLastPills";
 	}
 
 
