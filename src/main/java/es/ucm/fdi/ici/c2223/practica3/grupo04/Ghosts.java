@@ -24,11 +24,8 @@ public class Ghosts extends GhostController {
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		
 		GameMemory mem = new GameMemory();
-		//Process input
 		RulesInput input = new GhostsInput(game, mem);
-		//load facts
 		input.parseInput();
-		//reset the rule engines
 		for(RuleEngine engine: ghostRuleEngines.values()) {
 			engine.reset();
 			engine.assertFacts(input.getFacts());

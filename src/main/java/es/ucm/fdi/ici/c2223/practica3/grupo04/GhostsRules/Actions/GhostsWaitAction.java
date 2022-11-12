@@ -1,27 +1,30 @@
 package es.ucm.fdi.ici.c2223.practica3.grupo04.GhostsRules.Actions;
 
+import pacman.game.Game;
+import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.rules.RulesAction;
 import jess.Fact;
+import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
-import pacman.game.Game;
 
-public class ActionExample implements RulesAction {
-
+public class GhostsWaitAction implements RulesAction{
+	GHOST ghost;
+	public GhostsWaitAction( GHOST ghost) {
+		this.ghost = ghost;
+	}
+	
 	@Override
 	public String getActionId() {
-		return null;
+		return ghost.toString() + "wait";
 	}
 
 	@Override
 	public MOVE execute(Game game) {
-		// TODO Auto-generated method stub
-		return null;
+			return MOVE.NEUTRAL;
 	}
 
 	@Override
 	public void parseFact(Fact actionFact) {
-		// TODO Auto-generated method stub
 		
 	}
-
 }

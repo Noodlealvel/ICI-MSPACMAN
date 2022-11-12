@@ -1,4 +1,4 @@
-;FACTS ASSERTED BY GAME INPUT
+;Facts asserted
 (deftemplate BLINKY
 	(slot edible (type SYMBOL))
 	(slot eaten (type SYMBOL))
@@ -12,6 +12,9 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
+	(slot inDefense (type Symbol))
+	(slot inAttack (type Symbol))
+	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate INKY
@@ -27,6 +30,9 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
+	(slot inDefense (type Symbol))
+	(slot inAttack (type Symbol))
+	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate PINKY
@@ -42,6 +48,9 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
+	(slot inDefense (type Symbol))
+	(slot inAttack (type Symbol))
+	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate SUE
@@ -57,6 +66,9 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
+	(slot inDefense (type Symbol))
+	(slot inAttack (type Symbol))
+	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate MSPACMAN 
@@ -71,7 +83,34 @@
     (slot furthestGhost (type NUMBER))
     (slot levelChanged (type Symbol)))
     
-;ACTION FACT
+;Action Fact
 (deftemplate ACTION
-	(slot id) (slot info (default "")) (slot priority (type NUMBER) )
-	(slot runawaystrategy (type SYMBOL))
+	(slot id) (slot info (default "")) (slot priority (type NUMBER)))
+	
+;Rules
+
+(defrule BLINKYwait
+	(BLINKY (inLair true)) 
+	=>  
+	(assert 
+		(ACTION (id BLINKYwait) (info "BLINKY espera en lair") (priority 100))
+	)
+)
+
+(defrule BLINKYdefenseEdible 
+	(BLINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
+	=>
+	(assert
+		(BLINKY (inDefense true))
+	)
+)
+
+(defrule BLINKYdefensePacmanNearPPill 
+	(BLINKY (inDefense false) (inAttack false) (inAgressive false))
+	(MSPACMAN (pacmanNearPPill true))
+	=>
+	(assert
+		(BLINKY (inDefense true))
+	)
+)
+
