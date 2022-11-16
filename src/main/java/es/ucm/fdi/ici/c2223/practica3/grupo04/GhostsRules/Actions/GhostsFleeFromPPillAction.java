@@ -17,7 +17,7 @@ public class GhostsFleeFromPPillAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "FleeFromPPill";
+		return ghost.toString() + "fleeFromPPill";
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class GhostsDisperseAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "Disperse";
+		return ghost.toString() + "disperse";
 	}
 
 	@Override

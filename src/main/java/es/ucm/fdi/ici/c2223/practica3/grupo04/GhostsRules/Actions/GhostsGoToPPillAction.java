@@ -18,7 +18,7 @@ public class GhostsGoToPPillAction implements RulesAction {
 
 	@Override
 	public String getActionId() {
-		return ghost.toString() + "GoToPPill";
+		return ghost.toString() + "goToPPill";
 	}
 
 	@Override
