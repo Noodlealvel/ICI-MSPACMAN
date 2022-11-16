@@ -137,7 +137,7 @@
 	(BLINKY (inAttack true) (noGhostsInPath true))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
 	)
 )
 
@@ -192,7 +192,7 @@
 )
 
 (defrule BLINKYflee
-	(BLINKY (nearPacman true) (inDefense true)) 
+	(BLINKY (pacmanClose true) (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id BLINKYflee) (info "BLINKY huye de pacman porque esta cerca") (priority 70))

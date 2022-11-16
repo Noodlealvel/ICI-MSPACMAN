@@ -137,7 +137,7 @@
 	(PINKY (inAttack true) (noGhostsInPath true))
 	=>
 	(assert
-		(ACTION (id PINKYchase) (info "PINKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+		(ACTION (id PINKYchase) (info "PINKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
 	)
 )
 
@@ -192,7 +192,7 @@
 )
 
 (defrule PINKYflee
-	(PINKY (nearPacman true) (inDefense true)) 
+	(PINKY (pacmanClose true) (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id PINKYflee) (info "PINKY huye de pacman porque esta cerca") (priority 70))

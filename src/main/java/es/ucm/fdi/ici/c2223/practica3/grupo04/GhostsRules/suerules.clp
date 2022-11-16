@@ -137,7 +137,7 @@
 	(SUE (inAttack true) (noGhostsInPath true))
 	=>
 	(assert
-		(ACTION (id SUEchase) (info "SUE persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+		(ACTION (id SUEchase) (info "SUE persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
 	)
 )
 
@@ -192,7 +192,7 @@
 )
 
 (defrule SUEflee
-	(SUE (nearPacman true) (inDefense true)) 
+	(SUE (pacmanClose true) (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id SUEflee) (info "SUE huye de pacman porque esta cerca") (priority 70))

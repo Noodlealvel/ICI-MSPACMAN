@@ -137,7 +137,7 @@
 	(INKY (inAttack true) (noGhostsInPath true))
 	=>
 	(assert
-		(ACTION (id INKYchase) (info "INKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+		(ACTION (id INKYchase) (info "INKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
 	)
 )
 
@@ -192,7 +192,7 @@
 )
 
 (defrule INKYflee
-	(INKY (nearPacman true) (inDefense true)) 
+	(INKY (pacmanClose true) (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id INKYflee) (info "INKY huye de pacman porque esta cerca") (priority 70))

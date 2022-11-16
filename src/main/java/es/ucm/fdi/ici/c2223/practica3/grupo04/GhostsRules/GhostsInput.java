@@ -188,12 +188,9 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.JUST_BEHIND),
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EUCLID_PACMAN),
 				(int)ghostsDistances.get(GHOST.SUE).floatValue() ));
-		for (GHOST ghost : GHOST.values()) {
-			temp.add(ghostsDistances.get(ghost).floatValue());
-		}
-		Collections.sort(temp);
-		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) (nearestGhost %d) (secondNearestGhost %d) (secondFurthestGhost %d) (furthestGhost %d))", 
-				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill, temp.get(0), temp.get(1), temp.get(2), temp.get(3)));
+		
+		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) )", 
+				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill));
 		return facts;
 	}
 }

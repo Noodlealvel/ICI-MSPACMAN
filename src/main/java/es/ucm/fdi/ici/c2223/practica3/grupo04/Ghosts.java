@@ -28,7 +28,7 @@ import pacman.game.Game;
 public class Ghosts extends GhostController {
 	
 	EnumMap<GHOST,RuleEngine> ghostRuleEngines;
-	private static final String RULES_PATH = "es"+File.separator+"ucm"+File.separator+"fdi"+File.separator+"ici"+File.separator+"practica3"+File.separator+"demorules"+File.separator;
+	private static final String RULES_PATH = "es"+File.separator+"ucm"+File.separator+"fdi"+File.separator+"ici"+File.separator+"c2223"+File.separator+"practica3"+File.separator+"grupo04"+File.separator+"GhostsRules"+File.separator;
 	
 	public Ghosts(){
 		setName("Ghosts 04");
