@@ -76,11 +76,7 @@
     (slot noPPills (type SYMBOL)) 
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
-    (slot noPPills (type SYMBOL))
-    (slot nearestGhost (type NUMBER))
-    (slot secondNearestGhost (type NUMBER))
-    (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER)))
+    (slot noPPills (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -93,7 +89,7 @@
 (defrule SUEwait
 	(SUE (inLair true)) 
 	=>  
-	(assert 
+	(assert
 		(ACTION (id SUEwait) (info "SUE espera en lair") (priority 100))
 	)
 )
@@ -102,35 +98,27 @@
 	(SUE (edible false) (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(assert 
-		(SUE (inAgressive true))
-	)
+	(modify SUE (inAgressive true))
 )
 
 (defrule SUEAttacks
 	(SUE (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(assert 
-		(SUE (inAttack true))
-	)
+	(modify SUE (inAttack true))
 )
 
 (defrule SUEdefense_Edible 
 	(SUE (inDefense false) (inAttack false) (inAgressive false) (edible true))
 	=>
-	(assert
-		(SUE (inDefense true))
-	)
+	(modify SUE (inDefense true))
 )
 
 (defrule SUEdefense_PacmanNearPPill 
 	(SUE (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(assert
-		(SUE (inDefense true))
-	)
+	(modify SUE (inDefense true))
 )
 
 (defrule SUEchases_NoGhosts

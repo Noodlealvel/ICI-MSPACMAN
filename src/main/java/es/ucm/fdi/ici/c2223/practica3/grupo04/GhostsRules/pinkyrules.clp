@@ -76,11 +76,7 @@
     (slot noPPills (type SYMBOL)) 
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
-    (slot noPPills (type SYMBOL))
-    (slot nearestGhost (type NUMBER))
-    (slot secondNearestGhost (type NUMBER))
-    (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER)))
+    (slot noPPills (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION

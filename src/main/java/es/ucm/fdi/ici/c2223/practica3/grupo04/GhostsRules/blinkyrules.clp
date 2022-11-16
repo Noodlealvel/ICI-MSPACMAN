@@ -76,11 +76,7 @@
     (slot noPPills (type SYMBOL)) 
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
-    (slot noPPills (type SYMBOL))
-    (slot nearestGhost (type NUMBER))
-    (slot secondNearestGhost (type NUMBER))
-    (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER)))
+    (slot noPPills (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -102,35 +98,28 @@
 	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(assert 
-		(BLINKY (inAgressive true))
-	)
+	(modify BLINKY (inAgressive true))
 )
 
 (defrule BLINKYAttacks
 	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(assert 
-		(BLINKY (inAttack true))
+	(modify BLINKY (inAttack true))
 	)
 )
 
 (defrule BLINKYdefense_Edible 
 	(BLINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
 	=>
-	(assert
-		(BLINKY (inDefense true))
-	)
+	(modify BLINKY (inDefense true))
 )
 
 (defrule BLINKYdefense_PacmanNearPPill 
 	(BLINKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(assert
-		(BLINKY (inDefense true))
-	)
+	(modify BLINKY (inDefense true))
 )
 
 (defrule BLINKYchases_NoGhosts

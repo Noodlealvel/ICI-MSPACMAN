@@ -76,11 +76,7 @@
     (slot noPPills (type SYMBOL)) 
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
-    (slot noPPills (type SYMBOL))
-    (slot nearestGhost (type NUMBER))
-    (slot secondNearestGhost (type NUMBER))
-    (slot secondFurthestGhost (type NUMBER))
-    (slot furthestGhost (type NUMBER)))
+    (slot noPPills (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -102,35 +98,27 @@
 	(INKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(assert 
-		(INKY (inAgressive true))
-	)
+	(modify INKY (inAgressive true))
 )
 
 (defrule INKYAttacks
 	(INKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(assert 
-		(INKY (inAttack true))
-	)
+	(modify INKY (inAttack true))
 )
 
 (defrule INKYdefense_Edible 
 	(INKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
 	=>
-	(assert
-		(INKY (inDefense true))
-	)
+	(modify INKY (inDefense true))
 )
 
 (defrule INKYdefense_PacmanNearPPill 
 	(INKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(assert
-		(INKY (inDefense true))
-	)
+	(modify INKY (inDefense true))
 )
 
 (defrule INKYchases_NoGhosts
