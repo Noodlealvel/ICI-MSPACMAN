@@ -40,7 +40,7 @@ public class GhostsChaseAction implements RulesAction {
 	@Override
 	public void parseFact(Fact actionFact) {
 		try {
-			Value value = actionFact.getSlotValue("flanks");
+			Value value = actionFact.getSlotValue("flankstrategy");
 			if(value == null)
 				return;
 			String strategyValue = value.stringValue(null);

@@ -90,152 +90,152 @@
 	
 ;Rules
 
-(defrule BLINKYwait
-	(BLINKY (inLair true)) 
+(defrule PINKYwait
+	(PINKY (inLair true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYwait) (info "BLINKY espera en lair") (priority 100))
+		(ACTION (id PINKYwait) (info "PINKY espera en lair") (priority 100))
 	)
 )
 
-(defrule BLINKYAgressive
-	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
+(defrule PINKYAgressive
+	(PINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (noPPills true)) 
 	=>  
 	(assert 
-		(BLINKY (inAgressive true))
+		(PINKY (inAgressive true))
 	)
 )
 
-(defrule BLINKYAttacks
-	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
+(defrule PINKYAttacks
+	(PINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
 	(assert 
-		(BLINKY (inAttack true))
+		(PINKY (inAttack true))
 	)
 )
 
-(defrule BLINKYdefense_Edible 
-	(BLINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
+(defrule PINKYdefense_Edible 
+	(PINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
 	=>
 	(assert
-		(BLINKY (inDefense true))
+		(PINKY (inDefense true))
 	)
 )
 
-(defrule BLINKYdefense_PacmanNearPPill 
-	(BLINKY (inDefense false) (inAttack false) (inAgressive false))
+(defrule PINKYdefense_PacmanNearPPill 
+	(PINKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
 	(assert
-		(BLINKY (inDefense true))
+		(PINKY (inDefense true))
 	)
 )
 
-(defrule BLINKYchases_NoGhosts
-	(BLINKY (inAttack true) (noGhostsInPath true))
+(defrule PINKYchases_NoGhosts
+	(PINKY (inAttack true) (noGhostsInPath true))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
+		(ACTION (id PINKYchase) (info "PINKY persigue de manera directa al estar el camino vacío") (priority 40) (flanks false))
 	)
 )
 
-(defrule BLINKYchases_Tunnel
-	(BLINKY (inAttack true))
+(defrule PINKYchases_Tunnel
+	(PINKY (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar en túnel") (priority 40) (flankstrategy false))
+		(ACTION (id PINKYchase) (info "PINKY persigue de manera directa al estar en túnel") (priority 40) (flankstrategy false))
 	)
 )
 
-(defrule BLINKYflanks
-	(BLINKY (inAttack true) (noGhostsInPath false) (justBehind false))
+(defrule PINKYflanks
+	(PINKY (inAttack true) (noGhostsInPath false) (justBehind false))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY flanquea") (priority 60) (flankstrategy true))
+		(ACTION (id PINKYchase) (info "PINKY flanquea") (priority 60) (flankstrategy true))
 	)
 )
 
-(defrule BLINKYstopsChasing
-	(BLINKY (inAttack true) (justBehind true))
+(defrule PINKYstopsChasing
+	(PINKY (inAttack true) (justBehind true))
 	=>
 	(assert
-		(ACTION (id BLINKYstopChasing) (info "BLINKY para de perseguir") (priority 50))
+		(ACTION (id PINKYstopChasing) (info "PINKY para de perseguir") (priority 50))
 	)
 )
 
-(defrule BLINKYdefendLastPills
-	(BLINKY (inAgressive true) (justBehind true))
+(defrule PINKYdefendLastPills
+	(PINKY (inAgressive true) (justBehind true))
 	=>
 	(assert
-		(ACTION (id BLINKYdefendLastPills) (info "BLINKY protege las últimas pills") (priority 55))
+		(ACTION (id PINKYdefendLastPills) (info "PINKY protege las últimas pills") (priority 55))
 	)
 )
 
-(defrule BLINKYkillPacman
-	(BLINKY (inAgressive true) (chaseDistance true))
+(defrule PINKYkillPacman
+	(PINKY (inAgressive true) (chaseDistance true))
 	=>
 	(assert
-		(ACTION (id BLINKYkillPacman) (info "BLINKY va a terminar con pacman") (priority 50))
+		(ACTION (id PINKYkillPacman) (info "PINKY va a terminar con pacman") (priority 50))
 	)
 )
 
-(defrule BLINKYregroup
-	(BLINKY (chaseDistance false) (edible false) (inAgressive false)) 
+(defrule PINKYregroup
+	(PINKY (chaseDistance false) (edible false) (inAgressive false)) 
 	(MSPACMAN (pacmanNearPPill true))
 	=>  
 	(assert 
-		(ACTION (id BLINKYregroup) (info "BLINKY se acerca a pacman porque no es comestible y esta lejos") (priority 80))
+		(ACTION (id PINKYregroup) (info "PINKY se acerca a pacman porque no es comestible y esta lejos") (priority 80))
 	)
 )
 
-(defrule BLINKYflee
-	(BLINKY (nearPacman true) (inDefense true)) 
+(defrule PINKYflee
+	(PINKY (nearPacman true) (inDefense true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYflee) (info "BLINKY huye de pacman porque esta cerca") (priority 70))
+		(ACTION (id PINKYflee) (info "PINKY huye de pacman porque esta cerca") (priority 70))
 	)
 )
 
-(defrule BLINKYsearchForTunnel
-	(BLINKY (pacmanInVecinity true) (inDefense true) (nearTunnel true)) 
+(defrule PINKYsearchForTunnel
+	(PINKY (pacmanInVecinity true) (inDefense true) (nearTunnel true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYsearchForTunnel) (info "BLINKY busca tunel") (priority 30))
+		(ACTION (id PINKYsearchForTunnel) (info "PINKY busca tunel") (priority 30))
 	)
 )
 
-(defrule BLINKYfleeFromPPill_LowTime
-	(BLINKY (lowEdibleTime true) (inDefense true)) 
+(defrule PINKYfleeFromPPill_LowTime
+	(PINKY (lowEdibleTime true) (inDefense true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYfleeFromPPill) (info "A BLINKY le queda poco tiempo comestible y huye de powerpills cercanas") (priority 60))
+		(ACTION (id PINKYfleeFromPPill) (info "A PINKY le queda poco tiempo comestible y huye de powerpills cercanas") (priority 60))
 	)
 )
 
-(defrule BLINKYfleeFromPPill_PacmanFar
-	(BLINKY (pacmanClose false) (inDefense true)) 
+(defrule PINKYfleeFromPPill_PacmanFar
+	(PINKY (pacmanClose false) (inDefense true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYfleeFromPPill) (info "BLINKY esta lejos de pacman y este huye de powerpills cercanas") (priority 50))
+		(ACTION (id PINKYfleeFromPPill) (info "PINKY esta lejos de pacman y este huye de powerpills cercanas") (priority 50))
 	)
 )
 
-(defrule BLINKYdisperse
-	(BLINKY (pacmanClose false) (ghostsClose true) (inDefense true)) 
+(defrule PINKYdisperse
+	(PINKY (pacmanClose false) (ghostsClose true) (inDefense true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYdisperse) (info "BLINKY se dispersa") (priority 70))
+		(ACTION (id PINKYdisperse) (info "PINKY se dispersa") (priority 70))
 	)
 )
 
-(defrule BLINKYgoToPPill
-	(BLINKY (lowEdibleTime true) (inDefense true)) 
+(defrule PINKYgoToPPill
+	(PINKY (lowEdibleTime true) (inDefense true)) 
 	=>  
 	(assert 
-		(ACTION (id BLINKYdisperse) (info "BLINKY va a interceptar a pacman en PPill") (priority 75))
+		(ACTION (id PINKYdisperse) (info "PINKY va a interceptar a pacman en PPill") (priority 75))
 	)
 )
 
