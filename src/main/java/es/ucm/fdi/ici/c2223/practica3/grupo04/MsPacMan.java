@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.Input;
+import es.ucm.fdi.ici.rules.*;
 import es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRules.MsPacmanInput;
 import es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRulesActions.*;
-import es.ucm.fdi.ici.rules.RuleEngine;
 import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
@@ -14,7 +14,7 @@ import pacman.game.Game;
 public class MsPacMan extends PacmanController {
 
 	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica3\\grupo04\\";
-	HashMap<String,Action> map;
+	HashMap<String, RulesAction> map;
 	private RuleEngine pacmanEngine;
 	
 	public MsPacMan() {
@@ -22,7 +22,7 @@ public class MsPacMan extends PacmanController {
 		setName("MsPacMan 04");
 		setTeam("Team04");
 		
-		map = new HashMap<String,Action>();
+		map = new HashMap<String,RulesAction>();
 		
 		map.put("BeginMap", new BeginMapAction());
 		map.put("ChasePowerPill", new ChasePowerPillAction());
@@ -37,7 +37,7 @@ public class MsPacMan extends PacmanController {
 		map.put("SearchZoneWithPPAndNoGhosts", new SearchZoneWithPPAndNoGhostsAction());
 		
 		String rulesFile = String.format("%s/%srules.clp", RULES_PATH, "pacman");
-		pacmanEngine  = new RuleEngine("pacman",rulesFile, map);
+		pacmanEngine  = new RuleEngine("pacman", rulesFile, map);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class MsPacMan extends PacmanController {
 
 		// reset the rule engine
 		pacmanEngine.reset();
-		pacmanEngine.assertFacts(input.getFacts());
+		pacmanEngine.assertFacts(((MsPacmanInput) input).getFacts());
 
 		MOVE move = pacmanEngine.run(game);
 

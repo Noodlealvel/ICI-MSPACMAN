@@ -2,12 +2,14 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRulesActions;
 
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanUtils;
+import es.ucm.fdi.ici.rules.RulesAction;
+import jess.Fact;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class SearchOptimalPathTowardsEdiblesAction implements Action {
+public class SearchOptimalPathTowardsEdiblesAction implements Action, RulesAction {
 
 	@Override
 	public String getActionId() {
@@ -24,6 +26,11 @@ public class SearchOptimalPathTowardsEdiblesAction implements Action {
 			return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(nearestedibleghost), game.getPacmanLastMoveMade(), DM.EUCLID);	
 		}
 			return MOVE.NEUTRAL;
+	}
+	
+	public void parseFact(Fact arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

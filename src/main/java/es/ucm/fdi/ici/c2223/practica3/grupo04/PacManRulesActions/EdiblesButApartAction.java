@@ -2,12 +2,14 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRulesActions;
 
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanUtils;
+import es.ucm.fdi.ici.rules.RulesAction;
+import jess.Fact;
 import pacman.game.Game;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 
-public class EdiblesButApartAction implements Action {
+public class EdiblesButApartAction implements Action, RulesAction {
 
 	final static private int EATTIMELIMIT = 20;
 	
@@ -40,5 +42,10 @@ public class EdiblesButApartAction implements Action {
 	    default:
 	    	return EATTIMELIMIT;
 		}
+	}
+	
+	public void parseFact(Fact arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

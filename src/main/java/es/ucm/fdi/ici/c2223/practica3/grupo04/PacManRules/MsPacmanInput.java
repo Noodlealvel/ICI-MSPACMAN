@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import es.ucm.fdi.ici.Input;
+import es.ucm.fdi.ici.rules.RulesAction;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Game;
@@ -251,7 +252,6 @@ public class MsPacmanInput extends Input{
 	}
 	
 	
-	@Override
 	public Collection<String> getFacts() {
 		Vector<String> facts = new Vector<String>();
 		facts.add(String.format("(MSPACMAN (ghostClose %s) (edibleGhostClose %s) (PPEaten %s) (noPillsNear %s) (dontChase %s) (multipleGhostClose %s) (lessGhostsClose %s) (PPClose %s) (ghostsFlanking %s) (levelChange %s) (PPBlocked %s) (noPPsleft %s) (fewPillsleft %s) (multiplePPsInZone %s) (lessPPsInZone %s) (edibleGhostsTogether %s))", 
