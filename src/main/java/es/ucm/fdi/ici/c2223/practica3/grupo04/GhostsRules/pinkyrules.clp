@@ -12,9 +12,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate INKY
@@ -30,9 +27,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate PINKY
@@ -48,9 +42,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate SUE
@@ -66,9 +57,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate MSPACMAN 
@@ -77,6 +65,11 @@
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
     (slot noPPills (type SYMBOL)))
+    
+(deftemplate PINKY_STATE
+	(slot inDefense (type SYMBOL))
+	(slot inAttack (type SYMBOL))
+	(slot inAgressive (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -95,42 +88,34 @@
 )
 
 (defrule PINKYAgressive
-	(PINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
+	(PINKY (edible false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(assert 
-		(PINKY (inAgressive true))
-	)
+	(assert (PINKY_STATE (inAgressive true) (inDefense false) (inAttack false)))
 )
 
 (defrule PINKYAttacks
-	(PINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
+	(PINKY (edible false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(assert 
-		(PINKY (inAttack true))
-	)
+	(assert (PINKY_STATE (inAgressive false) (inDefense false) (inAttack true)))
 )
 
 (defrule PINKYdefense_Edible 
-	(PINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
+	(PINKY (edible true))
 	=>
-	(assert
-		(PINKY (inDefense true))
-	)
+	(assert (PINKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule PINKYdefense_PacmanNearPPill 
-	(PINKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(assert
-		(PINKY (inDefense true))
-	)
+	(assert (PINKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule PINKYchases_NoGhosts
-	(PINKY (inAttack true) (noGhostsInPath true))
+	(PINKY (noGhostsInPath true))
+	(PINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id PINKYchase) (info "PINKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
@@ -138,7 +123,7 @@
 )
 
 (defrule PINKYchases_Tunnel
-	(PINKY (inAttack true))
+	(PINKY_STATE (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
 	(assert
@@ -147,7 +132,8 @@
 )
 
 (defrule PINKYflanks
-	(PINKY (inAttack true) (noGhostsInPath false) (justBehind false))
+	(PINKY (noGhostsInPath false) (justBehind false))
+	(PINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id PINKYchase) (info "PINKY flanquea") (priority 60) (flankstrategy true))
@@ -155,7 +141,8 @@
 )
 
 (defrule PINKYstopsChasing
-	(PINKY (inAttack true) (justBehind true))
+	(PINKY (justBehind true))
+	(PINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id PINKYstopChasing) (info "PINKY para de perseguir") (priority 50))
@@ -163,7 +150,8 @@
 )
 
 (defrule PINKYdefendLastPills
-	(PINKY (inAgressive true) (justBehind true))
+	(PINKY (justBehind true))
+	(PINKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id PINKYdefendLastPills) (info "PINKY protege las últimas pills") (priority 55))
@@ -171,7 +159,8 @@
 )
 
 (defrule PINKYkillPacman
-	(PINKY (inAgressive true) (chaseDistance true))
+	(PINKY (chaseDistance true))
+	(PINKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id PINKYkillPacman) (info "PINKY va a terminar con pacman") (priority 50))
@@ -179,7 +168,8 @@
 )
 
 (defrule PINKYregroup
-	(PINKY (chaseDistance false) (edible false) (inAgressive false)) 
+	(PINKY (chaseDistance false) (edible false))
+	(PINKY_STATE (inAgressive false)) 
 	(MSPACMAN (pacmanNearPPill true))
 	=>  
 	(assert 
@@ -188,7 +178,8 @@
 )
 
 (defrule PINKYflee
-	(PINKY (pacmanClose true) (inDefense true)) 
+	(PINKY (pacmanClose true)) 
+	(PINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id PINKYflee) (info "PINKY huye de pacman porque esta cerca") (priority 70))
@@ -196,7 +187,8 @@
 )
 
 (defrule PINKYsearchForTunnel
-	(PINKY (pacmanInVecinity true) (inDefense true) (nearTunnel true)) 
+	(PINKY (pacmanInVecinity true) (nearTunnel true)) 
+	(PINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id PINKYsearchForTunnel) (info "PINKY busca tunel") (priority 30))
@@ -204,7 +196,8 @@
 )
 
 (defrule PINKYfleeFromPPill_LowTime
-	(PINKY (lowEdibleTime true) (inDefense true)) 
+	(PINKY (lowEdibleTime true)) 
+	(PINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id PINKYfleeFromPPill) (info "A PINKY le queda poco tiempo comestible y huye de powerpills cercanas") (priority 60))
@@ -212,7 +205,8 @@
 )
 
 (defrule PINKYfleeFromPPill_PacmanFar
-	(PINKY (pacmanClose false) (inDefense true)) 
+	(PINKY (pacmanClose false)) 
+	(PINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id PINKYfleeFromPPill) (info "PINKY esta lejos de pacman y este huye de powerpills cercanas") (priority 50))
@@ -220,7 +214,8 @@
 )
 
 (defrule PINKYdisperse
-	(PINKY (pacmanClose false) (ghostsClose true) (inDefense true)) 
+	(PINKY (pacmanClose false) (ghostsClose true)) 
+	(PINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id PINKYdisperse) (info "PINKY se dispersa") (priority 70))
@@ -228,7 +223,8 @@
 )
 
 (defrule PINKYgoToPPill
-	(PINKY (lowEdibleTime true) (inDefense true)) 
+	(PINKY (lowEdibleTime true))
+	(PINKY_STATE (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id PINKYdisperse) (info "PINKY va a interceptar a pacman en PPill") (priority 75))

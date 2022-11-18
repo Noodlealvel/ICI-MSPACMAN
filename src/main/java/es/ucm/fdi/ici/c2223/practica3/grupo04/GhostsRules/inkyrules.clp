@@ -12,9 +12,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate INKY
@@ -30,9 +27,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate PINKY
@@ -48,9 +42,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate SUE
@@ -66,9 +57,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate MSPACMAN 
@@ -77,6 +65,11 @@
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
     (slot noPPills (type SYMBOL)))
+    
+(deftemplate INKY_STATE
+	(slot inDefense (type SYMBOL))
+	(slot inAttack (type SYMBOL))
+	(slot inAgressive (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -95,34 +88,34 @@
 )
 
 (defrule INKYAgressive
-	(INKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
+	(INKY (edible false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(modify INKY (inAgressive true))
+	(assert (INKY_STATE (inAgressive true) (inDefense false) (inAttack false)))
 )
 
 (defrule INKYAttacks
-	(INKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
+	(INKY (edible false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(modify INKY (inAttack true))
+	(assert (INKY_STATE (inAgressive false) (inDefense false) (inAttack true)))
 )
 
 (defrule INKYdefense_Edible 
-	(INKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
+	(INKY (edible true))
 	=>
-	(modify INKY (inDefense true))
+	(assert (INKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule INKYdefense_PacmanNearPPill 
-	(INKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(modify INKY (inDefense true))
+	(assert (INKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule INKYchases_NoGhosts
-	(INKY (inAttack true) (noGhostsInPath true))
+	(INKY (noGhostsInPath true))
+	(INKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id INKYchase) (info "INKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
@@ -130,7 +123,7 @@
 )
 
 (defrule INKYchases_Tunnel
-	(INKY (inAttack true))
+	(INKY_STATE (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
 	(assert
@@ -139,7 +132,8 @@
 )
 
 (defrule INKYflanks
-	(INKY (inAttack true) (noGhostsInPath false) (justBehind false))
+	(INKY (noGhostsInPath false) (justBehind false))
+	(INKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id INKYchase) (info "INKY flanquea") (priority 60) (flankstrategy true))
@@ -147,7 +141,8 @@
 )
 
 (defrule INKYstopsChasing
-	(INKY (inAttack true) (justBehind true))
+	(INKY (justBehind true))
+	(INKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id INKYstopChasing) (info "INKY para de perseguir") (priority 50))
@@ -155,7 +150,8 @@
 )
 
 (defrule INKYdefendLastPills
-	(INKY (inAgressive true) (justBehind true))
+	(INKY (justBehind true))
+	(INKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id INKYdefendLastPills) (info "INKY protege las últimas pills") (priority 55))
@@ -163,7 +159,8 @@
 )
 
 (defrule INKYkillPacman
-	(INKY (inAgressive true) (chaseDistance true))
+	(INKY (chaseDistance true))
+	(INKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id INKYkillPacman) (info "INKY va a terminar con pacman") (priority 50))
@@ -171,7 +168,8 @@
 )
 
 (defrule INKYregroup
-	(INKY (chaseDistance false) (edible false) (inAgressive false)) 
+	(INKY (chaseDistance false) (edible false))
+	(INKY_STATE (inAgressive false)) 
 	(MSPACMAN (pacmanNearPPill true))
 	=>  
 	(assert 
@@ -180,7 +178,8 @@
 )
 
 (defrule INKYflee
-	(INKY (pacmanClose true) (inDefense true)) 
+	(INKY (pacmanClose true)) 
+	(INKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id INKYflee) (info "INKY huye de pacman porque esta cerca") (priority 70))
@@ -188,7 +187,8 @@
 )
 
 (defrule INKYsearchForTunnel
-	(INKY (pacmanInVecinity true) (inDefense true) (nearTunnel true)) 
+	(INKY (pacmanInVecinity true) (nearTunnel true)) 
+	(INKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id INKYsearchForTunnel) (info "INKY busca tunel") (priority 30))
@@ -196,7 +196,8 @@
 )
 
 (defrule INKYfleeFromPPill_LowTime
-	(INKY (lowEdibleTime true) (inDefense true)) 
+	(INKY (lowEdibleTime true)) 
+	(INKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id INKYfleeFromPPill) (info "A INKY le queda poco tiempo comestible y huye de powerpills cercanas") (priority 60))
@@ -204,7 +205,8 @@
 )
 
 (defrule INKYfleeFromPPill_PacmanFar
-	(INKY (pacmanClose false) (inDefense true)) 
+	(INKY (pacmanClose false)) 
+	(INKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id INKYfleeFromPPill) (info "INKY esta lejos de pacman y este huye de powerpills cercanas") (priority 50))
@@ -212,7 +214,8 @@
 )
 
 (defrule INKYdisperse
-	(INKY (pacmanClose false) (ghostsClose true) (inDefense true)) 
+	(INKY (pacmanClose false) (ghostsClose true)) 
+	(INKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id INKYdisperse) (info "INKY se dispersa") (priority 70))
@@ -220,7 +223,8 @@
 )
 
 (defrule INKYgoToPPill
-	(INKY (lowEdibleTime true) (inDefense true)) 
+	(INKY (lowEdibleTime true))
+	(INKY_STATE (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id INKYdisperse) (info "INKY va a interceptar a pacman en PPill") (priority 75))

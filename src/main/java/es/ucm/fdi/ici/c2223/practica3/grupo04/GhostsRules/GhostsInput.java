@@ -132,7 +132,7 @@ public class GhostsInput extends RulesInput {
 	public Collection<String> getFacts() {
 		Vector<Float> temp = new Vector<Float>();
 		Vector<String> facts = new Vector<String>();
-		facts.add(String.format("(BLINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (inDefense false) (inAttack false) (inAgressive false) (distanceToPacman %d) )", 
+		facts.add(String.format("(BLINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -146,7 +146,7 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.JUST_BEHIND),
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
 				(int)ghostsDistances.get(GHOST.BLINKY).floatValue() ));
-		facts.add(String.format("(INKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (inDefense false) (inAttack false) (inAgressive false) (distanceToPacman %d) )", 
+		facts.add(String.format("(INKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -160,7 +160,7 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.JUST_BEHIND),
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
 				(int)ghostsDistances.get(GHOST.INKY).floatValue() ));
-		facts.add(String.format("(PINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (inDefense false) (inAttack false) (inAgressive false) (distanceToPacman %d) )", 
+		facts.add(String.format("(PINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -174,7 +174,7 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.JUST_BEHIND),
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
 				(int)ghostsDistances.get(GHOST.PINKY).floatValue() ));
-		facts.add(String.format("(SUE (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (inDefense false) (inAttack false) (inAgressive false) (distanceToPacman %d) )", 
+		facts.add(String.format("(SUE (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.IN_LAIR), 

@@ -12,9 +12,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate INKY
@@ -30,9 +27,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 	
 (deftemplate PINKY
@@ -48,9 +42,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate SUE
@@ -66,9 +57,6 @@
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
 	(slot euclidPacman (type SYMBOL))
-	(slot inDefense (type Symbol))
-	(slot inAttack (type Symbol))
-	(slot inAgressive (type Symbol))
 	(slot distanceToPacman (type NUMBER)))
 
 (deftemplate MSPACMAN 
@@ -77,6 +65,11 @@
     (slot eatenPPill (type SYMBOL))
     (slot pacmanNearPPill (type SYMBOL))
     (slot noPPills (type SYMBOL)))
+    
+(deftemplate BLINKY_STATE
+	(slot inDefense (type SYMBOL))
+	(slot inAttack (type SYMBOL))
+	(slot inAgressive (type SYMBOL)))
     
 ;Action Fact
 (deftemplate ACTION
@@ -95,35 +88,34 @@
 )
 
 (defrule BLINKYAgressive
-	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false))
+	(BLINKY (edible false))
 	(MSPACMAN (noPPills true)) 
 	=>  
-	(modify BLINKY (inAgressive true))
+	(assert (BLINKY_STATE (inAgressive true) (inDefense false) (inAttack false)))
 )
 
 (defrule BLINKYAttacks
-	(BLINKY (edible false) (inDefense false) (inAttack false) (inAgressive false) (chaseDistance true))
+	(BLINKY (edible false) (chaseDistance true))
 	(MSPACMAN (pacmanNearPPill false)) 
 	=>  
-	(modify BLINKY (inAttack true))
-	)
+	(assert (BLINKY_STATE (inAgressive false) (inDefense false) (inAttack true)))
 )
 
 (defrule BLINKYdefense_Edible 
-	(BLINKY (inDefense false) (inAttack false) (inAgressive false) (edible true))
+	(BLINKY (edible true))
 	=>
-	(modify BLINKY (inDefense true))
+	(assert (BLINKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule BLINKYdefense_PacmanNearPPill 
-	(BLINKY (inDefense false) (inAttack false) (inAgressive false))
 	(MSPACMAN (pacmanNearPPill true))
 	=>
-	(modify BLINKY (inDefense true))
+	(assert (BLINKY_STATE (inAgressive false) (inDefense true) (inAttack false)))
 )
 
 (defrule BLINKYchases_NoGhosts
-	(BLINKY (inAttack true) (noGhostsInPath true))
+	(BLINKY (noGhostsInPath true))
+	(BLINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
@@ -131,7 +123,7 @@
 )
 
 (defrule BLINKYchases_Tunnel
-	(BLINKY (inAttack true))
+	(BLINKY_STATE (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
 	(assert
@@ -140,7 +132,8 @@
 )
 
 (defrule BLINKYflanks
-	(BLINKY (inAttack true) (noGhostsInPath false) (justBehind false))
+	(BLINKY (noGhostsInPath false) (justBehind false))
+	(BLINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id BLINKYchase) (info "BLINKY flanquea") (priority 60) (flankstrategy true))
@@ -148,7 +141,8 @@
 )
 
 (defrule BLINKYstopsChasing
-	(BLINKY (inAttack true) (justBehind true))
+	(BLINKY (justBehind true))
+	(BLINKY_STATE (inAttack true))
 	=>
 	(assert
 		(ACTION (id BLINKYstopChasing) (info "BLINKY para de perseguir") (priority 50))
@@ -156,7 +150,8 @@
 )
 
 (defrule BLINKYdefendLastPills
-	(BLINKY (inAgressive true) (justBehind true))
+	(BLINKY (justBehind true))
+	(BLINKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id BLINKYdefendLastPills) (info "BLINKY protege las últimas pills") (priority 55))
@@ -164,7 +159,8 @@
 )
 
 (defrule BLINKYkillPacman
-	(BLINKY (inAgressive true) (chaseDistance true))
+	(BLINKY (chaseDistance true))
+	(BLINKY_STATE (inAgressive true))
 	=>
 	(assert
 		(ACTION (id BLINKYkillPacman) (info "BLINKY va a terminar con pacman") (priority 50))
@@ -172,7 +168,8 @@
 )
 
 (defrule BLINKYregroup
-	(BLINKY (chaseDistance false) (edible false) (inAgressive false)) 
+	(BLINKY (chaseDistance false) (edible false))
+	(BLINKY_STATE (inAgressive false)) 
 	(MSPACMAN (pacmanNearPPill true))
 	=>  
 	(assert 
@@ -181,7 +178,8 @@
 )
 
 (defrule BLINKYflee
-	(BLINKY (pacmanClose true) (inDefense true)) 
+	(BLINKY (pacmanClose true)) 
+	(BLINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id BLINKYflee) (info "BLINKY huye de pacman porque esta cerca") (priority 70))
@@ -189,7 +187,8 @@
 )
 
 (defrule BLINKYsearchForTunnel
-	(BLINKY (pacmanInVecinity true) (inDefense true) (nearTunnel true)) 
+	(BLINKY (pacmanInVecinity true) (nearTunnel true)) 
+	(BLINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id BLINKYsearchForTunnel) (info "BLINKY busca tunel") (priority 30))
@@ -197,7 +196,8 @@
 )
 
 (defrule BLINKYfleeFromPPill_LowTime
-	(BLINKY (lowEdibleTime true) (inDefense true)) 
+	(BLINKY (lowEdibleTime true)) 
+	(BLINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id BLINKYfleeFromPPill) (info "A BLINKY le queda poco tiempo comestible y huye de powerpills cercanas") (priority 60))
@@ -205,7 +205,8 @@
 )
 
 (defrule BLINKYfleeFromPPill_PacmanFar
-	(BLINKY (pacmanClose false) (inDefense true)) 
+	(BLINKY (pacmanClose false)) 
+	(BLINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id BLINKYfleeFromPPill) (info "BLINKY esta lejos de pacman y este huye de powerpills cercanas") (priority 50))
@@ -213,7 +214,8 @@
 )
 
 (defrule BLINKYdisperse
-	(BLINKY (pacmanClose false) (ghostsClose true) (inDefense true)) 
+	(BLINKY (pacmanClose false) (ghostsClose true)) 
+	(BLINKY_STATE (inDefense true))
 	=>  
 	(assert 
 		(ACTION (id BLINKYdisperse) (info "BLINKY se dispersa") (priority 70))
@@ -221,7 +223,8 @@
 )
 
 (defrule BLINKYgoToPPill
-	(BLINKY (lowEdibleTime true) (inDefense true)) 
+	(BLINKY (lowEdibleTime true))
+	(BLINKY_STATE (inDefense true)) 
 	=>  
 	(assert 
 		(ACTION (id BLINKYdisperse) (info "BLINKY va a interceptar a pacman en PPill") (priority 75))
