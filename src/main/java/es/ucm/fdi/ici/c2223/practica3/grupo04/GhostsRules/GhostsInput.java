@@ -18,7 +18,6 @@ public class GhostsInput extends RulesInput {
 	private boolean eatenPPill;
 	private boolean pacmanNearPPill;
 	private boolean noPPills;
-	private HashMap<GHOST,MOVE> ghostsLastMovementMade;
 	private MOVE pacmanLastMovement;
 	private boolean pacmanInTunnel;
 	private GHOST nearestGhostToPacman;
@@ -33,7 +32,6 @@ public class GhostsInput extends RulesInput {
 	@Override
 	public void parseInput() {
 		ghostsInfoMap = new HashMap<GHOST,HashMap<GhostsRelevantInfo, Boolean>>();
-		ghostsLastMovementMade = new HashMap<GHOST,MOVE>();
 		for (GHOST ghost : GHOST.values()) {
 			HashMap<GhostsRelevantInfo, Boolean> ghostMap = new HashMap<GhostsRelevantInfo, Boolean>();
 			ghostMap.put(GhostsRelevantInfo.EATEN, game.wasGhostEaten(ghost));
@@ -48,7 +46,6 @@ public class GhostsInput extends RulesInput {
 			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, game.getGhostLairTime(ghost) <= 0 && !GhostsUtils.PathContainsGhosts(game, ghost));
 			ghostMap.put(GhostsRelevantInfo.JUST_BEHIND, game.getGhostLairTime(ghost) <= 0 && GhostsUtils.JustBehindPacman(game,ghost));
 			ghostsInfoMap.put(ghost, ghostMap);
-			ghostsLastMovementMade.put(ghost, game.getGhostLastMoveMade(ghost));
 			
 		}
 		pacmanLastMovement = game.getPacmanLastMoveMade();
@@ -99,9 +96,6 @@ public class GhostsInput extends RulesInput {
 	}
 	public boolean ghostsInPath(GHOST ghost){
 		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.NO_GHOSTS_IN_PATH);
-	}
-	public boolean sameLastMovement(GHOST ghost) {
-		return ghostsLastMovementMade.get(ghost) == pacmanLastMovement;
 	}
 	public boolean pacmanInTunnel() {
 		return pacmanInTunnel;

@@ -149,7 +149,7 @@
 	(BLINKY_STATE (inAgressive true))
 	=>
 	(assert
-		(ACTION (id BLINKYdefendLastPills) (info "BLINKY protege las últimas pills") (priority 55))
+		(ACTION (id BLINKYdefendLastPills) (info "BLINKY protege las últimas pills") (priority 65))
 	)
 )
 
@@ -158,7 +158,7 @@
 	(BLINKY_STATE (inAgressive true))
 	=>
 	(assert
-		(ACTION (id BLINKYkillPacman) (info "BLINKY va a terminar con pacman") (priority 50))
+		(ACTION (id BLINKYkillPacman) (info "BLINKY va a terminar con pacman") (priority 60))
 	)
 )
 

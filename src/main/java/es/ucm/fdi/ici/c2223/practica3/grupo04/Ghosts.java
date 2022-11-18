@@ -44,7 +44,7 @@ public class Ghosts extends GhostController {
 			map.put(ghost+"flee", new GhostsFleeAction(ghost));
 			map.put(ghost+"fleeFromPPill", new GhostsFleeFromPPillAction(ghost));
 			map.put(ghost+"goToPPill", new GhostsGoToPPillAction(ghost));
-			map.put(ghost+"killPacMan", new GhostsKillPacmanAction(ghost));
+			map.put(ghost+"killPacman", new GhostsKillPacmanAction(ghost));
 			map.put(ghost+"regroup", new GhostsRegroupAction(ghost));
 			map.put(ghost+"searchForTunnel", new GhostsSearchForTunnelAction(ghost));
 			map.put(ghost+"stopChasing", new GhostsStopChasingAction(ghost));
