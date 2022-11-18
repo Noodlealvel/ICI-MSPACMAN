@@ -23,7 +23,7 @@ public class MsPacmanInput extends Input{
 	public final static int ghostCloseMedium = 40;
 	public final static int PPDistance = 40;
 	public final static int EatLimit = 55;
-	public final static int PPDistanceInZone = 130;
+	public final static int PPDistanceInZone = 150;
 	public final static int fewPillsLimit = 15;
 	
 	private int[] activePowerPills;
@@ -59,6 +59,7 @@ public class MsPacmanInput extends Input{
 		this.ghostsFlanking = false;
 		this.edibleGhostsTogether=false;
 		this.lessPPsInZone=false;
+		this.levelChange=false;
 		this.fewPillsleft= game.getNumberOfActivePills() <= fewPillsLimit;
 		this.noPPsleft = game.getNumberOfActivePowerPills() == 0;
 		this.activePowerPills = game.getActivePowerPillsIndices();
@@ -254,7 +255,7 @@ public class MsPacmanInput extends Input{
 	
 	public Collection<String> getFacts() {
 		Vector<String> facts = new Vector<String>();
-		facts.add(String.format("(MSPACMAN (ghostClose %s) (edibleGhostClose %s) (PPEaten %s) (noPillsNear %s) (dontChase %s) (multipleGhostClose %s) (lessGhostsClose %s) (PPClose %s) (ghostsFlanking %s) (levelChange %s) (PPBlocked %s) (noPPsleft %s) (fewPillsleft %s) (multiplePPsInZone %s) (lessPPsInZone %s) (edibleGhostsTogether %s))", 
+		facts.add(String.format("(MSPACMAN (ghostClose %s) (edibleGhostClose %s) (PPeaten %s) (noPillsNear %s) (dontChase %s) (multipleGhostsClose %s) (lessGhostsClose %s) (PPClose %s) (ghostsFlanking %s) (levelChange %s) (PPBlocked %s) (noPPsleft %s) (fewPillsleft %s) (multiplePPsInZone %s) (lessPPsInZone %s) (edibleGhostsTogether %s))", 
 				getGhostClose(), getEdibleGhostClose(), getPPEaten(), getNoPillsNear(), getDontChase(), getMultipleGhostClose(), getLessGhostsClose(), getPPClose(), getGhostsFlanking(), getLevelChange(), getPPBlocked(), getNoPPsleft(), getFewPillsleft(), getMultiplePPsInZone(), getLessPPsInZone(), getEdibleGhostsTogether()));
 		
 		return facts;
