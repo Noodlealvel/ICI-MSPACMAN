@@ -11,8 +11,7 @@
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot euclidPacman (type SYMBOL)))
 	
 (deftemplate INKY
 	(slot edible (type SYMBOL))
@@ -26,8 +25,7 @@
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot euclidPacman (type SYMBOL)))
 	
 (deftemplate PINKY
 	(slot edible (type SYMBOL))
@@ -40,9 +38,7 @@
 	(slot ghostsClose (type SYMBOL))
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
-	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot justBehind (type SYMBOL)))
 
 (deftemplate SUE
 	(slot edible (type SYMBOL))
@@ -55,9 +51,8 @@
 	(slot ghostsClose (type SYMBOL))
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
-	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot justBehind (type SYMBOL)))
+
 
 (deftemplate MSPACMAN 
     (slot pacmanInTunnel (type SYMBOL))
@@ -114,7 +109,7 @@
 )
 
 (defrule PINKYchases_NoGhosts
-	(PINKY (noGhostsInPath true))
+	(PINKY (noGhostsInPath true) (justBehind false))
 	(PINKY_STATE (inAttack true))
 	=>
 	(assert
@@ -123,6 +118,7 @@
 )
 
 (defrule PINKYchases_Tunnel
+	(PINKY (justBehind false))
 	(PINKY_STATE (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
@@ -169,8 +165,7 @@
 
 (defrule PINKYregroup
 	(PINKY (chaseDistance false) (edible false))
-	(PINKY_STATE (inAgressive false)) 
-	(MSPACMAN (pacmanNearPPill true))
+	(MSPACMAN (pacmanNearPPill false))
 	=>  
 	(assert 
 		(ACTION (id PINKYregroup) (info "PINKY se acerca a pacman porque no es comestible y esta lejos") (priority 80))

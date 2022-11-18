@@ -11,8 +11,7 @@
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot euclidPacman (type SYMBOL)))
 	
 (deftemplate INKY
 	(slot edible (type SYMBOL))
@@ -26,8 +25,7 @@
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
 	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot euclidPacman (type SYMBOL)))
 	
 (deftemplate PINKY
 	(slot edible (type SYMBOL))
@@ -40,9 +38,7 @@
 	(slot ghostsClose (type SYMBOL))
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
-	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot justBehind (type SYMBOL)))
 
 (deftemplate SUE
 	(slot edible (type SYMBOL))
@@ -55,9 +51,7 @@
 	(slot ghostsClose (type SYMBOL))
 	(slot noGhostsInPath (type SYMBOL))
 	(slot chaseDistance (type SYMBOL))
-	(slot justBehind (type SYMBOL))
-	(slot euclidPacman (type SYMBOL))
-	(slot distanceToPacman (type NUMBER)))
+	(slot justBehind (type SYMBOL)))
 
 (deftemplate MSPACMAN 
     (slot pacmanInTunnel (type SYMBOL))
@@ -114,20 +108,21 @@
 )
 
 (defrule BLINKYchases_NoGhosts
-	(BLINKY (noGhostsInPath true))
+	(BLINKY (noGhostsInPath true) (justBehind false))
 	(BLINKY_STATE (inAttack true))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 40) (flankstrategy false))
+		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar el camino vacío") (priority 50) (flankstrategy false))
 	)
 )
 
 (defrule BLINKYchases_Tunnel
+	(BLINKY (justBehind false))
 	(BLINKY_STATE (inAttack true))
 	(MSPACMAN (pacmanInTunnel true))
 	=>
 	(assert
-		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar en túnel") (priority 40) (flankstrategy false))
+		(ACTION (id BLINKYchase) (info "BLINKY persigue de manera directa al estar en túnel") (priority 50) (flankstrategy false))
 	)
 )
 
@@ -145,7 +140,7 @@
 	(BLINKY_STATE (inAttack true))
 	=>
 	(assert
-		(ACTION (id BLINKYstopChasing) (info "BLINKY para de perseguir") (priority 50))
+		(ACTION (id BLINKYstopChasing) (info "BLINKY para de perseguir") (priority 40))
 	)
 )
 
@@ -169,8 +164,7 @@
 
 (defrule BLINKYregroup
 	(BLINKY (chaseDistance false) (edible false))
-	(BLINKY_STATE (inAgressive false)) 
-	(MSPACMAN (pacmanNearPPill true))
+	(MSPACMAN (pacmanNearPPill false))
 	=>  
 	(assert 
 		(ACTION (id BLINKYregroup) (info "BLINKY se acerca a pacman porque no es comestible y esta lejos") (priority 80))

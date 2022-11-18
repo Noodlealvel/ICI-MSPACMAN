@@ -16,7 +16,7 @@ public class GhostsKillPacmanAction implements RulesAction {
 	
 	@Override
 	public String getActionId() {
-		return ghost + "killPacMan";
+		return ghost + "killPacman";
 	}
 
 

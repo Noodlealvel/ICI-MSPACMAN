@@ -22,7 +22,6 @@ public class GhostsInput extends RulesInput {
 	private MOVE pacmanLastMovement;
 	private boolean pacmanInTunnel;
 	private GHOST nearestGhostToPacman;
-	private HashMap<GHOST, Double> ghostsDistances;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int CHASE = 50;
 	private static final int LOW_TIME = 10;
@@ -34,14 +33,12 @@ public class GhostsInput extends RulesInput {
 	@Override
 	public void parseInput() {
 		ghostsInfoMap = new HashMap<GHOST,HashMap<GhostsRelevantInfo, Boolean>>();
-		ghostsDistances = new HashMap<GHOST, Double>();
 		ghostsLastMovementMade = new HashMap<GHOST,MOVE>();
 		for (GHOST ghost : GHOST.values()) {
 			HashMap<GhostsRelevantInfo, Boolean> ghostMap = new HashMap<GhostsRelevantInfo, Boolean>();
 			ghostMap.put(GhostsRelevantInfo.EATEN, game.wasGhostEaten(ghost));
 			ghostMap.put(GhostsRelevantInfo.EDIBLE, game.isGhostEdible(ghost));
 			ghostMap.put(GhostsRelevantInfo.IN_LAIR, game.getGhostLairTime(ghost) > 0);
-			ghostMap.put(GhostsRelevantInfo.EUCLID_PACMAN, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.EUCLID) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.NEAR_TUNNEL, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost),game.getGhostLastMoveMade(ghost), DM.EUCLID) <= CLOSE_PACMAN_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.PACMAN_INVECINITY, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() , DM.PATH) <= SECURITY_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.GHOSTS_CLOSE,  game.getGhostLairTime(ghost) <= 0 && GhostsUtils.GhostCloseToRest(game,ghost, CLOSE_GHOSTS));
@@ -50,7 +47,6 @@ public class GhostsInput extends RulesInput {
 			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.PATH) <= CLOSE_PACMAN_DISTANCE);
 			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, game.getGhostLairTime(ghost) <= 0 && !GhostsUtils.PathContainsGhosts(game, ghost));
 			ghostMap.put(GhostsRelevantInfo.JUST_BEHIND, game.getGhostLairTime(ghost) <= 0 && GhostsUtils.JustBehindPacman(game,ghost));
-			ghostsDistances.put(ghost, game.getEuclideanDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex()));
 			ghostsInfoMap.put(ghost, ghostMap);
 			ghostsLastMovementMade.put(ghost, game.getGhostLastMoveMade(ghost));
 			
@@ -125,14 +121,10 @@ public class GhostsInput extends RulesInput {
 	public boolean isGhostEdible(GHOST ghost) {
 		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EDIBLE);
 	}
-	public boolean farFromPacmanEuclid(GHOST ghost) {
-		return !ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EUCLID_PACMAN);
-	}
 	@Override
 	public Collection<String> getFacts() {
-		Vector<Float> temp = new Vector<Float>();
 		Vector<String> facts = new Vector<String>();
-		facts.add(String.format("(BLINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
+		facts.add(String.format("(BLINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) )", 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -143,10 +135,8 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.GHOSTS_CLOSE),
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.NO_GHOSTS_IN_PATH),
 				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.CHASE_DISTANCE),
-				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.JUST_BEHIND),
-				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
-				(int)ghostsDistances.get(GHOST.BLINKY).floatValue() ));
-		facts.add(String.format("(INKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
+				ghostsInfoMap.get(GHOST.BLINKY).get(GhostsRelevantInfo.JUST_BEHIND)));
+		facts.add(String.format("(INKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) )", 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -157,10 +147,8 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.GHOSTS_CLOSE),
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.NO_GHOSTS_IN_PATH),
 				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.CHASE_DISTANCE),
-				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.JUST_BEHIND),
-				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
-				(int)ghostsDistances.get(GHOST.INKY).floatValue() ));
-		facts.add(String.format("(PINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
+				ghostsInfoMap.get(GHOST.INKY).get(GhostsRelevantInfo.JUST_BEHIND)));
+		facts.add(String.format("(PINKY (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) )", 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.IN_LAIR), 
@@ -171,10 +159,8 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.GHOSTS_CLOSE),
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.NO_GHOSTS_IN_PATH),
 				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.CHASE_DISTANCE),
-				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.JUST_BEHIND),
-				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.EUCLID_PACMAN),
-				(int)ghostsDistances.get(GHOST.PINKY).floatValue() ));
-		facts.add(String.format("(SUE (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) (euclidPacman %s) (distanceToPacman %d) )", 
+				ghostsInfoMap.get(GHOST.PINKY).get(GhostsRelevantInfo.JUST_BEHIND)));
+		facts.add(String.format("(SUE (edible %s) (eaten %s) (inLair %s) (lowEdibleTime %s) (pacmanInVecinity %s) (nearTunnel %s) (pacmanClose %s) (ghostsClose %s) (noGhostsInPath %s) (chaseDistance %s) (justBehind %s) )", 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EDIBLE), 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EATEN), 
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.IN_LAIR), 
@@ -185,9 +171,7 @@ public class GhostsInput extends RulesInput {
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.GHOSTS_CLOSE),
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.NO_GHOSTS_IN_PATH),
 				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.CHASE_DISTANCE),
-				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.JUST_BEHIND),
-				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.EUCLID_PACMAN),
-				(int)ghostsDistances.get(GHOST.SUE).floatValue() ));
+				ghostsInfoMap.get(GHOST.SUE).get(GhostsRelevantInfo.JUST_BEHIND)));
 		
 		facts.add(String.format("(MSPACMAN (pacmanInTunnel %s) (noPPills %s) (eatenPPill %s) (pacmanNearPPill %s) )", 
 				pacmanInTunnel, noPPills, eatenPPill, pacmanNearPPill));
