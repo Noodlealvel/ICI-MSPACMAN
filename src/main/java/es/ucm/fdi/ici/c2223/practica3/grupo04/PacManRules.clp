@@ -22,132 +22,122 @@
     
 ;DEFINITION OF THE ACTION FACT
 (deftemplate ACTION
-	(slot id) (slot info (default "")) ) 
-
-;RULES: VAMOS MIRANDO LAS TRANSICIONES QUE TENIAMOS Y info es el toString de la
-;Transicion y lo que seria "(MSPACMAN (dontChase true))" es la variable de los slots de arriba que se devuelve en el evaluate (se llaman igual). Para el defrule
-;le pongo el nombre de la transicion. id es el nombre de la accion que desencadena
-;esa transicion. en el primer ejemplo si dontChase es true se pasa de ataque a standard, por lo que el id es SearchOptimalPath, la accion que debe hacer ahora
-
-;Cuando la transicion es entre macroestados CREO que hay que poner la accion que en la practica pasada era la que poniamos como "cfsm1.ready(searchOptimalPath);"
-en el MsPacMan.java
-
-;te dejo estos dos de ejemplo:
+	(slot id) (slot info (default "")) (slot priority (type NUMBER) ) ) 
 
 (defrule AttackToStandard
 	(MSPACMAN (dontChase true))
 	=> 
-	(assert (ACTION (id SearchOptimalPath) (info "PACMAN TRANSITIONS TO STANDARD") ))
+	(assert (ACTION (id SearchOptimalPath) (info "PACMAN TRANSITIONS TO STANDARD") (priority 85)))
 )
 
 (defrule EdibleGhostsClose
 	(MSPACMAN (edibleGhostClose true))
 	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") ))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") (priority 80)))
 )
 
 (defrule EdibleGhostsApart
     (MSPACMAN (edibleGhostsTogether false))
     =>
-    (assert (ACTION (id ediblesButApart) (info "EDIBLE GHOSTS APART") ))
+    (assert (ACTION (id EdiblesButApart) (info "EDIBLE GHOSTS APART") (priority 75)))
 )
 
 (defrule EdibleGhostsTogether
 	(MSPACMAN (edibleGhostsTogether true))
 	=> 
-	(assert (ACTION (id ediblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") ))
+	(assert (ACTION (id EdiblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") (priority 80)))
 )
 
 (defrule FewPillsAndNoPPsLeft
 	(MSPACMAN (fewPillsleft true))
     (and
-        MSPACMAN (NoPPsleft true)))
+        (MSPACMAN (noPPsleft true)))
 	=> 
-	(assert (ACTION (id eatLastPills) (info "FEW PILLS AND NO PPS LEFT") ))
+	(assert (ACTION (id EatLastPills) (info "FEW PILLS AND NO PPS LEFT") (priority 80)))
 )
 
 (defrule FewPillsInZone
 	(MSPACMAN (lessPPsInZone true))
 	=> 
-	(assert (ACTION (id searchBetterZone) (info "FEW PPS IN ZONE") ))
+	(assert (ACTION (id SearchBetterZone) (info "FEW PPS IN ZONE") (priority 30)))
 )
 
 (defrule GhostClose
-	(MSPACMAN (ghostsClose true))
+	(MSPACMAN (ghostClose true))
 	=> 
-	(assert (ACTION (id flee) (info "GHOST CLOSE") ))
+	(assert (ACTION (id Flee) (info "GHOST CLOSE") (priority 72)))
 )
 
 (defrule GhostsFlanking
 	(MSPACMAN (ghostsFlanking true))
 	=> 
-	(assert (ACTION (id searchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") ))
+	(assert (ACTION (id SearchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") (priority 85)))
 )
 
 (defrule GhostsTooFar
 	(MSPACMAN (ghostClose false))
 	=> 
-	(assert (ACTION (id searchOptimalPath) (info "GHOSTS ARE OUTSIDE DANGER RADIUS") ))
+	(assert (ACTION (id SearchOptimalPath) (info "GHOSTS ARE OUTSIDE DANGER RADIUS") (priority 70)))
 )
 
 (defrule LessGhostsClose
 	(MSPACMAN (lessGhostsClose true))
 	=> 
-	(assert (ACTION (id flee) (info "FEW PPS IN ZONE") ))
+	(assert (ACTION (id Flee) (info "FEW PPS IN ZONE") (priority 72)))
 )
 
 (defrule LevelChange
 	(MSPACMAN (levelChange true))
 	=> 
-	(assert (ACTION (id beginMap) (info "LEVEL CHANGED") ))
+	(assert (ACTION (id BeginMap) (info "LEVEL CHANGED") (priority 100)))
 )
 
 (defrule MultiplePPsInZone
 	(MSPACMAN (multiplePPsInZone true))
 	=> 
-	(assert (ACTION (id searchOptimalPath) (info "MULTIPLE PPS IN ZONE") ))
+	(assert (ACTION (id SearchOptimalPath) (info "MULTIPLE PPS IN ZONE") (priority 70)))
 )
 
 (defrule NoPillsNearPacman
 	(MSPACMAN (noPillsNear true))
 	=> 
-	(assert (ACTION (id searchOptimalPath) (info "NO PILLS NEXT TO PACMAN") ))
+	(assert (ACTION (id SearchOptimalPath) (info "NO PILLS NEXT TO PACMAN") (priority 70)))
 )
 
 (defrule PowerPillBlocked
 	(MSPACMAN (PPBlocked true))
 	=> 
-	(assert (ACTION (id flee) (info "POWER PILL IS BLOCKED") ))
+	(assert (ACTION (id Flee) (info "POWER PILL IS BLOCKED") (priority 72)))
 )
 
 (defrule PowerPillEaten
 	(MSPACMAN (PPeaten true))
 	=> 
-	(assert (ACTION (id searchOptimalPathTowardsEdibles) (info "POWER PILL EATEN") ))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "POWER PILL EATEN") (priority 90)))
 )
 
 (defrule SeveralGhostsCloseAndPP
 	(MSPACMAN (multipleGhostsClose true))
     (and
-        MSPACMAN (PPClose true)))
+        (MSPACMAN (PPClose true)))
 	=> 
-	(assert (ACTION (id chasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") ))
+	(assert (ACTION (id ChasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") (priority 40)))
 )
 
 (defrule SeveralGhostsCloseNoPP
 	(MSPACMAN (multipleGhostsClose true))
     (and
-        MSPACMAN (PPClose false)))
+        (MSPACMAN (PPClose false)))
 	=> 
-	(assert (ACTION (id searchZoneWithPPAndNoGhosts) (info "SEVERAL GHOSTS CLOSE AND FAR FROM PP") ))
+	(assert (ACTION (id SearchZoneWithPPAndNoGhosts) (info "SEVERAL GHOSTS CLOSE AND FAR FROM PP") (priority 70)))
 )
 
 (defrule StandardToAttackTransition
 	(MSPACMAN (PPeaten true))
     (or
-        MSPACMAN (EdibleGhostClose true)))
+        (MSPACMAN (edibleGhostClose true)))
 	=> 
-	(assert (ACTION (id searchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") ))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") (priority 80)))
 )
 
 

@@ -2,7 +2,6 @@ package es.ucm.fdi.ici.c2223.practica3.grupo04;
 
 import java.util.HashMap;
 
-import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.Input;
 import es.ucm.fdi.ici.rules.*;
 import es.ucm.fdi.ici.c2223.practica3.grupo04.PacManRules.MsPacmanInput;
@@ -19,8 +18,8 @@ public class MsPacMan extends PacmanController {
 	
 	public MsPacMan() {
 		
-		setName("MsPacMan 04");
-		setTeam("Team04");
+		setName("MsPacMan 04 TEST");
+		setTeam("Team04 TEST");
 		
 		map = new HashMap<String,RulesAction>();
 		
