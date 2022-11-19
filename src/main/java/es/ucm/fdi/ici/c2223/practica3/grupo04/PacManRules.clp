@@ -33,7 +33,7 @@
 (defrule EdibleGhostsClose
 	(MSPACMAN (edibleGhostClose true))
 	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") (priority 80)))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") (priority 87)))
 )
 
 (defrule EdibleGhostsApart
@@ -45,7 +45,7 @@
 (defrule EdibleGhostsTogether
 	(MSPACMAN (edibleGhostsTogether true))
 	=> 
-	(assert (ACTION (id EdiblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") (priority 80)))
+	(assert (ACTION (id EdiblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") (priority 87)))
 )
 
 (defrule FewPillsAndNoPPsLeft
@@ -65,25 +65,25 @@
 (defrule GhostClose
 	(MSPACMAN (ghostClose true))
 	=> 
-	(assert (ACTION (id Flee) (info "GHOST CLOSE") (priority 72)))
+	(assert (ACTION (id Flee) (info "GHOST CLOSE") (priority 90)))
 )
 
 (defrule GhostsFlanking
 	(MSPACMAN (ghostsFlanking true))
 	=> 
-	(assert (ACTION (id SearchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") (priority 85)))
+	(assert (ACTION (id SearchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") (priority 92)))
 )
 
 (defrule GhostsTooFar
 	(MSPACMAN (ghostClose false))
 	=> 
-	(assert (ACTION (id SearchOptimalPath) (info "GHOSTS ARE OUTSIDE DANGER RADIUS") (priority 70)))
+	(assert (ACTION (id SearchOptimalPath) (info "GHOSTS ARE OUTSIDE DANGER RADIUS") (priority 80)))
 )
 
 (defrule LessGhostsClose
 	(MSPACMAN (lessGhostsClose true))
 	=> 
-	(assert (ACTION (id Flee) (info "FEW PPS IN ZONE") (priority 72)))
+	(assert (ACTION (id Flee) (info "FEW PPS IN ZONE") (priority 80)))
 )
 
 (defrule LevelChange
@@ -101,7 +101,7 @@
 (defrule NoPillsNearPacman
 	(MSPACMAN (noPillsNear true))
 	=> 
-	(assert (ACTION (id SearchOptimalPath) (info "NO PILLS NEXT TO PACMAN") (priority 70)))
+	(assert (ACTION (id SearchOptimalPath) (info "NO PILLS NEXT TO PACMAN") (priority 80)))
 )
 
 (defrule PowerPillBlocked
@@ -121,7 +121,7 @@
     (and
         (MSPACMAN (PPClose true)))
 	=> 
-	(assert (ACTION (id ChasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") (priority 40)))
+	(assert (ACTION (id ChasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") (priority 92)))
 )
 
 (defrule SeveralGhostsCloseNoPP
