@@ -60,6 +60,7 @@ public class MsPacmanInput extends Input{
 		this.edibleGhostsTogether=false;
 		this.lessPPsInZone=false;
 		this.levelChange=false;
+		this.multiplePPsInZone=false;
 		this.fewPillsleft= game.getNumberOfActivePills() <= fewPillsLimit;
 		this.noPPsleft = game.getNumberOfActivePowerPills() == 0;
 		this.activePowerPills = game.getActivePowerPillsIndices();

@@ -27,25 +27,25 @@
 (defrule AttackToStandard
 	(MSPACMAN (dontChase true))
 	=> 
-	(assert (ACTION (id SearchOptimalPath) (info "PACMAN TRANSITIONS TO STANDARD") (priority 85)))
+	(assert (ACTION (id SearchOptimalPath) (info "PACMAN TRANSITIONS TO STANDARD") (priority 80)))
 )
 
 (defrule EdibleGhostsClose
 	(MSPACMAN (edibleGhostClose true))
 	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") (priority 87)))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "EDIBLE GHOST CLOSE") (priority 90)))
 )
 
 (defrule EdibleGhostsApart
     (MSPACMAN (edibleGhostsTogether false))
     =>
-    (assert (ACTION (id EdiblesButApart) (info "EDIBLE GHOSTS APART") (priority 75)))
+    (assert (ACTION (id EdiblesButApart) (info "EDIBLE GHOSTS APART") (priority 90)))
 )
 
 (defrule EdibleGhostsTogether
 	(MSPACMAN (edibleGhostsTogether true))
 	=> 
-	(assert (ACTION (id EdiblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") (priority 87)))
+	(assert (ACTION (id EdiblesAndTogether) (info "EDIBLE GHOSTS TOGETHER") (priority 90)))
 )
 
 (defrule FewPillsAndNoPPsLeft
@@ -65,13 +65,13 @@
 (defrule GhostClose
 	(MSPACMAN (ghostClose true))
 	=> 
-	(assert (ACTION (id Flee) (info "GHOST CLOSE") (priority 90)))
+	(assert (ACTION (id Flee) (info "GHOST CLOSE") (priority 85)))
 )
 
 (defrule GhostsFlanking
 	(MSPACMAN (ghostsFlanking true))
 	=> 
-	(assert (ACTION (id SearchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") (priority 92)))
+	(assert (ACTION (id SearchPathWithoutGhosts) (info "GHOSTS ARE FLANKING") (priority 90)))
 )
 
 (defrule GhostsTooFar
@@ -83,7 +83,7 @@
 (defrule LessGhostsClose
 	(MSPACMAN (lessGhostsClose true))
 	=> 
-	(assert (ACTION (id Flee) (info "FEW PPS IN ZONE") (priority 80)))
+	(assert (ACTION (id Flee) (info "FEW PPS IN ZONE") (priority 85)))
 )
 
 (defrule LevelChange
@@ -107,7 +107,7 @@
 (defrule PowerPillBlocked
 	(MSPACMAN (PPBlocked true))
 	=> 
-	(assert (ACTION (id Flee) (info "POWER PILL IS BLOCKED") (priority 72)))
+	(assert (ACTION (id Flee) (info "POWER PILL IS BLOCKED") (priority 85)))
 )
 
 (defrule PowerPillEaten
@@ -121,7 +121,7 @@
     (and
         (MSPACMAN (PPClose true)))
 	=> 
-	(assert (ACTION (id ChasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") (priority 92)))
+	(assert (ACTION (id ChasePowerPill) (info "SEVERAL GHOSTS CLOSE AND NEAR PP") (priority 90)))
 )
 
 (defrule SeveralGhostsCloseNoPP
@@ -137,7 +137,7 @@
     (or
         (MSPACMAN (edibleGhostClose true)))
 	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") (priority 80)))
+	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") (priority 90)))
 )
 
 
