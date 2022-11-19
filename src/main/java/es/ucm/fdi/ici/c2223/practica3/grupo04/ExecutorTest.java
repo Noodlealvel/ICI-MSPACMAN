@@ -13,8 +13,8 @@ public class ExecutorTest {
 				 .setScaleFactor(2.0)
 				 .setSightLimit(0)
 				 .build();
-		PacmanController pacMan = new MsPacMan();
-		GhostController ghosts = new Ghosts();
+		PacmanController pacMan = new es.ucm.fdi.ici.c2223.practica3.grupo04.MsPacMan();
+		GhostController ghosts = new es.ucm.fdi.ici.c2122.practica1.grupo06.Ghosts();
 
 		System.out.println(executor.runGame(pacMan, ghosts, 10));
 	}
