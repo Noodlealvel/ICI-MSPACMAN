@@ -12,14 +12,14 @@ import pacman.game.Game;
 
 public class MsPacMan extends PacmanController {
 
-	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica3\\grupo04\\";
+	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica3\\grupo04\\PacManRules";
 	HashMap<String, RulesAction> map;
 	private RuleEngine pacmanEngine;
 	
 	public MsPacMan() {
 		
-		setName("MsPacMan 04 TEST");
-		setTeam("Team04 TEST");
+		setName("MsPacMan 04");
+		setTeam("Team04");
 		
 		map = new HashMap<String,RulesAction>();
 		

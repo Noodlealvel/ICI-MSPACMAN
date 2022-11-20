@@ -27,7 +27,7 @@
 (defrule AttackToStandard
 	(MSPACMAN (dontChase true))
 	=> 
-	(assert (ACTION (id SearchOptimalPath) (info "PACMAN TRANSITIONS TO STANDARD") (priority 80)))
+	(assert (ACTION (id SearchOptimalPath) (info "PACMAN STOPS CHASING GHOST") (priority 80)))
 )
 
 (defrule EdibleGhostsClose
@@ -130,14 +130,6 @@
         (MSPACMAN (PPClose false)))
 	=> 
 	(assert (ACTION (id SearchZoneWithPPAndNoGhosts) (info "SEVERAL GHOSTS CLOSE AND FAR FROM PP") (priority 70)))
-)
-
-(defrule StandardToAttackTransition
-	(MSPACMAN (PPeaten true))
-    (or
-        (MSPACMAN (edibleGhostClose true)))
-	=> 
-	(assert (ACTION (id SearchOptimalPathTowardsEdibles) (info "PACMAN TRANSITIONS TO ATTACK") (priority 90)))
 )
 
 
