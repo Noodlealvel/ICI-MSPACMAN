@@ -1,0 +1,77 @@
+FUNCTION_BLOCK FuzzyMsPacMan
+
+VAR_INPUT
+	BLINKY_distance : REAL;
+	PINKY_distance : REAL;
+	INKY_distance : REAL;
+	SUE_distance : REAL;
+
+	BLINKY_confidence : REAL;
+	PINKY_confidence : REAL;
+	INKY_confidence : REAL;
+	SUE_confidence : REAL;
+END_VAR
+
+VAR_OUTPUT
+	runAwayBLINKY: REAL;
+	runAwayPINKY: REAL;
+	runAwayINKY: REAL;
+	runAwaySUE: REAL;
+	
+	eatBLINKY: REAL;
+	eatPINKY: REAL;
+	eatINKY: REAL;
+	eatSUE: REAL;
+END_VAR
+
+FUZZIFY BLINKY_distance
+	TERM near := (0, 1) (50, 0);
+	TERM medium := gauss 75 25;
+	TERM far := (100, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+FUZZIFY PINKY_distance
+	TERM near := (0, 1) (50, 0);
+	TERM medium := gauss 75 25;
+	TERM far := (100, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+FUZZIFY INKY_distance
+	TERM near := (0, 1) (50, 0);
+	TERM medium := gauss 75 25;
+	TERM far := (100, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+FUZZIFY SUE_distance
+	TERM near := (0, 1) (50, 0);
+	TERM medium := gauss 75 25;
+	TERM far := (100, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+
+FUZZIFY confidence_BLINKY
+	TERM near := (0, 1) (2, 0);
+	TERM medium := gauss 1 1;
+	TERM far := (0, 0) (2, 1);
+END_FUZZIFY
+
+FUZZIFY confidence_PINKY
+	TERM near := (0, 1) (2, 0);
+	TERM medium := gauss 1 1;
+	TERM far := (0, 0) (2, 1);
+END_FUZZIFY
+
+FUZZIFY confidence_INKY
+	TERM near := (0, 1) (2, 0);
+	TERM medium := gauss 1 1;
+	TERM far := (0, 0) (2, 1);
+END_FUZZIFY
+
+FUZZIFY confidence_SUE
+	TERM near := (0, 1) (2, 0);
+	TERM medium := gauss 1 1;
+	TERM far := (0, 0) (2, 1);
+END_FUZZIFY
+
+
+END_FUNCTION_BLOCK
