@@ -50,28 +50,92 @@ END_FUZZIFY
 
 
 FUZZIFY confidence_BLINKY
-	TERM near := (0, 1) (2, 0);
+	TERM low := (0, 1) (2, 0);
 	TERM medium := gauss 1 1;
-	TERM far := (0, 0) (2, 1);
+	TERM high := (0, 0) (2, 1);
 END_FUZZIFY
 
 FUZZIFY confidence_PINKY
-	TERM near := (0, 1) (2, 0);
+	TERM low := (0, 1) (2, 0);
 	TERM medium := gauss 1 1;
-	TERM far := (0, 0) (2, 1);
+	TERM high := (0, 0) (2, 1);
 END_FUZZIFY
 
 FUZZIFY confidence_INKY
-	TERM near := (0, 1) (2, 0);
+	TERM low := (0, 1) (2, 0);
 	TERM medium := gauss 1 1;
-	TERM far := (0, 0) (2, 1);
+	TERM high := (0, 0) (2, 1);
 END_FUZZIFY
 
 FUZZIFY confidence_SUE
-	TERM near := (0, 1) (2, 0);
+	TERM low := (0, 1) (2, 0);
 	TERM medium := gauss 1 1;
-	TERM far := (0, 0) (2, 1);
+	TERM high := (0, 0) (2, 1);
 END_FUZZIFY
+
+DEFUZZIFY runAwayBLINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY runAwayPINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY runAwayINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY runAwaySUE			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY eatBLINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY eatPINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY eatINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
+
+DEFUZZIFY eatSUE			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervious := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)	
+END_DEFUZZIFY
 
 
 END_FUNCTION_BLOCK
