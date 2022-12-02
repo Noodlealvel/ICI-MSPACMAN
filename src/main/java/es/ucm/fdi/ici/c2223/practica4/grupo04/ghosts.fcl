@@ -1,14 +1,43 @@
-FUNCTION_BLOCK FuzzyMsPacMan	// Block definition (there may be more than one block per file)
+FUNCTION_BLOCK FuzzyGhosts	// Block definition (there may be more than one block per file)
 
 VAR_INPUT				// Define input variables
-	BLINKYdistance : REAL;
-	PINKYdistance : REAL;
-	INKYdistance : REAL;
-	SUEdistance : REAL;
-	BLINKYconfidence : REAL;
-	PINKYconfidence : REAL;
-	INKYconfidence : REAL;
-	SUEconfidence : REAL;
+	BLINKYdistanceToPacman : REAL;
+	PacmanDistanceToBLINKY : REAL;
+	BLINKYdanger : REAL;
+	BLINKYtimeInLair : REAL;
+	BLINKYnearToTunnel : REAL;
+	BLINKYedibleTime : REAL;
+	BLINKYcollisionIndex : REAL;
+	
+	INKYdistanceToPacman : REAL;
+	PacmanDistanceToINKY : REAL;
+	INKYdanger : REAL;
+	INKYtimeInLair : REAL;
+	INKYnearToTunnel : REAL;
+	INKYedibleTime : REAL;
+	INKYcollisionIndex : REAL;
+
+	SUEdistanceToPacman : REAL;
+	PacmanDistanceToSUE : REAL;
+	SUEdanger : REAL;
+	SUEtimeInLair : REAL;
+	SUEnearToTunnel : REAL;
+	SUEedibleTime : REAL;
+	SUEcollisionIndex : REAL;
+
+	PINKYdistanceToPacman : REAL;
+	PacmanDistanceToPINKY : REAL;
+	PINKYdanger : REAL;
+	PINKYtimeInLair : REAL;
+	PINKYnearToTunnel : REAL;
+	PINKYedibleTime : REAL;
+	PINKYcollisionIndex : REAL;
+
+
+	PacmanConfidence : REAL;
+	PacmanDistanceToPPill : REAL;	
+	PacmanDistanceToTunnel : REAL;
+	GhostsCloseIndex : REAL;
 END_VAR
 
 VAR_OUTPUT				// Define output variable

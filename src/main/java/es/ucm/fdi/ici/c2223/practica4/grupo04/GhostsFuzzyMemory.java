@@ -9,7 +9,10 @@ public class GhostsFuzzyMemory {
 
 	HashMap<String,Double> mem;
 	
-	double[] confidence = {100,100,100,100};
+	 private double confidence = 100;
+
+	private int lastPacmanPosition;
+	private int nearestPPillToPacman;
 
 	
 	public GhostsFuzzyMemory() {
@@ -18,16 +21,25 @@ public class GhostsFuzzyMemory {
 	
 	public void getInput(GhostsInput input)
 	{
-		for(GHOST g: GHOST.values()) {
-			double conf = confidence[g.ordinal()];
-			if(input.isVisible(g)) {
-				confidence[g.ordinal()] = 100;
-				conf = 100;
+		if(input.PacmanIsVisible()) {
+			confidence = 100;
+			mem.put("PacmanDistanceToPPill", input.getPacmanDistanceToPPill());
+			lastPacmanPosition = input.getLastPacmanPosition();
+			nearestPPillToPacman = input.getNearestPPillToPacman();
+			for(GHOST ghost : GHOST.values()) {
+				mem.put(ghost.name()+"distanceToPacman", input.distancetoPacman(ghost));
+				mem.put("PacmanDistanceTo"+ghost.name(), input.PacmanDistanceTo(ghost));
+				mem.put(ghost.name()+"danger", input.getDangerIndex(ghost));
+				mem.put(ghost.name()+"timeInLair", input.getTimeInLair(ghost));
+				mem.put(ghost.name()+"nearToTunnel", input.getDistanceToTunnel(ghost));
+				mem.put(ghost.name()+"edibleTime", input.getEdibleTime(ghost));
+				mem.put(ghost.name()+"collisionIndex", input.getCollisionIndex(ghost));
 			}
-			else
-				conf = Double.max(0, conf-5);
-			mem.put(g.name()+"confidence", conf);			
 		}
+		else
+			confidence = Double.max(0, confidence-5);
+		mem.put(g.name()+"confidence", confidence);
+		mem.put("GhostsCloseIndex", input.getGhostsCloseIndex());
 
 	}
 	
