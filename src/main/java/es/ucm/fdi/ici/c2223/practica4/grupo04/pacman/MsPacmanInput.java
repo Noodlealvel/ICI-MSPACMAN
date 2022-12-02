@@ -92,8 +92,8 @@ public class MsPacmanInput extends FuzzyInput {
 	public HashMap<String, Double> getFuzzyValues() { 
 		HashMap<String,Double> vars = new HashMap<String,Double>();
 		for(GHOST g: GHOST.values()) {
-			vars.put(g.name()+"distancesNoEdible", distancesNoEdible[g.ordinal()]);
-			vars.put(g.name()+"distancesEdible", distancesEdible[g.ordinal()]);
+			vars.put(g.name()+"_distance", distancesNoEdible[g.ordinal()]);
+			vars.put(g.name()+"_edibleDistance", distancesEdible[g.ordinal()]);
 			vars.put(g.name()+"confidence", confidence[g.ordinal()]);
 		}
 		return vars;
