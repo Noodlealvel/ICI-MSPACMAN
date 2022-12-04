@@ -12,13 +12,12 @@ import es.ucm.fdi.ici.c2122.practica1.grupo05.GameUtils;
 public class GhostsInput extends Input {
 
 	private HashMap<GHOST,HashMap<GhostsRelevantInfo, Double>> ghostsInfoMap;
-	private boolean pacmanNearPPill;
-	private boolean pacmanInTunnel;
 	private boolean pacmanIsVisible;
 	private int pacmanPosition;
 	private double pacmanDistanceToTunnel;
-	private Object pacmanDistanceToPPill;
+	private double pacmanDistanceToPPill;
 	private double ghostsCloseIndex;
+	private int nearestPPillToPacman;
 	private static final int SECURITY_DISTANCE = 60;
 	private static final int CHASE = 50;
 	private static final int LOW_TIME = 10;
@@ -30,21 +29,6 @@ public class GhostsInput extends Input {
 	}
 	@Override
 	public void parseInput() {
-		/*ghostsInfoMap = new HashMap<GHOST,HashMap<GhostsRelevantInfo, Boolean>>();
-		for (GHOST ghost : GHOST.values()) {
-			HashMap<GhostsRelevantInfo, Boolean> ghostMap = new HashMap<GhostsRelevantInfo, Boolean>();
-			ghostMap.put(GhostsRelevantInfo.EDIBLE, game.isGhostEdible(ghost));
-			ghostMap.put(GhostsRelevantInfo.IN_LAIR, game.getGhostLairTime(ghost) > 0);
-			ghostMap.put(GhostsRelevantInfo.NEAR_TUNNEL, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.NearestTunnelNode(game, ghost),game.getGhostLastMoveMade(ghost), DM.EUCLID) <= CLOSE_PACMAN_DISTANCE);
-			ghostMap.put(GhostsRelevantInfo.GHOSTS_CLOSE,  game.getGhostLairTime(ghost) <= 0 && GhostsUtils.GhostCloseToRest(game,ghost, CLOSE_GHOSTS));
-			ghostMap.put(GhostsRelevantInfo.CHASE_DISTANCE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(),game.getGhostLastMoveMade(ghost), DM.PATH) <= CHASE);
-			ghostMap.put(GhostsRelevantInfo.LOW_EDIBLE_TIME, game.getGhostEdibleTime(ghost) <= LOW_TIME);
-			ghostMap.put(GhostsRelevantInfo.PACMAN_CLOSE, game.getGhostLairTime(ghost) <= 0 && game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade() ,DM.PATH) <= CLOSE_PACMAN_DISTANCE);
-			ghostMap.put(GhostsRelevantInfo.NO_GHOSTS_IN_PATH, game.getGhostLairTime(ghost) <= 0 && !GhostsUtils.PathContainsGhosts(game, ghost));
-			ghostsInfoMap.put(ghost, ghostMap);
-			
-		}
-		*/
 		pacmanIsVisible = game.getPacmanCurrentNodeIndex() != -1;
 		if (pacmanIsVisible) {
 			pacmanPosition = game.getPacmanCurrentNodeIndex();
@@ -74,12 +58,10 @@ public class GhostsInput extends Input {
 			
 			ghostsInfoMap.put(ghost, ghostMap);
 		}
+		nearestPPillToPacman = GhostsUtils.NearestActivePPillToPacman(game,pacmanPosition);
 		pacmanDistanceToTunnel = GhostsUtils.DistancePacmanToTunnel(game, pacmanPosition);
-		pacmanDistanceToPPill = GhostsUtils.DistancePacmanToPP(game,pacmanPosition,CLOSE_PACMAN_DISTANCE);
+		pacmanDistanceToPPill = GhostsUtils.DistancePacmanToPP(game,pacmanPosition);
 		ghostsCloseIndex = GhostsUtils.CloseIndex(game, pacmanPosition);
-	}
-	public boolean nearPPill() {
-		return pacmanNearPPill;
 	}
 	public HashMap<String, Double> getFuzzyValues() {
 		return null;
@@ -87,7 +69,40 @@ public class GhostsInput extends Input {
 	public boolean PacmanIsVisible() {
 		return pacmanIsVisible;
 	}
-	public Double getPacmanDistanceToPPill() {
-		return ghostsInfoMap.get(ghostsInfoMap);
+	public double getPacmanDistanceToPPill() {
+		return pacmanDistanceToPPill;
+	}
+	public int getLastPacmanPosition() {
+		return pacmanPosition;
+	}
+	public int getNearestPPillToPacman() {
+		return nearestPPillToPacman;
+	}
+	public Double distancetoPacman(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.DISTANCE_TO_PACMAN);
+	}
+	public Double PacmanDistanceTo(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.PACMAN_DISTANCE_TO_GHOST);
+	}
+	public Double getDangerIndex(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.DANGER);
+	}
+	public Double getGhostsCloseIndex() {
+		return ghostsCloseIndex;
+	}
+	public Double getTimeInLair(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.TIME_IN_LAIR);
+	}
+	public Double getDistanceToTunnel(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.DISTANCE_TO_TUNNEL);
+	}
+	public Double getEdibleTime(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.EDIBLE_TIME);
+	}
+	public Double getCollisionIndex(GHOST ghost) {
+		return ghostsInfoMap.get(ghost).get(GhostsRelevantInfo.COLLISION_INDEX);
+	}
+	public Double getPacmanDistanceToTunnel() {
+		return pacmanDistanceToTunnel;
 	}
 }

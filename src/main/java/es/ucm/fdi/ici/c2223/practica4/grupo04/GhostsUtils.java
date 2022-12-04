@@ -158,7 +158,7 @@ public class GhostsUtils {
 		}
 		return middlePoint;
 	}
-	private static int NearestActivePPillToPacman(Game game, int pacmanPosition) {
+	public static int NearestActivePPillToPacman(Game game, int pacmanPosition) {
 		int nearest = Integer.MAX_VALUE;
 		int path;
 		for (int powerpill : game.getActivePowerPillsIndices()) {
