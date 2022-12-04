@@ -31,7 +31,7 @@ public class GhostsFuzzyMemory {
 				mem.put("PacmanDistanceTo"+ghost.name(), input.PacmanDistanceTo(ghost));
 				mem.put(ghost.name()+"danger", input.getDangerIndex(ghost));
 				mem.put(ghost.name()+"timeInLair", input.getTimeInLair(ghost));
-				mem.put(ghost.name()+"nearToTunnel", input.getDistanceToTunnel(ghost));
+				mem.put(ghost.name()+"distanceToTunnel", input.getDistanceToTunnel(ghost));
 				mem.put(ghost.name()+"edibleTime", input.getEdibleTime(ghost));
 				mem.put(ghost.name()+"collisionIndex", input.getCollisionIndex(ghost));
 			}
@@ -45,6 +45,10 @@ public class GhostsFuzzyMemory {
 	
 	public HashMap<String, Double> getFuzzyValues() {
 		return mem;
+	}
+
+	public int lastPacmanPosition() {
+		return lastPacmanPosition;
 	}
 	
 }

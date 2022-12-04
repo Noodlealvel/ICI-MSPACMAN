@@ -42,7 +42,7 @@ public class Ghosts extends GhostController {
 	@Override
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		EnumMap<GHOST, MOVE> map = new EnumMap<GHOST,MOVE>(GHOST.class);
-		GhostsInput input = new GhostsInput(game);
+		GhostsInput input = new GhostsInput(game, fuzzyMemory.lastPacmanPosition());
 		input.parseInput();
 		fuzzyMemory.getInput(input);
 		

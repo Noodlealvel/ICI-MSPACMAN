@@ -5,7 +5,7 @@ VAR_INPUT				// Define input variables
 	PacmanDistanceToBLINKY : REAL;
 	BLINKYdanger : REAL;
 	BLINKYtimeInLair : REAL;
-	BLINKYnearToTunnel : REAL;
+	BLINKYdistanceToTunnel : REAL;
 	BLINKYedibleTime : REAL;
 	BLINKYcollisionIndex : REAL;
 	
@@ -13,7 +13,7 @@ VAR_INPUT				// Define input variables
 	PacmanDistanceToINKY : REAL;
 	INKYdanger : REAL;
 	INKYtimeInLair : REAL;
-	INKYnearToTunnel : REAL;
+	INKYdistanceToTunnel : REAL;
 	INKYedibleTime : REAL;
 	INKYcollisionIndex : REAL;
 
@@ -21,7 +21,7 @@ VAR_INPUT				// Define input variables
 	PacmanDistanceToSUE : REAL;
 	SUEdanger : REAL;
 	SUEtimeInLair : REAL;
-	SUEnearToTunnel : REAL;
+	SUEdistanceToTunnel : REAL;
 	SUEedibleTime : REAL;
 	SUEcollisionIndex : REAL;
 
@@ -29,7 +29,7 @@ VAR_INPUT				// Define input variables
 	PacmanDistanceToPINKY : REAL;
 	PINKYdanger : REAL;
 	PINKYtimeInLair : REAL;
-	PINKYnearToTunnel : REAL;
+	PINKYdistanceToTunnel : REAL;
 	PINKYedibleTime : REAL;
 	PINKYcollisionIndex : REAL;
 
