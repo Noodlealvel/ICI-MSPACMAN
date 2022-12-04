@@ -3,6 +3,8 @@ package es.ucm.fdi.ici.c2223.practica4.grupo04.pacman;
 import java.util.EnumMap;
 import java.util.HashMap;
 
+import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GameMemory;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.MsPacManFuzzyMemory;
 import es.ucm.fdi.ici.fuzzy.FuzzyInput;
 import pacman.game.Game;
 import pacman.game.Constants.GHOST;
@@ -11,26 +13,33 @@ import pacman.game.Constants.MOVE;
 public class MsPacmanInput extends FuzzyInput {
 
 	private int initialGhostNode;
-	private double[] distancesNoEdible = {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
-	private double[] distancesEdible = {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
-	private double[] confidence = {MAX_CONFIDENCE, MAX_CONFIDENCE, MAX_CONFIDENCE, MAX_CONFIDENCE};
-	private int[] nodesGhosts = {-1, -1, -1, -1};
-	private boolean[] edibles = {false, false, false, false};
+	private double[] distancesNoEdible;
+	private double[] distancesEdible;
+	private double[] confidence;
+	private int[] nodesGhosts;
+	private boolean[] edibles;
 	
 	private final static int MAX_DISTANCE=200;
 	private final static int MAX_CONFIDENCE = 100;
+	
+	private MsPacManFuzzyMemory msPacManFuzzyMemory;
 	public MsPacmanInput(Game game) {
 		super(game);
 	}
 	
 	@Override
 	public void parseInput() {
-
+		
+		distancesNoEdible = new double[] {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
+		distancesEdible = new double[] {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
+		confidence = new double[] {MAX_CONFIDENCE, MAX_CONFIDENCE, MAX_CONFIDENCE, MAX_CONFIDENCE};
+		nodesGhosts = new int[] {-1, -1, -1, -1};
+		edibles = new boolean[] {false, false, false, false};
 		initialGhostNode = game.getGhostInitialNodeIndex();
 
 		for (GHOST ghost : GHOST.values()) {
 			if (game.wasPacManEaten() || game.getCurrentLevelTime() == 0) {
-				nodesGhosts[ghost.ordinal()] = initialGhostNode;
+				this.nodesGhosts[ghost.ordinal()] = initialGhostNode;
 				confidence[ghost.ordinal()] = MAX_CONFIDENCE;
 
 				distancesNoEdible[ghost.ordinal()] = MAX_DISTANCE;
@@ -85,8 +94,21 @@ public class MsPacmanInput extends FuzzyInput {
 			}
 
 		}
-
+		
+		fillMemory();
 	}
+	
+	private void fillMemory() {
+		if (msPacManFuzzyMemory != null) {
+			msPacManFuzzyMemory.setGhostsPositions(nodesGhosts);
+			msPacManFuzzyMemory.setPacManPosition(game.getPacmanCurrentNodeIndex());
+		}
+		else {
+			msPacManFuzzyMemory = new MsPacManFuzzyMemory(nodesGhosts, game.getPacmanCurrentNodeIndex());
+		}
+		
+	}
+	
 	
 	
 	public HashMap<String, Double> getFuzzyValues() { 
@@ -94,7 +116,7 @@ public class MsPacmanInput extends FuzzyInput {
 		for(GHOST g: GHOST.values()) {
 			vars.put(g.name()+"_distance", distancesNoEdible[g.ordinal()]);
 			vars.put(g.name()+"_edibleDistance", distancesEdible[g.ordinal()]);
-			vars.put(g.name()+"confidence", confidence[g.ordinal()]);
+			vars.put(g.name()+"_confidence", confidence[g.ordinal()]);
 		}
 		return vars;
 	}

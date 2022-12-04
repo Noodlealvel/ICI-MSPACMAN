@@ -6,6 +6,7 @@ import java.util.HashMap;
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MaxActionSelector;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MsPacmanInput;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.actions.*;
 import es.ucm.fdi.ici.fuzzy.ActionSelector;
 import es.ucm.fdi.ici.fuzzy.FuzzyEngine;
 import es.ucm.fdi.ici.fuzzy.observers.ConsoleFuzzyEngineObserver;
@@ -15,7 +16,7 @@ import pacman.game.Game;
 
 public class MsPacMan extends PacmanController {
 
-	private static final String RULES_PATH = "bin"+File.separator+"es"+File.separator+"ucm"+File.separator+"fdi"+File.separator+"ici"+File.separator+"practica4"+File.separator+"demofuzzy"+File.separator+"mspacman"+File.separator;
+	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica4\\grupo04\\pacman";
 	FuzzyEngine fuzzyEngine;
 	MsPacManFuzzyMemory fuzzyMemory;
 	
@@ -23,28 +24,25 @@ public class MsPacMan extends PacmanController {
 	public MsPacMan()
 	{
 		setName("MsPacMan 04 Test");
-		setTeam("MsPacMan 04 Test")
+		setTeam("MsPacMan 04 Test");
 
-	 	Action[] actions = {new GoToPPillAction(), new RunAwayAction()};
+	 	Action[] actions = {new ChasePowerPillAction(), new RunAwayBlinky(), new RunAwayPinky(), new RunAwayInky(), new RunAwaySue(), new ChaseGhostBlinky(), new ChaseGhostPinky(), new ChaseGhostInky(), new ChaseGhostSue()};
 		
 		ActionSelector actionSelector = new MaxActionSelector(actions);
 		 
 		ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver("MsPacMan","MsPacManRules");
-		fuzzyEngine = new FuzzyEngine("MsPacMan",RULES_PATH+"mspacman.fcl","FuzzyMsPacMan",actionSelector);
+		fuzzyEngine = new FuzzyEngine("MsPacMan", RULES_PATH+"\\pacman.fcl", "FuzzyMsPacMan", actionSelector);
 		fuzzyEngine.addObserver(observer);
 		
-		fuzzyMemory = new MsPacManFuzzyMemory();
 	}
 	
 	
 	@Override
 	public MOVE getMove(Game game, long timeDue) {
 		MsPacmanInput input = new MsPacmanInput(game);
-		input.parseInput();
-		fuzzyMemory.getInput(input);
+		input.parseInput();		
 		
 		HashMap<String, Double> fvars = input.getFuzzyValues();
-		fvars.putAll(fuzzyMemory.getFuzzyValues());
 		
 		return fuzzyEngine.run(fvars,game);
 	}

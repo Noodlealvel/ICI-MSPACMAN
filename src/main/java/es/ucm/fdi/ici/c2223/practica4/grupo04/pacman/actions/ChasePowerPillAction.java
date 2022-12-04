@@ -9,7 +9,7 @@ public class ChasePowerPillAction implements Action {
 
 	@Override
 	public String getActionId() {
-		return "GoToPPill";
+		return "goToPPill";
 	}
 
 	@Override
