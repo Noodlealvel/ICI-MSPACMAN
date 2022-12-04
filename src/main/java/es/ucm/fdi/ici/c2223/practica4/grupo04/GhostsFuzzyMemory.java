@@ -38,8 +38,7 @@ public class GhostsFuzzyMemory {
 		}
 		else
 			confidence = Double.max(0, confidence-5);
-		for(GHOST ghost : GHOST.values())
-			mem.put(ghost.name()+"confidence", confidence);
+		mem.put("PacmanConfidence", confidence);
 		mem.put("PacmanDistanceToTunnel", input.getPacmanDistanceToTunnel());
 		mem.put("GhostsCloseIndex", input.getGhostsCloseIndex());
 

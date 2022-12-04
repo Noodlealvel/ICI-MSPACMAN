@@ -45,44 +45,171 @@ VAR_OUTPUT				// Define output variable
 	GoToPPill: REAL;
 END_VAR
 
-FUZZIFY BLINKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY BLINKYdistanceToPacman	
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY PINKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY PacmanDistanceToBLINKY	
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY INKYdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY BLINKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY BLINKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY BLINKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY BLINKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY BLINKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY SUEdistanceToPacman	
 	TERM near := (0, 1) (60, 0) ; 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY SUEdistance			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY PacmanDistanceToSUE
 	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY SUEdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY SUEtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY SUEdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY SUEedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY SUEcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY PINKYdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToPINKY
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PINKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY PINKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY PINKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PINKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY PINKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY INKYdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToINKY
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY INKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY INKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY INKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY INKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY INKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+
+FUZZIFY PacmanConfidence			
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
+END_FUZZIFY
+
+FUZZIFY PacmanDistanceToPPill			
+	TERM near := (0, 1) (60, 0); 
 	TERM medium := gauss 75 25;
 	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
 
-FUZZIFY BLINKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
-	TERM low := (0,1)(25,1)(50,0) ; 
-	TERM medium := gauss 50 25;
-	TERM high := (50,0)(75,1)(100,1);
+FUZZIFY PacmanDistanceToTunnel			
+	TERM near := (0, 1) (60, 0); 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
 END_FUZZIFY
-FUZZIFY INKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
-	TERM low := (0,1)(25,1)(50,0) ; 
-	TERM medium := gauss 50 25;
-	TERM high := (50,0)(75,1)(100,1);
-END_FUZZIFY
-FUZZIFY PINKYconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
-	TERM low := (0,1)(25,1)(50,0) ; 
-	TERM medium := gauss 50 25;
-	TERM high := (50,0)(75,1)(100,1);
-END_FUZZIFY
-FUZZIFY SUEconfidence			// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
-	TERM low := (0,1)(25,1)(50,0) ; 
+
+FUZZIFY GhostsCloseIndex			
+	TERM low := (0,1)(25,1)(50,0); 
 	TERM medium := gauss 50 25;
 	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
