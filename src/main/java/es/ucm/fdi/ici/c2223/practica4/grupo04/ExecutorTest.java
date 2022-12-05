@@ -23,10 +23,10 @@ public class ExecutorTest {
                 .build();
 
         PacmanController pacMan = new es.ucm.fdi.ici.c2223.practica4.grupo04.MsPacMan();
-        GhostController ghosts = new es.ucm.fdi.ici.c2223.practica3.grupo04.Ghosts();
+        GhostController ghosts = new es.ucm.fdi.ici.c2223.practica0.grupoIndividual.GhostsAgressive();
         
         System.out.println( 
-        		executor.runGame(pacMan, ghosts, 10)
+        		executor.runGame(pacMan, ghosts, 1)
         );
         
     }

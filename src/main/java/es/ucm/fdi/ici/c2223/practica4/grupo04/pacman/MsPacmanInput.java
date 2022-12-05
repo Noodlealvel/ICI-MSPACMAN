@@ -1,14 +1,11 @@
 package es.ucm.fdi.ici.c2223.practica4.grupo04.pacman;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 
-import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GameMemory;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.MsPacManFuzzyMemory;
 import es.ucm.fdi.ici.fuzzy.FuzzyInput;
 import pacman.game.Game;
 import pacman.game.Constants.GHOST;
-import pacman.game.Constants.MOVE;
 
 public class MsPacmanInput extends FuzzyInput {
 
@@ -28,7 +25,7 @@ public class MsPacmanInput extends FuzzyInput {
 	}
 	
 	@Override
-	public void parseInput() {
+	public void parseInput() { //Inicializamos los arrays
 		
 		distancesNoEdible = new double[] {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
 		distancesEdible = new double[] {MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE, MAX_DISTANCE};
@@ -36,25 +33,23 @@ public class MsPacmanInput extends FuzzyInput {
 		nodesGhosts = new int[] {-1, -1, -1, -1};
 		edibles = new boolean[] {false, false, false, false};
 		initialGhostNode = game.getGhostInitialNodeIndex();
-
+		
 		for (GHOST ghost : GHOST.values()) {
-			if (game.wasPacManEaten() || game.getCurrentLevelTime() == 0) {
+			if (game.wasPacManEaten() || game.getCurrentLevelTime() == 0) { // Reseteamos todo si comen a Pacman o pasa de nivel
 				this.nodesGhosts[ghost.ordinal()] = initialGhostNode;
 				confidence[ghost.ordinal()] = MAX_CONFIDENCE;
 
 				distancesNoEdible[ghost.ordinal()] = MAX_DISTANCE;
 				distancesEdible[ghost.ordinal()] = MAX_DISTANCE;
 				edibles[ghost.ordinal()] = false;
-			} else if (game.wasPowerPillEaten() && confidence[ghost.ordinal()] < MAX_CONFIDENCE
-					&& !edibles[ghost.ordinal()]) // CAMBIAR CONFIDENCE
+			} else if (game.wasPowerPillEaten() && confidence[ghost.ordinal()] > MAX_CONFIDENCE/2 && !edibles[ghost.ordinal()]) //Cambiamos las distancias 
 			{
 				distancesEdible[ghost.ordinal()] = distancesNoEdible[ghost.ordinal()];
 				distancesNoEdible[ghost.ordinal()] = MAX_DISTANCE;
 
 				edibles[ghost.ordinal()] = true;
-				confidence[ghost.ordinal()] = 0;
-			} else {
-				if (game.wasGhostEaten(ghost)) {
+			} else { //Si Pacman come a un ghost
+				if (game.wasGhostEaten(ghost)) { //Si Pacman come a un ghost, reseteamos la pos y confidence del fantasma comido y volvemos a calcular la distancia no comestible
 					nodesGhosts[ghost.ordinal()] = initialGhostNode;
 					confidence[ghost.ordinal()] = MAX_CONFIDENCE / 2;
 
@@ -63,21 +58,21 @@ public class MsPacmanInput extends FuzzyInput {
 					distancesEdible[ghost.ordinal()] = MAX_DISTANCE;
 
 					edibles[ghost.ordinal()] = false;
-				} else {
+				} else { //Si no come, calculamos la distancia al fantasma
 					double distance = game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(),
 							game.getGhostCurrentNodeIndex(ghost));
-					if (distance != 0) // Estamos viendo al fantasma
+					if (distance != 0) // Pacman ve al fantasma, confidence al máximo y guardamos pos
 					{
 						nodesGhosts[ghost.ordinal()] = game.getGhostCurrentNodeIndex(ghost);
 						confidence[ghost.ordinal()] = MAX_CONFIDENCE;
-						if (game.isGhostEdible(ghost)) {
+						if (!game.isGhostEdible(ghost)) { //Si no es edible guardamos en distanciaNoEdible
+							distancesNoEdible[ghost.ordinal()] = distance;
+						} else {
 							distancesEdible[ghost.ordinal()] = distance;
 							edibles[ghost.ordinal()] = true;
-						} else {
-							distancesNoEdible[ghost.ordinal()] = distance;
 						}
-					} else {
-						if (confidence[ghost.ordinal()] <= MAX_CONFIDENCE / 3) {
+					} else { //No ve al fantasma, disminuye confidence
+						if (confidence[ghost.ordinal()] <= MAX_CONFIDENCE / 3) { //Si la confidence es muy poca directamente la ponemos a 0
 							nodesGhosts[ghost.ordinal()] = -1;
 							confidence[ghost.ordinal()] = 0;
 
@@ -98,7 +93,7 @@ public class MsPacmanInput extends FuzzyInput {
 		fillMemory();
 	}
 	
-	private void fillMemory() {
+	private void fillMemory() { //Guardamos las posiciones de todos en la memoria
 		if (msPacManFuzzyMemory != null) {
 			msPacManFuzzyMemory.setGhostsPositions(nodesGhosts);
 			msPacManFuzzyMemory.setPacManPosition(game.getPacmanCurrentNodeIndex());
@@ -111,7 +106,7 @@ public class MsPacmanInput extends FuzzyInput {
 	
 	
 	
-	public HashMap<String, Double> getFuzzyValues() { 
+	public HashMap<String, Double> getFuzzyValues() { //Variables input fuzzy
 		HashMap<String,Double> vars = new HashMap<String,Double>();
 		for(GHOST g: GHOST.values()) {
 			vars.put(g.name()+"_distance", distancesNoEdible[g.ordinal()]);
