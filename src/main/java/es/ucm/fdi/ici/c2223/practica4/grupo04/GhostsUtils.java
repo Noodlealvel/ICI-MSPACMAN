@@ -123,11 +123,11 @@ public class GhostsUtils {
 		}
 		return false;
 	}
-	public static int getNodeBetweenPacmanAndPpill(Game game, int pacmanPosition) {
+	public static int getNodeBetweenPacmanAndPpill(Game game, int pacmanPosition, int PPposition) {
 		//Búsqueda heurística según distancia, que elige el punto intemedio entre la PPill más cercana y pacman, explorando siempre los no explorados más prometedores hasta tener un márgen de error bajo.
 		TreeMap<Double,Integer> distanceMap = new TreeMap<Double, Integer>();
 		List<Integer> expandedList = new ArrayList<Integer>();
-		int closestActivePowerPill = NearestActivePPillToPacman(game, pacmanPosition);
+		int closestActivePowerPill = PPposition;
 		distanceMap.put(game.getDistance(closestActivePowerPill,pacmanPosition, DM.EUCLID),Integer.valueOf(pacmanPosition));
 		double currentDistance = Double.MAX_VALUE;
 		boolean found = false;

@@ -1,10 +1,16 @@
 package es.ucm.fdi.ici.c2223.practica4.grupo04;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 
 import es.ucm.fdi.ici.Action;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsChaseAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsDisperseAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFlankAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFleeAction;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.MaxActionSelector;
 import es.ucm.fdi.ici.fuzzy.ActionSelector;
 import es.ucm.fdi.ici.fuzzy.FuzzyEngine;
@@ -25,8 +31,18 @@ public class Ghosts extends GhostController {
 		setName("Ghosts 04");
 		setTeam("Team04");
 		
-		Action[] actions = {};
-
+		fuzzyMemory = new GhostsFuzzyMemory();
+		
+		List<Action> actionList = new ArrayList<Action>();
+		
+		for(GHOST ghost : GHOST.values()) {
+			actionList.add(new GhostsChaseAction(ghost, fuzzyMemory));
+			actionList.add(new GhostsDisperseAction(ghost));
+			actionList.add(new GhostsFlankAction(ghost, fuzzyMemory));
+			actionList.add(new GhostsFleeAction(ghost, fuzzyMemory));
+		}
+		
+		Action[] actions = (Action[]) actionList.toArray();
 		ActionSelector actionSelector = new MaxActionSelector(actions);
 		
 		for(GHOST ghost : GHOST.values()) {	
@@ -35,8 +51,6 @@ public class Ghosts extends GhostController {
 			fuzzyEngine.addObserver(observer);
 			engineMap.put(ghost, fuzzyEngine);
 		}
-		
-		fuzzyMemory = new GhostsFuzzyMemory();
 	}
 
 	@Override

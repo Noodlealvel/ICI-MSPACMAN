@@ -23,21 +23,21 @@ public class GhostsFuzzyMemory {
 	{
 		if(input.PacmanIsVisible()) {
 			confidence = 100;
-			mem.put("PacmanDistanceToPPill", input.getPacmanDistanceToPPill());
-			lastPacmanPosition = input.getLastPacmanPosition();
-			nearestPPillToPacman = input.getNearestPPillToPacman();
-			for(GHOST ghost : GHOST.values()) {
-				mem.put(ghost.name()+"distanceToPacman", input.distancetoPacman(ghost));
-				mem.put("PacmanDistanceTo"+ghost.name(), input.PacmanDistanceTo(ghost));
-				mem.put(ghost.name()+"danger", input.getDangerIndex(ghost));
-				mem.put(ghost.name()+"timeInLair", input.getTimeInLair(ghost));
-				mem.put(ghost.name()+"distanceToTunnel", input.getDistanceToTunnel(ghost));
-				mem.put(ghost.name()+"edibleTime", input.getEdibleTime(ghost));
-				mem.put(ghost.name()+"collisionIndex", input.getCollisionIndex(ghost));
-			}
 		}
 		else
 			confidence = Double.max(0, confidence-5);
+		mem.put("PacmanDistanceToPPill", input.getPacmanDistanceToPPill());
+		lastPacmanPosition = input.getLastPacmanPosition();
+		nearestPPillToPacman = input.getNearestPPillToPacman();
+		for(GHOST ghost : GHOST.values()) {
+			mem.put(ghost.name()+"distanceToPacman", input.distancetoPacman(ghost));
+			mem.put("PacmanDistanceTo"+ghost.name(), input.PacmanDistanceTo(ghost));
+			mem.put(ghost.name()+"danger", input.getDangerIndex(ghost));
+			mem.put(ghost.name()+"timeInLair", input.getTimeInLair(ghost));
+			mem.put(ghost.name()+"distanceToTunnel", input.getDistanceToTunnel(ghost));
+			mem.put(ghost.name()+"edibleTime", input.getEdibleTime(ghost));
+			mem.put(ghost.name()+"collisionIndex", input.getCollisionIndex(ghost));
+		}
 		mem.put("PacmanConfidence", confidence);
 		mem.put("PacmanDistanceToTunnel", input.getPacmanDistanceToTunnel());
 		mem.put("GhostsCloseIndex", input.getGhostsCloseIndex());
@@ -50,6 +50,10 @@ public class GhostsFuzzyMemory {
 
 	public int lastPacmanPosition() {
 		return lastPacmanPosition;
+	}
+
+	public int getLastClosePP() {
+		return nearestPPillToPacman;
 	}
 	
 }

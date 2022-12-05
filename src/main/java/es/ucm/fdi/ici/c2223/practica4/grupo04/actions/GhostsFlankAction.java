@@ -1,7 +1,8 @@
 package es.ucm.fdi.ici.c2223.practica4.grupo04.actions;
 
 import es.ucm.fdi.ici.Action;
-import es.ucm.fdi.ici.c2223.practica2.grupo04.GhostsFSM.GhostsUtils;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.GhostsFuzzyMemory;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.GhostsUtils;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
@@ -11,8 +12,10 @@ public class GhostsFlankAction implements Action {
 
 
 	GHOST ghost;
-	public GhostsFlankAction( GHOST ghost) {
+	private GhostsFuzzyMemory fuzzyMemory;
+	public GhostsFlankAction( GHOST ghost, GhostsFuzzyMemory fuzzyMemory) {
 		this.ghost = ghost;
+		this.fuzzyMemory = fuzzyMemory;
 	}
 	
 	@Override
@@ -24,7 +27,7 @@ public class GhostsFlankAction implements Action {
 	public MOVE execute(Game game) {
 		if (game.doesGhostRequireAction(ghost))       
         {
-			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.getNodeBetweenPacmanAndPpill(game),game.getGhostLastMoveMade(ghost) ,DM.PATH);
+			return game.getNextMoveTowardsTarget(game.getGhostCurrentNodeIndex(ghost), GhostsUtils.getNodeBetweenPacmanAndPpill(game, fuzzyMemory.lastPacmanPosition(), fuzzyMemory.getLastClosePP()),game.getGhostLastMoveMade(ghost) ,DM.PATH);
         }
 		else
 			return MOVE.NEUTRAL;
