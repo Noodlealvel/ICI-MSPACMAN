@@ -11,6 +11,10 @@ import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsChaseAction;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsDisperseAction;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFlankAction;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFleeAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFleeFromPPillAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsGoToPPillAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsSearchForTunnelAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsWaitAction;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.MaxActionSelector;
 import es.ucm.fdi.ici.fuzzy.ActionSelector;
 import es.ucm.fdi.ici.fuzzy.FuzzyEngine;
@@ -40,6 +44,10 @@ public class Ghosts extends GhostController {
 			actionList.add(new GhostsDisperseAction(ghost));
 			actionList.add(new GhostsFlankAction(ghost, fuzzyMemory));
 			actionList.add(new GhostsFleeAction(ghost, fuzzyMemory));
+			actionList.add(new GhostsFleeFromPPillAction(ghost));
+			actionList.add(new GhostsGoToPPillAction(ghost));
+			actionList.add(new GhostsSearchForTunnelAction(ghost));
+			actionList.add(new GhostsWaitAction(ghost));
 		}
 		
 		Action[] actions = (Action[]) actionList.toArray();

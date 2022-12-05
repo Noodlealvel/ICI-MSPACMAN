@@ -10,7 +10,7 @@ import pacman.game.Game;
 public class GhostsFleeAction implements Action {
 	  GHOST ghost;
 	private GhostsFuzzyMemory fuzzyMemory;
-		public GhostsFleeAction( GHOST ghost, GhostsFuzzyMemory fuzzyMemory) {
+		public GhostsFleeAction(GHOST ghost, GhostsFuzzyMemory fuzzyMemory) {
 			this.ghost = ghost;
 			this.fuzzyMemory = fuzzyMemory;
 		}

@@ -209,12 +209,12 @@ FUZZIFY PacmanDistanceToTunnel
 END_FUZZIFY
 
 FUZZIFY GhostsCloseIndex			
-	TERM low := (0,1)(25,1)(50,0); 
-	TERM medium := gauss 50 25;
-	TERM high := (50,0)(75,1)(100,1);
+	TERM low := (0,1)(40,1)(70,0); 
+	TERM medium := gauss 70 30;
+	TERM high := (50,0)(100,1)(200,1);
 END_FUZZIFY
 
-DEFUZZIFY Runaway			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+DEFUZZIFY Runaway			
 	TERM calm := (0,1) (5,1) (15,0);
 	TERM nervious := gauss 15 5;
 	TERM emergency := (15,0) (25,1) (30,1);
@@ -222,12 +222,12 @@ DEFUZZIFY Runaway			// Defzzzify output variable 'tip' : {'cheap', 'average', 'g
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
 
-DEFUZZIFY GoToPPill			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+DEFUZZIFY GoToPPill			
 	TERM calm := (0,1) (5,1) (15,0);
 	TERM nervious := gauss 15 5;
 	TERM emergency := (15,0) (25,1) (30,1);
-	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
-	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+	METHOD : COG;		
+	DEFAULT := 0;		
 END_DEFUZZIFY
 
 
