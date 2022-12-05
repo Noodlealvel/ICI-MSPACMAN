@@ -15,7 +15,13 @@ public class ChasePowerPillAction implements Action {
 	@Override
 	public MOVE execute(Game game) {
 		int powerpill;
-		powerpill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePowerPillsIndices(), DM.EUCLID);
+		if(game.getActivePowerPillsIndices().length <= 0) {
+			powerpill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePillsIndices(), DM.EUCLID);
+		}
+		else {
+			powerpill = game.getClosestNodeIndexFromNodeIndex(game.getPacmanCurrentNodeIndex(), game.getActivePowerPillsIndices(), DM.EUCLID);
+		}
+	
 		return game.getApproximateNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(), powerpill, game.getPacmanLastMoveMade(), DM.EUCLID);
 	}
 

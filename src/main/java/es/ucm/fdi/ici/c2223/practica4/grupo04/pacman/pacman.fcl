@@ -190,7 +190,7 @@ RULEBLOCK MsPacManRules
 	RULE 4 : IF ((BLINKY_distance IS medium) AND (BLINKY_confidence IS high)) THEN goToPPill IS emergency;
 	RULE 5 : IF ((BLINKY_distance IS medium) AND (BLINKY_confidence IS medium)) THEN goToPPill is nervious;
 	RULE 6 : IF ((BLINKY_distance IS medium) AND (BLINKY_confidence IS low)) THEN runAwayBLINKY IS calm;
-	RULE 7 : IF ((BLINKY_distance IS far) AND (BLINKY_confidence IS high)) THEN runAwayBLINKY IS calm;
+	RULE 7 : IF ((BLINKY_distance IS far) AND (BLINKY_confidence IS high)) THEN runAwayBLINKY IS nervious;
 	RULE 8 : IF ((BLINKY_distance IS far) AND (BLINKY_confidence IS medium)) THEN runAwayBLINKY IS calm;
 	RULE 9 : IF ((BLINKY_distance IS far) AND (BLINKY_confidence IS low)) THEN runAwayBLINKY IS calm;
 	
@@ -200,7 +200,7 @@ RULEBLOCK MsPacManRules
 	RULE 13 : IF ((PINKY_distance IS medium) AND (PINKY_confidence IS high)) THEN goToPPill IS emergency;
 	RULE 14 : IF ((PINKY_distance IS medium) AND (PINKY_confidence IS medium)) THEN goToPPill is nervious;
 	RULE 15 : IF ((PINKY_distance IS medium) AND (PINKY_confidence IS low)) THEN runAwayPINKY IS calm;
-	RULE 16 : IF ((PINKY_distance IS far) AND (PINKY_confidence IS high)) THEN runAwayPINKY IS calm;
+	RULE 16 : IF ((PINKY_distance IS far) AND (PINKY_confidence IS high)) THEN runAwayPINKY IS nervious;
 	RULE 17 : IF ((PINKY_distance IS far) AND (PINKY_confidence IS medium)) THEN runAwayPINKY IS calm;
 	RULE 18 : IF ((PINKY_distance IS far) AND (PINKY_confidence IS low)) THEN runAwayPINKY IS calm;
 	
@@ -210,7 +210,7 @@ RULEBLOCK MsPacManRules
 	RULE 22 : IF ((INKY_distance IS medium) AND (INKY_confidence IS high)) THEN goToPPill IS emergency;
 	RULE 23 : IF ((INKY_distance IS medium) AND (INKY_confidence IS medium)) THEN goToPPill is nervious;
 	RULE 24 : IF ((INKY_distance IS medium) AND (INKY_confidence IS low)) THEN runAwayINKY IS calm;
-	RULE 25 : IF ((INKY_distance IS far) AND (INKY_confidence IS high)) THEN runAwayINKY IS calm;
+	RULE 25 : IF ((INKY_distance IS far) AND (INKY_confidence IS high)) THEN runAwayINKY IS nervious;
 	RULE 26 : IF ((INKY_distance IS far) AND (INKY_confidence IS medium)) THEN runAwayINKY IS calm;
 	RULE 27 : IF ((INKY_distance IS far) AND (INKY_confidence IS low)) THEN runAwayINKY IS calm;
 	
@@ -220,7 +220,7 @@ RULEBLOCK MsPacManRules
 	RULE 31 : IF ((SUE_distance IS medium) AND (SUE_confidence IS high)) THEN goToPPill IS emergency;
 	RULE 32 : IF ((SUE_distance IS medium) AND (SUE_confidence IS medium)) THEN goToPPill is nervious;
 	RULE 33 : IF ((SUE_distance IS medium) AND (SUE_confidence IS low)) THEN runAwaySUE IS calm;
-	RULE 34 : IF ((SUE_distance IS far) AND (SUE_confidence IS high)) THEN runAwaySUE IS calm;
+	RULE 34 : IF ((SUE_distance IS far) AND (SUE_confidence IS high)) THEN runAwaySUE IS nervious;
 	RULE 35 : IF ((SUE_distance IS far) AND (SUE_confidence IS medium)) THEN runAwaySUE IS calm;
 	RULE 36 : IF ((SUE_distance IS far) AND (SUE_confidence IS low)) THEN runAwaySUE IS calm;
 	
