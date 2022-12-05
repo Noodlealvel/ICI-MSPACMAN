@@ -80,27 +80,27 @@ FUZZIFY SUE_edibleDistance
 END_FUZZIFY
 
 FUZZIFY BLINKY_confidence
-	TERM low := (0, 1) (2, 0);
-	TERM medium := gauss 1 1;
-	TERM high := (0, 0) (2, 1);
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
 
 FUZZIFY PINKY_confidence
-	TERM low := (0, 1) (2, 0);
-	TERM medium := gauss 1 1;
-	TERM high := (0, 0) (2, 1);
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
 
 FUZZIFY INKY_confidence
-	TERM low := (0, 1) (2, 0);
-	TERM medium := gauss 1 1;
-	TERM high := (0, 0) (2, 1);
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
 
 FUZZIFY SUE_confidence
-	TERM low := (0, 1) (2, 0);
-	TERM medium := gauss 1 1;
-	TERM high := (0, 0) (2, 1);
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
 END_FUZZIFY
 
 DEFUZZIFY runAwayBLINKY			// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
