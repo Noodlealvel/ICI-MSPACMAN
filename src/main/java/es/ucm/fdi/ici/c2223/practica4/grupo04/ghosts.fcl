@@ -319,6 +319,7 @@ RULEBLOCK MsPacManRules
 	RULE 10 : IF PINKYdistance IS far THEN Runaway IS calm;
 	RULE 11 : IF INKYdistance IS far THEN Runaway IS calm;
 	RULE 12 : IF SUEdistance IS far THEN Runaway IS calm;
+
 	RULE 13 : IF BLINKYdanger IS high THEN Flee IS emergency;
 	RULE 14 : IF PINKYdanger IS high THEN Flee IS emergency;
 	RULE 15 : IF INKYdanger IS high THEN Flee IS emergency;
@@ -335,30 +336,113 @@ RULEBLOCK MsPacManRules
 	RULE 26 : IF PINKYdistanceToTunnel IS near AND PINKYdanger IS high THEN SearchForTunnel IS emergency;
 	RULE 27 : IF INKYdistanceToTunnel IS near AND INKYdanger IS high THEN SearchForTunnel IS emergency;
 	RULE 28 : IF SUEdistanceToTunnel IS near AND SUEdanger IS high THEN SearchForTunnel IS emergency;
-	//RULE 29 : IF BLINKYtimeInLair IS low AND BLINKYdistanceToPacman IS far THEN GoToPPill IS emergency;
-	//RULE 30 : IF PINKYtimeInLair IS low AND PINKYdistanceToPacman IS far THEN GoToPPill IS emergency;
-	//RULE 31 : IF INKYtimeInLair IS low AND INKYdistanceToPacman IS far THEN GoToPPill IS emergency;
-	//RULE 32 : IF SUEtimeInLair IS low AND SUEdistanceToPacman IS far THEN GoToPPill IS emergency;
+	//RULE 29 : IF BLINKYtimeInLair IS low AND BLINKYdistanceToPacman IS near THEN Chase IS emergency;
+	//RULE 30 : IF PINKYtimeInLair IS low AND PINKYdistanceToPacman IS near THEN Chase IS emergency;
+	//RULE 31 : IF INKYtimeInLair IS low AND INKYdistanceToPacman IS near THEN Chase IS emergency;
+	//RULE 32 : IF SUEtimeInLair IS low AND SUEdistanceToPacman IS near THEN Chase IS emergency;
 	RULE 33 : IF BLINKYdistanceToTunnel IS far AND BLINKYdistanceToPacman IS medium THEN disperse IS nervious;
 	RULE 34 : IF PINKYdistanceToTunnel IS far AND PINKYdistanceToPacman IS medium THEN disperse IS nervious;
 	RULE 35 : IF INKYdistanceToTunnel IS far AND INKYdistanceToPacman IS medium THEN disperse IS nervious;
 	RULE 36 : IF SUEdistanceToTunnel IS far AND SUEdistanceToPacman IS medium THEN disperse IS nervious;
-	RULE 37 : IF (BLINKYedibleTime IS high) AND (PacmanDistanceToBLINKY IS near) THEN Flee IS emergency;
-	RULE 38 : IF (PINKYedibleTime IS high) AND (PacmanDistanceToPINKY IS near) THEN Flee IS emergency;
-	RULE 39 : IF (INKYedibleTime IS high) AND (PacmanDistanceToINKY IS near) THEN Flee IS emergency;
-	RULE 40 : IF (SUEedibleTime IS high) AND (PacmanDistanceToSUE IS near) THEN Flee IS emergency;
-	RULE 41 : IF (BLINKYedibleTime IS high) AND (PacmanDistanceToBLINKY IS medium) THEN Flee IS nervious;
-	RULE 42 : IF (PINKYedibleTime IS high) AND (PacmanDistanceToPINKY IS medium) THEN Flee IS nervious;
-	RULE 43 : IF (INKYedibleTime IS high) AND (PacmanDistanceToINKY IS medium) THEN Flee IS nervious;
-	RULE 44 : IF (SUEedibleTime IS high) AND (PacmanDistanceToSUE IS medium) THEN Flee IS nervious;
-	RULE 45 : IF (BLINKYedibleTime IS high) AND (PacmanDistanceToBLINKY IS far) THEN FleeFromPPill IS nervious;
-	RULE 46 : IF (PINKYedibleTime IS high) AND (PacmanDistanceToPINKY IS far) THEN FleeFromPPill IS nervious;
-	RULE 47 : IF (INKYedibleTime IS high) AND (PacmanDistanceToINKY IS far) THEN FleeFromPPill IS nervious;
-	RULE 48 : IF (SUEedibleTime IS high) AND (PacmanDistanceToSUE IS far) THEN FleeFromPPill IS nervious;
+	RULE 37 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS near THEN Flee IS emergency;
+	RULE 38 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS near THEN Flee IS emergency;
+	RULE 39 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS near THEN Flee IS emergency;
+	RULE 40 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS near THEN Flee IS emergency;
+	RULE 41 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS medium THEN Flee IS nervious;
+	RULE 42 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS medium THEN Flee IS nervious;
+	RULE 43 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS medium THEN Flee IS nervious;
+	RULE 44 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS medium THEN Flee IS nervious;
+	RULE 45 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS far THEN FleeFromPPill IS nervious;
+	RULE 46 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS far THEN FleeFromPPill IS nervious;
+	RULE 47 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS far THEN FleeFromPPill IS nervious;
+	RULE 48 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS far THEN FleeFromPPill IS nervious;
 	RULE 49 : IF BLINKYedibleTime IS low AND BLINKYdistanceToPacman IS far THEN FleeFromPPill IS nervious;
 	RULE 50 : IF PINKYedibleTime IS low AND PINKYdistanceToPacman IS far THEN FleeFromPPill IS nervious;
 	RULE 51 : IF INKYedibleTime IS low AND INKYdistanceToPacman IS far THEN FleeFromPPill IS nervious;
 	RULE 52 : IF SUEedibleTime IS low AND SUEdistanceToPacman IS far THEN FleeFromPPill IS nervious;
+	RULE 53 : IF BLINKYdanger IS high AND BLINKYedibleTime IS medium THEN Flee IS emergency;
+	RULE 54 : IF PINKYdanger IS high AND PINKYedibleTime IS medium THEN Flee IS emergency;
+	RULE 55 : IF INKYdanger IS high AND INKYedibleTime IS medium THEN Flee IS emergency;
+	RULE 56 : IF SUEdanger IS high AND SUEedibleTime IS medium THEN Flee IS emergency;
+	RULE 57 : IF BLINKYdanger IS high AND BLINKYedibleTime IS low THEN Flee IS emergency;
+	RULE 58 : IF PINKYdanger IS high AND PINKYedibleTime IS low THEN Flee IS emergency;
+	RULE 59 : IF INKYdanger IS high AND INKYedibleTime IS low THEN Flee IS emergency;
+	RULE 60 : IF SUEdanger IS high AND SUEedibleTime IS low THEN Flee IS emergency;
+	RULE 61 : IF BLINKYtimeInLair IS high THEN Wait IS emergency;
+	RULE 62 : IF PINKYtimeInLair IS high THEN Wait IS emergency;
+	RULE 63 : IF INKYtimeInLair IS high THEN Wait IS emergency;
+	RULE 64 : IF SUEtimeInLair IS high THEN Wait IS emergency;
+	RULE 65 : IF BLINKYdanger IS low AND BLINKYdistanceToPacman IS far THEN Flank IS emergency;
+	RULE 66 : IF PINKYdanger IS low AND PINKYdistanceToPacman IS far THEN Flank IS emergency;
+	RULE 67 : IF INKYdanger IS low AND INKYdistanceToPacman IS far THEN Flank IS emergency;
+	RULE 68 : IF SUEdanger IS low AND SUEdistanceToPacman IS far THEN Flank IS emergency;
+	RULE 69 : IF BLINKYdanger IS low AND BLINKYdistanceToPacman IS medium THEN Flank IS nervious;
+	RULE 70 : IF PINKYdanger IS low AND PINKYdistanceToPacman IS medium THEN Flank IS nervious;
+	RULE 71 : IF INKYdanger IS low AND INKYdistanceToPacman IS medium THEN Flank IS nervious;
+	RULE 72 : IF SUEdanger IS low AND SUEdistanceToPacman IS medium THEN Flank IS nervious;
+	RULE 73 : IF BLINKYdanger IS low THEN Flee IS calm;
+	RULE 74 : IF PINKYdanger IS low THEN Flee IS calm;
+	RULE 75 : IF INKYdanger IS low THEN Flee IS calm;
+	RULE 76 : IF SUEdanger IS low THEN Flee IS calm;
+	RULE 77 : IF PacmanDistanceToPPill IS near AND BLINKYdistanceToPacman IS medium THEN Disperse IS nervious;
+	RULE 78 : IF PacmanDistanceToPPill IS near AND PINKYdistanceToPacman IS medium THEN Disperse IS nervious;
+	RULE 79 : IF PacmanDistanceToPPill IS near AND INKYdistanceToPacman IS medium THEN Disperse IS nervious;
+	RULE 80 : IF PacmanDistanceToPPill IS near AND SUEdistanceToPacman IS medium THEN Disperse IS nervious;
+	RULE 81 : IF GhostsCloseIndex IS near AND BLINKYdistanceToPacman IS near THEN Disperse IS emergency;
+	RULE 82 : IF GhostsCloseIndex IS near AND PINKYdistanceToPacman IS near THEN Disperse IS emergency;
+	RULE 83 : IF GhostsCloseIndex IS near AND INKYdistanceToPacman IS near THEN Disperse IS emergency;
+	RULE 84 : IF GhostsCloseIndex IS near AND SUEdistanceToPacman IS near THEN Disperse IS emergency;
+	RULE 85 : IF GhostsCloseIndex IS near AND BLINKYdistanceToPacman IS medium THEN Flank IS emergency;
+	RULE 86 : IF GhostsCloseIndex IS near AND PINKYdistanceToPacman IS medium THEN Flank IS emergency;
+	RULE 87 : IF GhostsCloseIndex IS near AND INKYdistanceToPacman IS medium THEN Flank IS emergency;
+	RULE 88 : IF GhostsCloseIndex IS near AND SUEdistanceToPacman IS medium THEN Flank IS emergency;
+	RULE 89 : IF PacmanDistanceToTunnel IS near AND BLINKYdistanceToPacman IS near THEN Chase IS nervious;
+	RULE 90 : IF PacmanDistanceToTunnel IS near AND PINKYdistanceToPacman IS near THEN Chase IS nervious;
+	RULE 91 : IF PacmanDistanceToTunnel IS near AND INKYdistanceToPacman IS near THEN Chase IS nervious;
+	RULE 92 : IF PacmanDistanceToTunnel IS near AND SUEdistanceToPacman IS near THEN Chase IS nervious;
+	RULE 93 : IF PacmanDistanceToPPill IS near AND BLINKYdistanceToPacman IS near THEN FleeFromPPill IS emergency;
+	RULE 94 : IF PacmanDistanceToPPill IS near AND PINKYdistanceToPacman IS near THEN FleeFromPPill IS emergency;
+	RULE 95 : IF PacmanDistanceToPPill IS near AND INKYdistanceToPacman IS near THEN FleeFromPPill IS emergency;
+	RULE 96 : IF PacmanDistanceToPPill IS near AND SUEdistanceToPacman IS near THEN FleeFromPPill IS emergency;
+	RULE 97 : IF BLINKYedibleTime IS low AND BLINKYdistanceToPacman IS far THEN Flee IS calm;
+	RULE 98 : IF PINKYedibleTime IS low AND PINKYdistanceToPacman IS far THEN Flee IS calm;
+	RULE 99 : IF INKYedibleTime IS low AND INKYdistanceToPacman IS far THEN Flee IS calm;
+	RULE 100 : IF SUEedibleTime IS low AND SUEdistanceToPacman IS far THEN Flee IS calm;
+	RULE 101 : IF BLINKYedibleTime IS medium AND BLINKYdistanceToPacman IS far THEN Flee IS nervious;
+	RULE 102 : IF PINKYedibleTime IS medium AND PINKYdistanceToPacman IS far THEN Flee IS nervious;
+	RULE 103 : IF INKYedibleTime IS medium AND INKYdistanceToPacman IS far THEN Flee IS nervious;
+	RULE 104 : IF SUEedibleTime IS medium AND SUEdistanceToPacman IS far THEN Flee IS nervious;
+	
+
+
+	/* PINKYdistanceToPacman : REAL;
+	PacmanDistanceToPINKY : REAL;
+	PINKYdanger : REAL;
+	PINKYtimeInLair : REAL;
+	PINKYdistanceToTunnel : REAL;
+	PINKYedibleTime : REAL;
+	PINKYcollisionIndex : REAL;
+
+
+	PacmanConfidence : REAL;
+	PacmanDistanceToPPill : REAL;	
+	PacmanDistanceToTunnel : REAL;
+	GhostsCloseIndex : REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	Runaway : REAL;
+	GoToPPill: REAL;
+	Chase: REAL;
+	Disperse: REAL;
+	Flank: REAL;
+	Flee: REAL;
+	FleeFromPPill: REAL;
+	GoToPPill: REAL;
+	SearchForTunnel: REAL;
+	Wait: REAL;
+END_VAR */
+
 	
 	
 END_RULEBLOCK
