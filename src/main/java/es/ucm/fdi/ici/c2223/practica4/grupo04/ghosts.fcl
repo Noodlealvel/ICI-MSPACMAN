@@ -1,0 +1,763 @@
+FUNCTION_BLOCK FuzzyGhosts	// Block definition (there may be more than one block per file)
+
+VAR_INPUT				// Define input variables
+	BLINKYdistanceToPacman : REAL;
+	PacmanDistanceToBLINKY : REAL;
+	BLINKYdanger : REAL;
+	BLINKYtimeInLair : REAL;
+	BLINKYdistanceToTunnel : REAL;
+	BLINKYedibleTime : REAL;
+	BLINKYcollisionIndex : REAL;
+	
+	INKYdistanceToPacman : REAL;
+	PacmanDistanceToINKY : REAL;
+	INKYdanger : REAL;
+	INKYtimeInLair : REAL;
+	INKYdistanceToTunnel : REAL;
+	INKYedibleTime : REAL;
+	INKYcollisionIndex : REAL;
+
+	SUEdistanceToPacman : REAL;
+	PacmanDistanceToSUE : REAL;
+	SUEdanger : REAL;
+	SUEtimeInLair : REAL;
+	SUEdistanceToTunnel : REAL;
+	SUEedibleTime : REAL;
+	SUEcollisionIndex : REAL;
+
+	PINKYdistanceToPacman : REAL;
+	PacmanDistanceToPINKY : REAL;
+	PINKYdanger : REAL;
+	PINKYtimeInLair : REAL;
+	PINKYdistanceToTunnel : REAL;
+	PINKYedibleTime : REAL;
+	PINKYcollisionIndex : REAL;
+
+
+	PacmanConfidence : REAL;
+	PacmanDistanceToPPill : REAL;	
+	PacmanDistanceToTunnel : REAL;
+	GhostsCloseIndex : REAL;
+END_VAR
+
+VAR_OUTPUT				// Define output variable
+	BLINKYgoToPPill: REAL;
+	BLINKYchase: REAL;
+	BLINKYdisperse: REAL;
+	BLINKYflank: REAL;
+	BLINKYflee: REAL;
+	BLINKYfleeFromPPill: REAL;
+	BLINKYsearchForTunnel: REAL;
+	BLINKYwait: REAL;
+	
+	PINKYgoToPPill: REAL;
+	PINKYchase: REAL;
+	PINKYdisperse: REAL;
+	PINKYflank: REAL;
+	PINKYflee: REAL;
+	PINKYfleeFromPPill: REAL;
+	PINKYsearchForTunnel: REAL;
+	PINKYwait: REAL;
+	
+	SUEgoToPPill: REAL;
+	SUEchase: REAL;
+	SUEdisperse: REAL;
+	SUEflank: REAL;
+	SUEflee: REAL;
+	SUEfleeFromPPill: REAL;
+	SUEsearchForTunnel: REAL;
+	SUEwait: REAL;
+	
+	INKYgoToPPill: REAL;
+	INKYchase: REAL;
+	INKYdisperse: REAL;
+	INKYflank: REAL;
+	INKYflee: REAL;
+	INKYfleeFromPPill: REAL;
+	INKYsearchForTunnel: REAL;
+	INKYwait: REAL;
+END_VAR
+
+FUZZIFY BLINKYdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToBLINKY	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY BLINKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY BLINKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY BLINKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY BLINKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY BLINKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY SUEdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToSUE
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY SUEdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY SUEtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY SUEdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY SUEedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY SUEcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY PINKYdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToPINKY
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PINKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY PINKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY PINKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PINKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY PINKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+FUZZIFY INKYdistanceToPacman	
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY PacmanDistanceToINKY
+	TERM near := (0, 1) (60, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY INKYdanger
+	TERM low := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY INKYtimeInLair
+	TERM low := (0, 1) (40, 0) ; 
+	TERM medium := gauss 50 15;
+	TERM high := (60, 0) (80, 1) (200, 1);
+END_FUZZIFY 
+FUZZIFY INKYdistanceToTunnel
+	TERM near := (0, 1) (30, 0) ; 
+	TERM medium := gauss 50 25;
+	TERM far := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY
+FUZZIFY INKYedibleTime
+	TERM low := (0, 1) (20, 0) ; 
+	TERM medium := gauss 50 30;
+	TERM high := (70, 0) (100, 1) (200, 1);
+END_FUZZIFY  
+FUZZIFY INKYcollisionIndex
+	TERM low := (0, 1) (50, 0) ; 
+	TERM medium := gauss 75 25;
+	TERM high := (100, 0) (170, 1) (200, 1);
+END_FUZZIFY 
+
+
+FUZZIFY PacmanConfidence			
+	TERM low := (0,1)(25,1)(50,0) ; 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
+END_FUZZIFY
+
+FUZZIFY PacmanDistanceToPPill			
+	TERM near := (0, 1) (60, 0); 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+FUZZIFY PacmanDistanceToTunnel			
+	TERM near := (0, 1) (60, 0); 
+	TERM medium := gauss 75 25;
+	TERM far := (90, 0) (150, 1) (200, 1);
+END_FUZZIFY
+
+FUZZIFY GhostsCloseIndex			
+	TERM low := (0,1)(25,1)(50,0); 
+	TERM medium := gauss 50 25;
+	TERM high := (50,0)(75,1)(100,1);
+END_FUZZIFY
+
+DEFUZZIFY BLINKYgoToPPill			
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		
+	DEFAULT := 0;		
+END_DEFUZZIFY
+	
+DEFUZZIFY BLINKYchase
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYdisperse
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYflank
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYflee
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYfleeFromPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYgoToPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYsearchForTunnel
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY BLINKYwait
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYgoToPPill			
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		
+	DEFAULT := 0;		
+END_DEFUZZIFY
+	
+DEFUZZIFY PINKYchase
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYdisperse
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYflank
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYflee
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYfleeFromPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYgoToPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYsearchForTunnel
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY PINKYwait
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYgoToPPill			
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		
+	DEFAULT := 0;		
+END_DEFUZZIFY
+	
+DEFUZZIFY INKYchase
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYdisperse
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYflank
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYflee
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYfleeFromPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYgoToPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYsearchForTunnel
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY INKYwait
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEgoToPPill			
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;		
+	DEFAULT := 0;		
+END_DEFUZZIFY
+	
+DEFUZZIFY SUEchase
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEdisperse
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEflank
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEflee
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEfleeFromPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEgoToPPill
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEsearchForTunnel
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY SUEwait
+	TERM calm := (0,1) (5,1) (15,0);
+	TERM nervous := gauss 15 5;
+	TERM emergency := (15,0) (25,1) (30,1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+
+RULEBLOCK MsPacManRules
+	AND : MIN;			// Use 'min' for 'and' (also implicit use 'max' for 'or' to fulfill DeMorgan's Law)
+	ACT : MIN;			// Use 'min' activation method
+	ACCU : MAX;			// Use 'MAX' accumulation method (Other options PROBOR and SUM)
+
+	RULE 1 : IF BLINKYconfidence IS medium THEN BLINKYgoToPPill IS nervous;
+	RULE 2 : IF BLINKYdistance IS far THEN BLINKYflee IS calm;
+	RULE 3 : IF BLINKYdanger IS high THEN BLINKYflee IS emergency;
+	RULE 4 : IF BLINKYdanger IS medium AND BLINKYedibleTime IS medium AND PacmanConfidence IS high THEN BLINKYflee IS nervous;
+	RULE 5 : IF BLINKYdistanceToTunnel IS near AND BLINKYdanger IS medium THEN BLINKYsearchForTunnel IS nervous;
+	RULE 6 : IF BLINKYdistanceToTunnel IS near AND BLINKYdanger IS high THEN BLINKYsearchForTunnel IS emergency;
+	RULE 7 : IF BLINKYtimeInLair IS low AND BLINKYdistanceToPacman IS near THEN BLINKYchase IS emergency;
+	RULE 8 : IF BLINKYdistanceToTunnel IS far AND BLINKYdistanceToPacman IS medium THEN BLINKYdisperse IS nervous;
+	RULE 9 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS near THEN BLINKYflee IS emergency;
+	RULE 10 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS medium THEN BLINKYflee IS nervous;
+	RULE 11 : IF BLINKYedibleTime IS high AND PacmanDistanceToBLINKY IS far THEN BLINKYfleeFromPPill IS nervous;
+	RULE 12 : IF BLINKYedibleTime IS low AND BLINKYdistanceToPacman IS far THEN BLINKYfleeFromPPill IS nervous;
+	RULE 13 : IF BLINKYdanger IS high AND BLINKYedibleTime IS medium AND PacmanConfidence IS high THEN BLINKYflee IS emergency;
+	RULE 14 : IF BLINKYdanger IS high AND BLINKYedibleTime IS low AND PacmanConfidence IS high THEN BLINKYflee IS emergency;
+	RULE 15 : IF BLINKYtimeInLair IS high THEN BLINKYwait IS emergency;
+	RULE 16 : IF BLINKYdanger IS low AND BLINKYdistanceToPacman IS far THEN BLINKYflank IS emergency;
+	RULE 17 : IF BLINKYdanger IS low AND BLINKYdistanceToPacman IS medium THEN BLINKYflank IS nervous;
+	RULE 18 : IF BLINKYdanger IS low THEN BLINKYflee IS calm;
+	RULE 19 : IF PacmanDistanceToPPill IS near AND BLINKYdistanceToPacman IS medium THEN BLINKYdisperse IS nervous;
+	RULE 20 : IF GhostsCloseIndex IS high AND BLINKYdistanceToPacman IS far THEN BLINKYdisperse IS nervous;
+	RULE 21 : IF GhostsCloseIndex IS high AND BLINKYdistanceToPacman IS medium THEN BLINKYdisperse IS nervous;
+	RULE 22 : IF PacmanDistanceToTunnel IS near AND BLINKYdistanceToPacman IS near THEN BLINKYchase IS nervous;
+	RULE 23 : IF PacmanDistanceToPPill IS near AND BLINKYdistanceToPacman IS near THEN BLINKYfleeFromPPill IS emergency;
+	RULE 24 : IF BLINKYedibleTime IS low AND BLINKYdistanceToPacman IS far THEN BLINKYflee IS calm;
+	RULE 25 : IF BLINKYedibleTime IS medium AND BLINKYdistanceToPacman IS far THEN BLINKYflee IS nervous;
+	RULE 26 : IF BLINKYtimeInLair IS medium THEN BLINKYwait IS nervous;
+	RULE 105 : IF BLINKYcollisionIndex IS high AND PacmanConfidence IS high THEN BLINKYflank IS emergency;
+	RULE 27 : IF BLINKYdanger IS medium AND BLINKYedibleTime IS medium AND PacmanConfidence IS medium THEN BLINKYflee IS nervous;
+	RULE 28 : IF BLINKYdanger IS medium AND BLINKYedibleTime IS medium AND PacmanConfidence IS low THEN BLINKYflee IS calm;
+	RULE 29 : IF BLINKYdanger IS high AND BLINKYedibleTime IS medium AND PacmanConfidence IS high THEN BLINKYflee IS emergency;
+	RULE 30 : IF BLINKYdanger IS high AND BLINKYedibleTime IS medium AND PacmanConfidence IS medium THEN BLINKYflee IS emergency;
+	RULE 31 : IF BLINKYdanger IS high AND BLINKYedibleTime IS medium AND PacmanConfidence IS low THEN BLINKYflee IS nervous;
+	RULE 106 : IF BLINKYdanger IS low AND BLINKYedibleTime IS medium AND PacmanConfidence IS high THEN BLINKYflee IS calm;
+	RULE 32 : IF BLINKYdanger IS low AND BLINKYedibleTime IS medium AND PacmanConfidence IS medium THEN BLINKYflee IS calm;
+	RULE 33 : IF BLINKYdanger IS low AND BLINKYedibleTime IS medium AND PacmanConfidence IS low THEN BLINKYflee IS nervous;
+	RULE 34 : IF BLINKYdanger IS low AND BLINKYedibleTime IS low AND PacmanConfidence IS low THEN BLINKYdisperse IS emergency;
+	RULE 35 : IF BLINKYdanger IS low AND BLINKYedibleTime IS low AND PacmanConfidence IS medium THEN BLINKYdisperse IS nervous;
+	RULE 36 : IF BLINKYdanger IS low AND BLINKYedibleTime IS low AND PacmanConfidence IS high THEN BLINKYdisperse IS calm;
+	RULE 37 : IF BLINKYdanger IS low AND PacmanConfidence IS high THEN BLINKYchase IS emergency;
+	RULE 38 : IF BLINKYdanger IS low AND PacmanConfidence IS high THEN BLINKYchase IS emergency;
+	RULE 39 : IF BLINKYdanger IS low AND PacmanConfidence IS medium THEN BLINKYchase IS nervous;
+	RULE 40 : IF BLINKYdanger IS low AND PacmanConfidence IS low THEN BLINKYchase IS nervous;
+	RULE 41 : IF BLINKYdanger IS low AND PacmanConfidence IS low THEN BLINKYchase IS nervous;
+	RULE 42 : IF BLINKYdanger IS low AND PacmanConfidence IS low THEN BLINKYsearchForTunnel IS emergency;
+	RULE 43 : IF BLINKYdanger IS low AND PacmanConfidence IS low THEN BLINKYsearchForTunnel IS emergency;
+	RULE 44 : IF GhostsCloseIndex IS high AND BLINKYdistanceToPacman IS far AND BLINKYdanger IS high THEN BLINKYdisperse IS emergency;
+	RULE 45 : IF GhostsCloseIndex IS medium AND BLINKYdistanceToPacman IS far AND BLINKYdanger IS high THEN BLINKYdisperse IS emergency;
+	RULE 46 : IF GhostsCloseIndex IS medium AND BLINKYdistanceToPacman IS far AND BLINKYdanger IS medium THEN BLINKYdisperse IS nervous;
+	RULE 47 : IF BLINKYconfidence IS high AND PacmanDistanceToPPill IS medium THEN BLINKYgoToPPill IS emergency;
+	RULE 48 : IF BLINKYconfidence IS medium AND PacmanDistanceToPPill IS medium THEN BLINKYgoToPPill IS nervous;
+	RULE 49 : IF PacmanDistanceToTunnel IS near AND BLINKYdistanceToPacman IS near AND PacmanConfidence IS high THEN BLINKYchase IS emergency;
+	RULE 50 : IF PacmanDistanceToTunnel IS near AND BLINKYdistanceToPacman IS near AND PacmanConfidence IS low THEN BLINKYchase IS calm;
+	RULE 51 : IF PacmanDistanceToTunnel IS near AND BLINKYdistanceToPacman IS near AND PacmanConfidence IS low THEN BLINKYchase IS calm;
+	
+	RULE 52 : IF PINKYconfidence IS medium THEN PINKYgoToPPill IS nervous;
+	RULE 53 : IF PINKYdistance IS far THEN PINKYflee IS calm;
+	RULE 54 : IF PINKYdanger IS high THEN PINKYflee IS emergency;
+	RULE 55 : IF PINKYdanger IS medium AND PINKYedibleTime IS medium AND PacmanConfidence IS high THEN PINKYflee IS nervous;
+	RULE 56 : IF PINKYdistanceToTunnel IS near AND PINKYdanger IS medium THEN PINKYsearchForTunnel IS nervous;
+	RULE 57 : IF PINKYdistanceToTunnel IS near AND PINKYdanger IS high THEN PINKYsearchForTunnel IS emergency;
+	RULE 58 : IF PINKYtimeInLair IS low AND PINKYdistanceToPacman IS near THEN PINKYchase IS emergency;
+	RULE 59 : IF PINKYdistanceToTunnel IS far AND PINKYdistanceToPacman IS medium THEN PINKYdisperse IS nervous;
+	RULE 60 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS near THEN PINKYflee IS emergency;
+	RULE 61 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS medium THEN PINKYflee IS nervous;
+	RULE 62 : IF PINKYedibleTime IS high AND PacmanDistanceToPINKY IS far THEN PINKYfleeFromPPill IS nervous;
+	RULE 63 : IF PINKYedibleTime IS low AND PINKYdistanceToPacman IS far THEN PINKYfleeFromPPill IS nervous;
+	RULE 64 : IF PINKYdanger IS high AND PINKYedibleTime IS medium AND PacmanConfidence IS high THEN PINKYflee IS emergency;
+	RULE 65 : IF PINKYdanger IS high AND PINKYedibleTime IS low AND PacmanConfidence IS high THEN PINKYflee IS emergency;
+	RULE 66 : IF PINKYtimeInLair IS high THEN PINKYwait IS emergency;
+	RULE 67 : IF PINKYdanger IS low AND PINKYdistanceToPacman IS far THEN PINKYflank IS emergency;
+	RULE 68 : IF PINKYdanger IS low AND PINKYdistanceToPacman IS medium THEN PINKYflank IS nervous;
+	RULE 69 : IF PINKYdanger IS low THEN PINKYflee IS calm;
+	RULE 70 : IF PacmanDistanceToPPill IS near AND PINKYdistanceToPacman IS medium THEN PINKYdisperse IS nervous;
+	RULE 71 : IF GhostsCloseIndex IS high AND PINKYdistanceToPacman IS far THEN PINKYdisperse IS nervous;
+	RULE 72 : IF GhostsCloseIndex IS high AND PINKYdistanceToPacman IS medium THEN PINKYdisperse IS nervous;
+	RULE 73 : IF PacmanDistanceToTunnel IS near AND PINKYdistanceToPacman IS near THEN PINKYchase IS nervous;
+	RULE 74 : IF PacmanDistanceToPPill IS near AND PINKYdistanceToPacman IS near THEN PINKYfleeFromPPill IS emergency;
+	RULE 75 : IF PINKYedibleTime IS low AND PINKYdistanceToPacman IS far THEN PINKYflee IS calm;
+	RULE 76 : IF PINKYedibleTime IS medium AND PINKYdistanceToPacman IS far THEN PINKYflee IS nervous;
+	RULE 77 : IF PINKYtimeInLair IS medium THEN PINKYwait IS nervous;
+	RULE 78 : IF PINKYcollisionIndex IS high AND PacmanConfidence IS high THEN PINKYflank IS emergency;
+	RULE 79 : IF PINKYdanger IS medium AND PINKYedibleTime IS medium AND PacmanConfidence IS medium THEN PINKYflee IS nervous;
+	RULE 80 : IF PINKYdanger IS medium AND PINKYedibleTime IS medium AND PacmanConfidence IS low THEN PINKYflee IS calm;
+	RULE 81 : IF PINKYdanger IS high AND PINKYedibleTime IS medium AND PacmanConfidence IS high THEN PINKYflee IS emergency;
+	RULE 82 : IF PINKYdanger IS high AND PINKYedibleTime IS medium AND PacmanConfidence IS medium THEN PINKYflee IS emergency;
+	RULE 83 : IF PINKYdanger IS high AND PINKYedibleTime IS medium AND PacmanConfidence IS low THEN PINKYflee IS nervous;
+	RULE 84 : IF PINKYdanger IS low AND PINKYedibleTime IS medium AND PacmanConfidence IS high THEN PINKYflee IS calm;
+	RULE 85 : IF PINKYdanger IS low AND PINKYedibleTime IS medium AND PacmanConfidence IS medium THEN PINKYflee IS calm;
+	RULE 86 : IF PINKYdanger IS low AND PINKYedibleTime IS medium AND PacmanConfidence IS low THEN PINKYflee IS nervous;
+	RULE 87 : IF PINKYdanger IS low AND PINKYedibleTime IS low AND PacmanConfidence IS low THEN PINKYdisperse IS emergency;
+	RULE 88 : IF PINKYdanger IS low AND PINKYedibleTime IS low AND PacmanConfidence IS medium THEN PINKYdisperse IS nervous;
+	RULE 89 : IF PINKYdanger IS low AND PINKYedibleTime IS low AND PacmanConfidence IS high THEN PINKYdisperse IS calm;
+	RULE 90 : IF PINKYdanger IS low AND PacmanConfidence IS high THEN PINKYchase IS emergency;
+	RULE 91 : IF PINKYdanger IS low AND PacmanConfidence IS high THEN PINKYchase IS emergency;
+	RULE 92 : IF PINKYdanger IS low AND PacmanConfidence IS medium THEN PINKYchase IS nervous;
+	RULE 93 : IF PINKYdanger IS low AND PacmanConfidence IS low THEN PINKYchase IS nervous;
+	RULE 94 : IF PINKYdanger IS low AND PacmanConfidence IS low THEN PINKYchase IS nervous;
+	RULE 95 : IF PINKYdanger IS low AND PacmanConfidence IS low THEN PINKYsearchForTunnel IS emergency;
+	RULE 96 : IF PINKYdanger IS low AND PacmanConfidence IS low THEN PINKYsearchForTunnel IS emergency;
+	RULE 97 : IF GhostsCloseIndex IS high AND PINKYdistanceToPacman IS far AND PINKYdanger IS high THEN PINKYdisperse IS emergency;
+	RULE 98 : IF GhostsCloseIndex IS medium AND PINKYdistanceToPacman IS far AND PINKYdanger IS high THEN PINKYdisperse IS emergency;
+	RULE 99 : IF GhostsCloseIndex IS medium AND PINKYdistanceToPacman IS far AND PINKYdanger IS medium THEN PINKYdisperse IS nervous;
+	RULE 100 : IF PINKYconfidence IS high AND PacmanDistanceToPPill IS medium THEN PINKYgoToPPill IS emergency;
+	RULE 101 : IF PINKYconfidence IS medium AND PacmanDistanceToPPill IS medium THEN PINKYgoToPPill IS nervous;
+	RULE 102 : IF PacmanDistanceToTunnel IS near AND PINKYdistanceToPacman IS near AND PacmanConfidence IS high THEN PINKYchase IS emergency;
+	RULE 103 : IF PacmanDistanceToTunnel IS near AND PINKYdistanceToPacman IS near AND PacmanConfidence IS low THEN PINKYchase IS calm;
+	RULE 104 : IF PacmanDistanceToTunnel IS near AND PINKYdistanceToPacman IS near AND PacmanConfidence IS low THEN PINKYchase IS calm;
+	
+	RULE 107 : IF INKYconfidence IS medium THEN INKYgoToPPill IS nervous;
+	RULE 108 : IF INKYdistance IS far THEN INKYflee IS calm;
+	RULE 109 : IF INKYdanger IS high THEN INKYflee IS emergency;
+	RULE 110 : IF INKYdanger IS medium AND INKYedibleTime IS medium AND PacmanConfidence IS high THEN INKYflee IS nervous;
+	RULE 111 : IF INKYdistanceToTunnel IS near AND INKYdanger IS medium THEN INKYsearchForTunnel IS nervous;
+	RULE 112 : IF INKYdistanceToTunnel IS near AND INKYdanger IS high THEN INKYsearchForTunnel IS emergency;
+	RULE 113 : IF INKYtimeInLair IS low AND INKYdistanceToPacman IS near THEN INKYchase IS emergency;
+	RULE 114 : IF INKYdistanceToTunnel IS far AND INKYdistanceToPacman IS medium THEN INKYdisperse IS nervous;
+	RULE 115 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS near THEN INKYflee IS emergency;
+	RULE 116 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS medium THEN INKYflee IS nervous;
+	RULE 117 : IF INKYedibleTime IS high AND PacmanDistanceToINKY IS far THEN INKYfleeFromPPill IS nervous;
+	RULE 118 : IF INKYedibleTime IS low AND INKYdistanceToPacman IS far THEN INKYfleeFromPPill IS nervous;
+	RULE 119 : IF INKYdanger IS high AND INKYedibleTime IS medium AND PacmanConfidence IS high THEN INKYflee IS emergency;
+	RULE 120 : IF INKYdanger IS high AND INKYedibleTime IS low AND PacmanConfidence IS high THEN INKYflee IS emergency;
+	RULE 121 : IF INKYtimeInLair IS high THEN INKYwait IS emergency;
+	RULE 122 : IF INKYdanger IS low AND INKYdistanceToPacman IS far THEN INKYflank IS emergency;
+	RULE 123 : IF INKYdanger IS low AND INKYdistanceToPacman IS medium THEN INKYflank IS nervous;
+	RULE 124 : IF INKYdanger IS low THEN INKYflee IS calm;
+	RULE 125 : IF PacmanDistanceToPPill IS near AND INKYdistanceToPacman IS medium THEN INKYdisperse IS nervous;
+	RULE 126 : IF GhostsCloseIndex IS high AND INKYdistanceToPacman IS far THEN INKYdisperse IS nervous;
+	RULE 127 : IF GhostsCloseIndex IS high AND INKYdistanceToPacman IS medium THEN INKYdisperse IS nervous;
+	RULE 128 : IF PacmanDistanceToTunnel IS near AND INKYdistanceToPacman IS near THEN INKYchase IS nervous;
+	RULE 129 : IF PacmanDistanceToPPill IS near AND INKYdistanceToPacman IS near THEN INKYfleeFromPPill IS emergency;
+	RULE 130 : IF INKYedibleTime IS low AND INKYdistanceToPacman IS far THEN INKYflee IS calm;
+	RULE 131 : IF INKYedibleTime IS medium AND INKYdistanceToPacman IS far THEN INKYflee IS nervous;
+	RULE 132 : IF INKYtimeInLair IS medium THEN INKYwait IS nervous;
+	RULE 133 : IF INKYcollisionIndex IS high AND PacmanConfidence IS high THEN INKYflank IS emergency;
+	RULE 134 : IF INKYdanger IS medium AND INKYedibleTime IS medium AND PacmanConfidence IS medium THEN INKYflee IS nervous;
+	RULE 135 : IF INKYdanger IS medium AND INKYedibleTime IS medium AND PacmanConfidence IS low THEN INKYflee IS calm;
+	RULE 136 : IF INKYdanger IS high AND INKYedibleTime IS medium AND PacmanConfidence IS high THEN INKYflee IS emergency;
+	RULE 137 : IF INKYdanger IS high AND INKYedibleTime IS medium AND PacmanConfidence IS medium THEN INKYflee IS emergency;
+	RULE 138 : IF INKYdanger IS high AND INKYedibleTime IS medium AND PacmanConfidence IS low THEN INKYflee IS nervous;
+	RULE 139 : IF INKYdanger IS low AND INKYedibleTime IS medium AND PacmanConfidence IS high THEN INKYflee IS calm;
+	RULE 140 : IF INKYdanger IS low AND INKYedibleTime IS medium AND PacmanConfidence IS medium THEN INKYflee IS calm;
+	RULE 141 : IF INKYdanger IS low AND INKYedibleTime IS medium AND PacmanConfidence IS low THEN INKYflee IS nervous;
+	RULE 142 : IF INKYdanger IS low AND INKYedibleTime IS low AND PacmanConfidence IS low THEN INKYdisperse IS emergency;
+	RULE 143 : IF INKYdanger IS low AND INKYedibleTime IS low AND PacmanConfidence IS medium THEN INKYdisperse IS nervous;
+	RULE 144 : IF INKYdanger IS low AND INKYedibleTime IS low AND PacmanConfidence IS high THEN INKYdisperse IS calm;
+	RULE 145 : IF INKYdanger IS low AND PacmanConfidence IS high THEN INKYchase IS emergency;
+	RULE 146 : IF INKYdanger IS low AND PacmanConfidence IS high THEN INKYchase IS emergency;
+	RULE 147 : IF INKYdanger IS low AND PacmanConfidence IS medium THEN INKYchase IS nervous;
+	RULE 148 : IF INKYdanger IS low AND PacmanConfidence IS low THEN INKYchase IS nervous;
+	RULE 149 : IF INKYdanger IS low AND PacmanConfidence IS low THEN INKYchase IS nervous;
+	RULE 150 : IF INKYdanger IS low AND PacmanConfidence IS low THEN INKYsearchForTunnel IS emergency;
+	RULE 151 : IF INKYdanger IS low AND PacmanConfidence IS low THEN INKYsearchForTunnel IS emergency;
+	RULE 152 : IF GhostsCloseIndex IS high AND INKYdistanceToPacman IS far AND INKYdanger IS high THEN INKYdisperse IS emergency;
+	RULE 153 : IF GhostsCloseIndex IS medium AND INKYdistanceToPacman IS far AND INKYdanger IS high THEN INKYdisperse IS emergency;
+	RULE 154 : IF GhostsCloseIndex IS medium AND INKYdistanceToPacman IS far AND INKYdanger IS medium THEN INKYdisperse IS nervous;
+	RULE 155 : IF INKYconfidence IS high AND PacmanDistanceToPPill IS medium THEN INKYgoToPPill IS emergency;
+	RULE 156 : IF INKYconfidence IS medium AND PacmanDistanceToPPill IS medium THEN INKYgoToPPill IS nervous;
+	RULE 157 : IF PacmanDistanceToTunnel IS near AND INKYdistanceToPacman IS near AND PacmanConfidence IS high THEN INKYchase IS emergency;
+	RULE 158 : IF PacmanDistanceToTunnel IS near AND INKYdistanceToPacman IS near AND PacmanConfidence IS low THEN INKYchase IS calm;
+	RULE 159 : IF PacmanDistanceToTunnel IS near AND INKYdistanceToPacman IS near AND PacmanConfidence IS low THEN INKYchase IS calm;
+	
+	RULE 160 : IF SUEconfidence IS medium THEN SUEgoToPPill IS nervous;
+	RULE 161 : IF SUEdistance IS far THEN SUEflee IS calm;
+	RULE 162 : IF SUEdanger IS high THEN SUEflee IS emergency;
+	RULE 163 : IF SUEdanger IS medium AND SUEedibleTime IS medium AND PacmanConfidence IS high THEN SUEflee IS nervous;
+	RULE 164 : IF SUEdistanceToTunnel IS near AND SUEdanger IS medium THEN SUEsearchForTunnel IS nervous;
+	RULE 165 : IF SUEdistanceToTunnel IS near AND SUEdanger IS high THEN SUEsearchForTunnel IS emergency;
+	RULE 166 : IF SUEtimeInLair IS low AND SUEdistanceToPacman IS near THEN SUEchase IS emergency;
+	RULE 167 : IF SUEdistanceToTunnel IS far AND SUEdistanceToPacman IS medium THEN SUEdisperse IS nervous;
+	RULE 168 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS near THEN SUEflee IS emergency;
+	RULE 169 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS medium THEN SUEflee IS nervous;
+	RULE 170 : IF SUEedibleTime IS high AND PacmanDistanceToSUE IS far THEN SUEfleeFromPPill IS nervous;
+	RULE 171 : IF SUEedibleTime IS low AND SUEdistanceToPacman IS far THEN SUEfleeFromPPill IS nervous;
+	RULE 172 : IF SUEdanger IS high AND SUEedibleTime IS medium AND PacmanConfidence IS high THEN SUEflee IS emergency;
+	RULE 173 : IF SUEdanger IS high AND SUEedibleTime IS low AND PacmanConfidence IS high THEN SUEflee IS emergency;
+	RULE 174 : IF SUEtimeInLair IS high THEN SUEwait IS emergency;
+	RULE 175 : IF SUEdanger IS low AND SUEdistanceToPacman IS far THEN SUEflank IS emergency;
+	RULE 176 : IF SUEdanger IS low AND SUEdistanceToPacman IS medium THEN SUEflank IS nervous;
+	RULE 177 : IF SUEdanger IS low THEN SUEflee IS calm;
+	RULE 178 : IF PacmanDistanceToPPill IS near AND SUEdistanceToPacman IS medium THEN SUEdisperse IS nervous;
+	RULE 179 : IF GhostsCloseIndex IS high AND SUEdistanceToPacman IS far THEN SUEdisperse IS nervous;
+	RULE 180 : IF GhostsCloseIndex IS high AND SUEdistanceToPacman IS medium THEN SUEdisperse IS nervous;
+	RULE 181 : IF PacmanDistanceToTunnel IS near AND SUEdistanceToPacman IS near THEN SUEchase IS nervous;
+	RULE 182 : IF PacmanDistanceToPPill IS near AND SUEdistanceToPacman IS near THEN SUEfleeFromPPill IS emergency;
+	RULE 183 : IF SUEedibleTime IS low AND SUEdistanceToPacman IS far THEN SUEflee IS calm;
+	RULE 184 : IF SUEedibleTime IS medium AND SUEdistanceToPacman IS far THEN SUEflee IS nervous;
+	RULE 185 : IF SUEtimeInLair IS medium THEN SUEwait IS nervous;
+	RULE 186 : IF SUEcollisionIndex IS high AND PacmanConfidence IS high THEN SUEflank IS emergency;
+	RULE 187 : IF SUEdanger IS medium AND SUEedibleTime IS medium AND PacmanConfidence IS medium THEN SUEflee IS nervous;
+	RULE 188 : IF SUEdanger IS medium AND SUEedibleTime IS medium AND PacmanConfidence IS low THEN SUEflee IS calm;
+	RULE 189 : IF SUEdanger IS high AND SUEedibleTime IS medium AND PacmanConfidence IS high THEN SUEflee IS emergency;
+	RULE 190 : IF SUEdanger IS high AND SUEedibleTime IS medium AND PacmanConfidence IS medium THEN SUEflee IS emergency;
+	RULE 191 : IF SUEdanger IS high AND SUEedibleTime IS medium AND PacmanConfidence IS low THEN SUEflee IS nervous;
+	RULE 192 : IF SUEdanger IS low AND SUEedibleTime IS medium AND PacmanConfidence IS high THEN SUEflee IS calm;
+	RULE 193 : IF SUEdanger IS low AND SUEedibleTime IS medium AND PacmanConfidence IS medium THEN SUEflee IS calm;
+	RULE 194 : IF SUEdanger IS low AND SUEedibleTime IS medium AND PacmanConfidence IS low THEN SUEflee IS nervous;
+	RULE 195 : IF SUEdanger IS low AND SUEedibleTime IS low AND PacmanConfidence IS low THEN SUEdisperse IS emergency;
+	RULE 196 : IF SUEdanger IS low AND SUEedibleTime IS low AND PacmanConfidence IS medium THEN SUEdisperse IS nervous;
+	RULE 197 : IF SUEdanger IS low AND SUEedibleTime IS low AND PacmanConfidence IS high THEN SUEdisperse IS calm;
+	RULE 198 : IF SUEdanger IS low AND PacmanConfidence IS high THEN SUEchase IS emergency;
+	RULE 199 : IF SUEdanger IS low AND PacmanConfidence IS high THEN SUEchase IS emergency;
+	RULE 200 : IF SUEdanger IS low AND PacmanConfidence IS medium THEN SUEchase IS nervous;
+	RULE 201 : IF SUEdanger IS low AND PacmanConfidence IS low THEN SUEchase IS nervous;
+	RULE 202 : IF SUEdanger IS low AND PacmanConfidence IS low THEN SUEchase IS nervous;
+	RULE 203 : IF SUEdanger IS low AND PacmanConfidence IS low THEN SUEsearchForTunnel IS emergency;
+	RULE 204 : IF SUEdanger IS low AND PacmanConfidence IS low THEN SUEsearchForTunnel IS emergency;
+	RULE 205 : IF GhostsCloseIndex IS high AND SUEdistanceToPacman IS far AND SUEdanger IS high THEN SUEdisperse IS emergency;
+	RULE 206 : IF GhostsCloseIndex IS medium AND SUEdistanceToPacman IS far AND SUEdanger IS high THEN SUEdisperse IS emergency;
+	RULE 207 : IF GhostsCloseIndex IS medium AND SUEdistanceToPacman IS far AND SUEdanger IS medium THEN SUEdisperse IS nervous;
+	RULE 208 : IF SUEconfidence IS high AND PacmanDistanceToPPill IS medium THEN SUEgoToPPill IS emergency;
+	RULE 209 : IF SUEconfidence IS medium AND PacmanDistanceToPPill IS medium THEN SUEgoToPPill IS nervous;
+	RULE 210 : IF PacmanDistanceToTunnel IS near AND SUEdistanceToPacman IS near AND PacmanConfidence IS high THEN SUEchase IS emergency;
+	RULE 211 : IF PacmanDistanceToTunnel IS near AND SUEdistanceToPacman IS near AND PacmanConfidence IS low THEN SUEchase IS calm;
+	RULE 212 : IF PacmanDistanceToTunnel IS near AND SUEdistanceToPacman IS near AND PacmanConfidence IS low THEN SUEchase IS calm;
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
