@@ -36,7 +36,7 @@ public class Ghosts extends GhostController {
 
 	public Ghosts() {
 		setName("Ghosts 04");
-		setTeam("Team04");
+		setTeam("Grupo 04");
 		
 		fuzzyMemory = new GhostsFuzzyMemory();
 		
