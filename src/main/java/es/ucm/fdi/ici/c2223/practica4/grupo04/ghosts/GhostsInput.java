@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2223.practica4.grupo04;
+package es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts;
 
 import java.util.HashMap;
 
@@ -17,17 +17,13 @@ public class GhostsInput extends Input {
 	private double pacmanDistanceToPPill;
 	private double ghostsCloseIndex;
 	private int nearestPPillToPacman;
-	/*private static final int SECURITY_DISTANCE = 60;
-	private static final int CHASE = 50;
-	private static final int LOW_TIME = 10;
-	private static final int CLOSE_PACMAN_DISTANCE = 20;
-	private static final int CLOSE_GHOSTS = 120;*/
 	public GhostsInput(Game game, int lastPacmanPosition) {
 		super(game);
 		pacmanPosition = lastPacmanPosition;
 	}
 	@Override
 	public void parseInput() {
+		ghostsInfoMap = new HashMap<GHOST,HashMap<GhostsRelevantInfo, Double>>();
 		pacmanIsVisible = game.getPacmanCurrentNodeIndex() != -1;
 		if (pacmanIsVisible) {
 			pacmanPosition = game.getPacmanCurrentNodeIndex();
@@ -40,8 +36,8 @@ public class GhostsInput extends Input {
 			HashMap<GhostsRelevantInfo, Double> ghostMap = new HashMap<GhostsRelevantInfo, Double>();
 			if (game.getGhostLairTime(ghost) <= 0) {
 				ghostMap.put(GhostsRelevantInfo.DISTANCE_TO_PACMAN, game.getDistance(game.getGhostCurrentNodeIndex(ghost),pacmanPosition, game.getGhostLastMoveMade(ghost), DM.PATH));
-				ghostMap.put(GhostsRelevantInfo.PACMAN_DISTANCE_TO_GHOST, game.getDistance(pacmanPosition, game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade(), DM.PATH));
-				ghostMap.put(GhostsRelevantInfo.COLLISION_INDEX, GhostsUtils.PathContainsGhosts(game, ghost)? 200.0 : GhostsUtils.numberOfGhostsCloser(game,pacmanPosition,ghost)*25);
+				ghostMap.put(GhostsRelevantInfo.PACMAN_DISTANCE_TO_GHOST, game.getDistance(pacmanPosition, game.getGhostCurrentNodeIndex(ghost), DM.PATH));
+				ghostMap.put(GhostsRelevantInfo.COLLISION_INDEX, GhostsUtils.PathContainsGhosts(game, ghost, pacmanPosition)? 200.0 : GhostsUtils.numberOfGhostsCloser(game,pacmanPosition,ghost)*25);
 			}
 			else {
 				ghostMap.put(GhostsRelevantInfo.DISTANCE_TO_PACMAN, 200.0);

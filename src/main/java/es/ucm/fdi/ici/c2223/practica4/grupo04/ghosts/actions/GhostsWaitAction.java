@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2223.practica4.grupo04.actions;
+package es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions;
 
 import pacman.game.Game;
 import es.ucm.fdi.ici.Action;

@@ -2,7 +2,6 @@ package es.ucm.fdi.ici.c2223.practica4.grupo04.pacman;
 
 import java.util.HashMap;
 
-import es.ucm.fdi.ici.c2223.practica4.grupo04.MsPacManFuzzyMemory;
 import es.ucm.fdi.ici.fuzzy.FuzzyInput;
 import pacman.game.Game;
 import pacman.game.Constants.GHOST;

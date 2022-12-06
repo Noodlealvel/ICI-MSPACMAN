@@ -2,7 +2,7 @@ package es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.actions;
 
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.c2223.practica2.grupo04.MsPacmanFSM.MsPacmanUtils;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.MsPacManFuzzyMemory;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MsPacManFuzzyMemory;
 import pacman.game.Game;
 import pacman.game.Constants.DM;
 import pacman.game.Constants.GHOST;

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import es.ucm.fdi.ici.Action;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MaxActionSelector;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MsPacManFuzzyMemory;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.MsPacmanInput;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.pacman.actions.*;
 import es.ucm.fdi.ici.fuzzy.ActionSelector;

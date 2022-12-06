@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.c2223.practica4.grupo04;
+package es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts;
 
 import pacman.game.Game;
 
@@ -109,8 +109,8 @@ public class GhostsUtils {
 		return point;
 	}
 	
-	static public boolean PathContainsGhosts(Game game, GHOST ghost) {
-		int[] path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost));
+	static public boolean PathContainsGhosts(Game game, GHOST ghost, int pacmanPosition) {
+		int[] path = game.getShortestPath(game.getGhostCurrentNodeIndex(ghost), pacmanPosition, game.getGhostLastMoveMade(ghost));
 		if (path != null) {
 			for (int node : path) {
 				for (GHOST ghosts : GHOST.values()) {

@@ -8,15 +8,16 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import es.ucm.fdi.ici.Action;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsChaseAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsDisperseAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFlankAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFleeAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsFleeFromPPillAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsGoToPPillAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsSearchForTunnelAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsWaitAction;
-import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.MaxActionSelector;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.GhostsFuzzyMemory;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.GhostsInput;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsChaseAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsDisperseAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsFlankAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsFleeAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsFleeFromPPillAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsGoToPPillAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsSearchForTunnelAction;
+import es.ucm.fdi.ici.c2223.practica4.grupo04.ghosts.actions.GhostsWaitAction;
 import es.ucm.fdi.ici.fuzzy.ActionSelector;
 import es.ucm.fdi.ici.fuzzy.FuzzyEngine;
 import es.ucm.fdi.ici.fuzzy.observers.ConsoleFuzzyEngineObserver;
@@ -39,27 +40,25 @@ public class Ghosts extends GhostController {
 		
 		fuzzyMemory = new GhostsFuzzyMemory();
 		
-		Action[] actions = new Action[4*ACTION_NUMBER] ;
+		Action[] actions = new Action[GHOST.values().length*ACTION_NUMBER] ;
 		
 		for(GHOST ghost : GHOST.values()){
 			int j = 0;
-			actions[ghost.ordinal()+j++] = new GhostsChaseAction(ghost , fuzzyMemory);
-			actions[ghost.ordinal()+j++] = new GhostsDisperseAction(ghost);
-			actions[ghost.ordinal()+j++] = new GhostsFlankAction(ghost, fuzzyMemory);
-			actions[ghost.ordinal()+j++] = new GhostsFleeAction(ghost, fuzzyMemory);
-			actions[ghost.ordinal()+j++] = new GhostsFleeFromPPillAction(ghost);
-			actions[ghost.ordinal()+j++] = new GhostsGoToPPillAction(ghost);
-			actions[ghost.ordinal()+j++] = new GhostsSearchForTunnelAction(ghost);
-			actions[ghost.ordinal()+j++] = new GhostsWaitAction(ghost);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsChaseAction(ghost , fuzzyMemory);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsDisperseAction(ghost);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsFlankAction(ghost, fuzzyMemory);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsFleeAction(ghost, fuzzyMemory);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsFleeFromPPillAction(ghost);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsGoToPPillAction(ghost);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsSearchForTunnelAction(ghost);
+			actions[ghost.ordinal()*ACTION_NUMBER+j++] = new GhostsWaitAction(ghost);
 		}
 		ActionSelector actionSelector = new MaxActionSelector(actions);
 		
 		engineMap = new HashMap<GHOST, FuzzyEngine>();
 		
 		for(GHOST ghost : GHOST.values()) {	
-			ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver(ghost.toString(),ghost.toString()+"Rules");
 			fuzzyEngine = new FuzzyEngine(ghost.toString(), RULES_PATH+"\\ghosts.fcl",ghost.toString()+"fuzzyGhosts",actionSelector);
-			fuzzyEngine.addObserver(observer);
 			engineMap.put(ghost, fuzzyEngine);
 		}
 	}
@@ -71,13 +70,8 @@ public class Ghosts extends GhostController {
 		input.parseInput();
 		fuzzyMemory.getInput(input);
 		
-		HashMap<String, Double> fvars = input.getFuzzyValues();
-		fvars.putAll(fuzzyMemory.getFuzzyValues());
 		for (GHOST ghost : GHOST.values()) {
-			for(Entry<String, Double> set :fvars.entrySet()) {
-				if (!set.getKey().contains(ghost.name()));
-					fvars.remove(set.getKey());
-			}
+			HashMap<String, Double> fvars = fuzzyMemory.getFuzzyValues(ghost);
 			map.put(ghost, engineMap.get(ghost).run(fvars,game));
 		}
 		return map;
