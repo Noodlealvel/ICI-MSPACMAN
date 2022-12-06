@@ -23,9 +23,8 @@ public class MsPacMan extends PacmanController {
 	
 	public MsPacMan()
 	{
-		setName("MsPacMan 04 Test");
-		setTeam("MsPacMan 04 Test");
-
+		setName("MsPacMan 04");
+		setTeam("Grupo 04");
 	 	Action[] actions = {new ChasePowerPillAction(), new RunAwayBlinky(), new RunAwayPinky(), new RunAwayInky(), new RunAwaySue(), new ChaseGhostBlinky(), new ChaseGhostPinky(), new ChaseGhostInky(), new ChaseGhostSue()};
 		
 		ActionSelector actionSelector = new MaxActionSelector(actions);
