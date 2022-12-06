@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import es.ucm.fdi.ici.Action;
 import es.ucm.fdi.ici.c2223.practica4.grupo04.actions.GhostsChaseAction;
@@ -26,7 +27,8 @@ import pacman.game.Game;
 
 public class Ghosts extends GhostController {
 
-	private static final String RULES_PATH = "es"+File.separator+"ucm"+File.separator+"fdi"+File.separator+"ici"+File.separator+"c2223"+File.separator+"practica4"+File.separator+"grupo04"+File.separator;
+	private static final String RULES_PATH = "src\\main\\java\\es\\ucm\\fdi\\ici\\c2223\\practica4\\grupo04";
+	private static final int ACTION_NUMBER = 8;
 	private FuzzyEngine fuzzyEngine;
 	private GhostsFuzzyMemory fuzzyMemory;
 	private HashMap<GHOST, FuzzyEngine> engineMap;
@@ -37,25 +39,26 @@ public class Ghosts extends GhostController {
 		
 		fuzzyMemory = new GhostsFuzzyMemory();
 		
-		List<Action> actionList = new ArrayList<Action>();
+		Action[] actions = new Action[4*ACTION_NUMBER] ;
 		
-		for(GHOST ghost : GHOST.values()) {
-			actionList.add(new GhostsChaseAction(ghost, fuzzyMemory));
-			actionList.add(new GhostsDisperseAction(ghost));
-			actionList.add(new GhostsFlankAction(ghost, fuzzyMemory));
-			actionList.add(new GhostsFleeAction(ghost, fuzzyMemory));
-			actionList.add(new GhostsFleeFromPPillAction(ghost));
-			actionList.add(new GhostsGoToPPillAction(ghost));
-			actionList.add(new GhostsSearchForTunnelAction(ghost));
-			actionList.add(new GhostsWaitAction(ghost));
+		for(GHOST ghost : GHOST.values()){
+			int j = 0;
+			actions[ghost.ordinal()+j++] = new GhostsChaseAction(ghost , fuzzyMemory);
+			actions[ghost.ordinal()+j++] = new GhostsDisperseAction(ghost);
+			actions[ghost.ordinal()+j++] = new GhostsFlankAction(ghost, fuzzyMemory);
+			actions[ghost.ordinal()+j++] = new GhostsFleeAction(ghost, fuzzyMemory);
+			actions[ghost.ordinal()+j++] = new GhostsFleeFromPPillAction(ghost);
+			actions[ghost.ordinal()+j++] = new GhostsGoToPPillAction(ghost);
+			actions[ghost.ordinal()+j++] = new GhostsSearchForTunnelAction(ghost);
+			actions[ghost.ordinal()+j++] = new GhostsWaitAction(ghost);
 		}
-		
-		Action[] actions = (Action[]) actionList.toArray();
 		ActionSelector actionSelector = new MaxActionSelector(actions);
+		
+		engineMap = new HashMap<GHOST, FuzzyEngine>();
 		
 		for(GHOST ghost : GHOST.values()) {	
 			ConsoleFuzzyEngineObserver observer = new ConsoleFuzzyEngineObserver(ghost.toString(),ghost.toString()+"Rules");
-			fuzzyEngine = new FuzzyEngine(ghost.toString(),RULES_PATH+"ghosts.fcl",ghost.toString()+"fuzzyGhosts",actionSelector);
+			fuzzyEngine = new FuzzyEngine(ghost.toString(), RULES_PATH+"\\ghosts.fcl",ghost.toString()+"fuzzyGhosts",actionSelector);
 			fuzzyEngine.addObserver(observer);
 			engineMap.put(ghost, fuzzyEngine);
 		}
@@ -71,6 +74,10 @@ public class Ghosts extends GhostController {
 		HashMap<String, Double> fvars = input.getFuzzyValues();
 		fvars.putAll(fuzzyMemory.getFuzzyValues());
 		for (GHOST ghost : GHOST.values()) {
+			for(Entry<String, Double> set :fvars.entrySet()) {
+				if (!set.getKey().contains(ghost.name()));
+					fvars.remove(set.getKey());
+			}
 			map.put(ghost, engineMap.get(ghost).run(fvars,game));
 		}
 		return map;
