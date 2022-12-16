@@ -1,9 +1,7 @@
-package es.ucm.fdi.ici.practica5.grupoXX;
+package es.ucm.fdi.ici.c2223.practica5.grupo04;
 
 import es.ucm.fdi.gaia.jcolibri.exception.ExecutionException;
-import es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManCBRengine;
-import es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManInput;
-import es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManStorageManager;
+import es.ucm.fdi.ici.c2223.practica5.grupo04.pacman.*;
 import pacman.controllers.PacmanController;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;

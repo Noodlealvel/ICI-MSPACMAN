@@ -4,11 +4,24 @@
 	<DescriptionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManDescription</DescriptionClassName>
 	<DescriptionMappings>
 		<Map>id</Map>
-		<Map>score</Map>
-		<Map>time</Map>
-		<Map>nearestPPill</Map>		
-		<Map>nearestGhost</Map>		
-		<Map>edibleGhost</Map>		
+		<Map>BlinkyDistance</Map>
+		<Map>PinkyDistance</Map>
+		<Map>InkyDistance</Map>
+		<Map>SueDistance</Map>
+		<Map>PacmanDBlinky</Map>
+		<Map>PacmanDPinky</Map>
+		<Map>PacmanDInky</Map>
+		<Map>PacmanDSue</Map>
+		<Map>PPillUp</Map>
+		<Map>PPillDown</Map>
+		<Map>PPillRight</Map>
+		<Map>PPillLeft</Map>
+		<Map>BlinkyTimeEdible</Map>
+		<Map>PinkyTimeEdible</Map>
+		<Map>InkyTimeEdible</Map>
+		<Map>SueTimeEdible</Map>
+		<Map>numPills</Map>
+		<Map>eatValue</Map>		
 	</DescriptionMappings>
 	<SolutionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManSolution</SolutionClassName>
 	<SolutionMappings>

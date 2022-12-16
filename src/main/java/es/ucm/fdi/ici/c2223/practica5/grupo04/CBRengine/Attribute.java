@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.practica5.grupoXX.CBRengine;
+package es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import es.ucm.fdi.gaia.jcolibri.exception.AttributeAccessException;
-import es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManDescription;
+import es.ucm.fdi.ici.c2223.practica5.grupo04.pacman.MsPacManDescription;
 
 @SuppressWarnings("rawtypes")
 public class Attribute extends es.ucm.fdi.gaia.jcolibri.cbrcore.Attribute {

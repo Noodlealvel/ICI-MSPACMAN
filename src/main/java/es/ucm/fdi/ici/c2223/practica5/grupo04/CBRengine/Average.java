@@ -1,4 +1,4 @@
-package es.ucm.fdi.ici.practica5.grupoXX.CBRengine;
+package es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine;
 
 import java.lang.reflect.Field;
 
