@@ -1,7 +1,7 @@
 <TextFileConfiguration>
 	<FilePath>not used</FilePath>
 	<Delimiters>,</Delimiters>
-	<DescriptionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManDescription</DescriptionClassName>
+	<DescriptionClassName>es.ucm.fdi.ici.practica5.grupo04.pacman.MsPacManDescription</DescriptionClassName>
 	<DescriptionMappings>
 		<Map>id</Map>
 		<Map>BlinkyDistance</Map>
@@ -16,6 +16,10 @@
 		<Map>PPillDown</Map>
 		<Map>PPillRight</Map>
 		<Map>PPillLeft</Map>
+		<Map>PillUp</Map>
+		<Map>PillDown</Map>
+		<Map>PillRight</Map>
+		<Map>PillLeft</Map>
 		<Map>BlinkyTimeEdible</Map>
 		<Map>PinkyTimeEdible</Map>
 		<Map>InkyTimeEdible</Map>
@@ -23,12 +27,12 @@
 		<Map>numPills</Map>
 		<Map>eatValue</Map>		
 	</DescriptionMappings>
-	<SolutionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManSolution</SolutionClassName>
+	<SolutionClassName>es.ucm.fdi.ici.practica5.grupo04.pacman.MsPacManSolution</SolutionClassName>
 	<SolutionMappings>
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.practica5.grupo04.pacman.MsPacManResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>
