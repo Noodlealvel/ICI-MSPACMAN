@@ -125,6 +125,63 @@ GHOST ghost;
 		
 	}
 
+	public GHOST getGhost() {
+		return ghost;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public double getBlinkyDist() {
+		return BlinkyDistance;
+	}
+	
+	public double getInkyDist() {
+		return InkyDistance;
+	}
+	
+	public double getSueDist() {
+		return SueDistance;
+	}
+
+	public double getPinkyDist() {
+		return PinkyDistance;
+	}
+
+	public Boolean getNoPPills() {
+		return noPPills;
+	}
+
+	public double getPacBlinkyDist() {
+		return PacmanDBlinky;
+	}
+	
+	public double getPacInkyDist() {
+		return PacmanDInky;
+	}
+	
+	public double getPacPinkyDist() {
+		return PacmanDPinky;
+	}
+	
+	public double getPacSueDist() {
+		return PacmanDSue;
+	}
+
+	public int getTimeEdible() {
+		
+		return timeEdible;
+	}
+
+	public double getCloseIndex() {
+		return ghostsCloseIndex;
+	}
+
+	public int getNearestPPillDist() {
+		return PPillDistance;
+	}
+
 
 	
 	

@@ -2,6 +2,8 @@ package es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import es.ucm.fdi.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.Attribute;
@@ -11,7 +13,6 @@ import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRQuery;
 import es.ucm.fdi.gaia.jcolibri.exception.ExecutionException;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
-import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
@@ -19,6 +20,8 @@ import es.ucm.fdi.gaia.jcolibri.util.FileIO;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.Average;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.CachedLinearCaseBase;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.CustomPlainTextConnector;
+import es.ucm.fdi.ici.c2223.practica5.grupo04.pacman.MsPacManDescription;
+import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 
 public class GhostCBRengine implements StandardCBRApplication {
@@ -30,18 +33,20 @@ public class GhostCBRengine implements StandardCBRApplication {
 	CustomPlainTextConnector connector;
 	CBRCaseBase caseBase;
 	NNConfig simConfig;
+	private GHOST ghost;
 	
 	
 	final static String TEAM = "grupo04";  //Cuidado!! poner el grupo aqu√≠
 	
 	
-	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/practica5/"+TEAM+"/mspacman/plaintextconfig.xml";
-	final static String CASE_BASE_PATH = "cbrdata"+File.separator+TEAM+File.separator+"mspacman"+File.separator;
+	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/practica5/"+TEAM+"/ghosts/plaintextconfig.xml";
+	final static String CASE_BASE_PATH = "cbrdata"+File.separator+TEAM+File.separator+"ghosts"+File.separator;
 
 	
-	public GhostCBRengine(GhostStorageManager storageManager)
+	public GhostCBRengine(GhostStorageManager storageManager, GHOST ghost)
 	{
 		this.storageManager = storageManager;
+		this.ghost = ghost;
 	}
 	
 	public void setOpponent(String opponent) {
@@ -57,17 +62,31 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		//Do not use default case base path in the xml file. Instead use custom file path for each opponent.
 		//Note that you can create any subfolder of files to store the case base inside your "cbrdata/grupoXX" folder.
-		connector.setCaseBaseFile(CASE_BASE_PATH, opponent+".csv");
+		connector.setCaseBaseFile(CASE_BASE_PATH, opponent+ghost.toString()+".csv");
 		
 		this.storageManager.setCaseBase(caseBase);
 		
 		simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
-		simConfig.addMapping(new Attribute("score",GhostDescription.class), new Interval(15000));
-		simConfig.addMapping(new Attribute("time",GhostDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("nearestPPill",GhostDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("nearestGhost",GhostDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("edibleGhost",GhostDescription.class), new Equal());
+		
+		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(15000));
+		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(4));
+		simConfig.addMapping(new Attribute("ghost",MsPacManDescription.class), new Interval(4));
+		simConfig.addMapping(new Attribute("BlinkyDistance",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("PinkyDistance",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("InkyDistance",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("SueDistance",MsPacManDescription.class), new Interval(650));
+		
+		simConfig.addMapping(new Attribute("PacmanDBlinky",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("PacmanDPinky",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("PacmanDInky",MsPacManDescription.class), new Interval(650));
+		simConfig.addMapping(new Attribute("PacmanDSue",MsPacManDescription.class), new Interval(650));
+		
+		simConfig.addMapping(new Attribute("noPPills",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("nearestPPill",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("ghostCloseIndex",MsPacManDescription.class), new Equal());
+		
+		simConfig.addMapping(new Attribute("edibleTime",MsPacManDescription.class), new Interval(15000));
 		
 	}
 
@@ -84,7 +103,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		}
 		else {
 			//Compute retrieve
-			Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
+			Collection<RetrievalResult> eval = NNnuevo(caseBase.getCases(), query);
 			//Compute reuse
 			this.action = reuse(eval);
 		}
@@ -93,6 +112,42 @@ public class GhostCBRengine implements StandardCBRApplication {
 		CBRCase newCase = createNewCase(query);
 		this.storageManager.reviseAndRetain(newCase);
 		
+	}
+	
+	// Obtener m·s parecidos
+		private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
+			List<RetrievalResult> res = casos.parallelStream()
+					.map(c -> new RetrievalResult(c, Similaridad((GhostDescription)query.getDescription(), (GhostDescription) c.getDescription())))
+			        .collect(Collectors.toList());
+			
+			res.sort(RetrievalResult::compareTo);
+			return res;
+		}
+		
+
+	private Double Similaridad(GhostDescription des1, GhostDescription des2) {
+		if (des1.getGhost() != des2.getGhost()) return 0.0;
+		if(des1.getLevel() != des1.getLevel()) return 0.0;
+		if((des1.getTimeEdible() > 0 && des2.getTimeEdible() == 0) || (des1.getTimeEdible() == 0 && des2.getTimeEdible() > 0)) return 0.0;
+		if(des1.getNoPPills() != des1.getNoPPills()) return 0.0;
+		
+		double similitud = 0.0;
+		
+		similitud  += Math.abs(des1.getBlinkyDist() - des2.getBlinkyDist()) * 0.1;
+		similitud  += Math.abs(des1.getInkyDist() - des2.getInkyDist()) * 0.1;
+		similitud  += Math.abs(des1.getPinkyDist() - des2.getPinkyDist()) * 0.1;
+		similitud  += Math.abs(des1.getSueDist() - des2.getSueDist()) * 0.1;
+		
+		similitud  += Math.abs(des1.getPacBlinkyDist() - des2.getPacBlinkyDist()) * 0.05;
+		similitud  += Math.abs(des1.getPacInkyDist() - des2.getPacInkyDist()) * 0.05;
+		similitud  += Math.abs(des1.getPacPinkyDist() - des2.getPacPinkyDist()) * 0.05;
+		similitud  += Math.abs(des1.getPacSueDist() - des2.getPacSueDist()) * 0.05;
+		
+		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
+		similitud += Math.abs(des1.getNearestPPillDist() - des2.getNearestPPillDist()) * 0.1;
+		similitud += Math.abs(des1.getCloseIndex() - des2.getCloseIndex()) * 0.1;
+		similitud += Math.abs(des1.getTimeEdible() - des2.getTimeEdible())* 0.1;
+		return similitud;
 	}
 
 	private MOVE reuse(Collection<RetrievalResult> eval)

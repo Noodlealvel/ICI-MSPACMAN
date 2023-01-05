@@ -19,10 +19,11 @@ public class Ghost extends GhostController {
 	EnumMap<GHOST, GhostInput> inputs;
 	private EnumMap<GHOST, MOVE> moves;
 	
-	final static String FILE_PATH = "cbrdata/grupo04/%s.csv"; 
-	
 	public Ghost()
 	{
+		setName("Ghosts 04");
+		setTeam("Grupo 04");
+		
 		moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 		inputs = new EnumMap<GHOST, GhostInput>(GHOST.class);
 		
@@ -32,7 +33,7 @@ public class Ghost extends GhostController {
 		this.storageManager = new GhostStorageManager();
 		
 		for (GHOST g : GHOST.values())
-			cbrEngines.put(g, new GhostCBRengine(storageManager));
+			cbrEngines.put(g, new GhostCBRengine(storageManager, g));
 	}
 	
 	@Override

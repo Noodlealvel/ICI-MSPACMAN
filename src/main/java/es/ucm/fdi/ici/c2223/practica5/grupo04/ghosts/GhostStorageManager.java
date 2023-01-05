@@ -13,7 +13,7 @@ public class GhostStorageManager {
 	CBRCaseBase caseBase;
 	Vector<CBRCase> buffer;
 
-	private final static int TIME_WINDOW = 3;
+	private final static int TIME_WINDOW = 5;
 	
 	public GhostStorageManager()
 	{
