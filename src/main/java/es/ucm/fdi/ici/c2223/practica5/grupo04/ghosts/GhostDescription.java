@@ -2,19 +2,36 @@ package es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts;
 
 import es.ucm.fdi.gaia.jcolibri.cbrcore.Attribute;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CaseComponent;
+import pacman.game.Constants.GHOST;
 
 public class GhostDescription implements CaseComponent {
 
 	Integer id;
 	
-	Integer score;
-	Integer time;
-	Integer nearestPPill;
-	Integer nearestGhost;
-	Boolean edibleGhost;
+GHOST ghost;
 	
-	
+	Integer level;
 
+	double BlinkyDistance;
+	double PinkyDistance;
+	double InkyDistance;
+	double SueDistance;
+	
+	double PacmanDBlinky;
+	double PacmanDPinky;
+	double PacmanDInky;
+	double PacmanDSue;
+	
+	Integer PPillDistance;
+
+	Integer timeEdible;
+	
+	Boolean noPPills;
+	
+	double ghostsCloseIndex;
+
+	private int score;
+	
 
 	public Integer getId() {
 		return id;
@@ -24,55 +41,88 @@ public class GhostDescription implements CaseComponent {
 		this.id = id;
 	}
 
-	public Integer getScore() {
-		return score;
+	public void setBlinkyDistance(double blinkyDistance) {
+		BlinkyDistance = blinkyDistance;
 	}
 
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setPinkyDistance(double pinkyDistance) {
+		PinkyDistance = pinkyDistance;
 	}
 
-	public Integer getTime() {
-		return time;
+	public void setInkyDistance(double inkyDistance) {
+		InkyDistance = inkyDistance;
 	}
 
-	public void setTime(Integer time) {
-		this.time = time;
+	public void setSueDistance(double sueDistance) {
+		SueDistance = sueDistance;
 	}
 
-	public Integer getNearestPPill() {
-		return nearestPPill;
+	public void setPacmanDBlinky(double pacmanDBlinky) {
+		PacmanDBlinky = pacmanDBlinky;
 	}
 
-	public void setNearestPPill(Integer nearestPPill) {
-		this.nearestPPill = nearestPPill;
+	public void setPacmanDPinky(double pacmanDPinky) {
+		PacmanDPinky = pacmanDPinky;
 	}
 
-	public Integer getNearestGhost() {
-		return nearestGhost;
+	public void setPacmanDInky(double pacmanDInky) {
+		PacmanDInky = pacmanDInky;
 	}
 
-	public void setNearestGhost(Integer nearestGhost) {
-		this.nearestGhost = nearestGhost;
+	public void setPacmanDSue(double pacmanDSue) {
+		PacmanDSue = pacmanDSue;
 	}
-
-	public Boolean getEdibleGhost() {
-		return edibleGhost;
-	}
-
-	public void setEdibleGhost(Boolean edibleGhost) {
-		this.edibleGhost = edibleGhost;
-	}
+	
 
 	@Override
 	public Attribute getIdAttribute() {
 		return new Attribute("id", GhostDescription.class);
 	}
+	
 
 	@Override
 	public String toString() {
-		return "GhostDescription [id=" + id + ", score=" + score + ", time=" + time + ", nearestPPill="
-				+ nearestPPill + ", nearestGhost=" + nearestGhost + ", edibleGhost=" + edibleGhost + "]";
+		return "MsPacManDescription [id=" + id + ", level=" + level +", ghost=" + ghost + 
+				", BlinkyDistance=" + BlinkyDistance + ", PinkyDistance=" + PinkyDistance 
+				+ ", InkyDistance=" + InkyDistance + ", SueDistance=" + SueDistance + 
+				", PacmanDBlinky=" + PacmanDBlinky + ", PacmanDPinky=" + PacmanDPinky + 
+				", PacmanDInky=" + PacmanDInky + ", PacmanDSue=" + PacmanDSue + ", noPPills=" + noPPills +
+				", nearestPPill=" + PPillDistance + ", ghostCloseIndex=" + ghostsCloseIndex + ", edibleTime=" + timeEdible +
+				"]";
+	}
+
+	public void setLevel(Integer level2) {
+		this.level = level2;
+	}
+
+	public void setGhost(GHOST ghost2) {
+		this.ghost = ghost2;
+	}
+
+	public void setPPillDistance(Integer pPillDistance2) {
+		this.PPillDistance = pPillDistance2;
+	}
+
+	public void setTimeEdible(Integer timeEdible2) {
+		this.timeEdible = timeEdible2;
+		
+	}
+
+	public void setNoPPills(Boolean noPPills2) {
+		this.noPPills = noPPills2;
+	}
+
+	public void setCloseIndex(double ghostsCloseIndex2) {
+		this.ghostsCloseIndex = ghostsCloseIndex2;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score2) {
+		score = score2;
+		
 	}
 
 

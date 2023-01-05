@@ -1,21 +1,31 @@
 <TextFileConfiguration>
 	<FilePath>not used</FilePath>
 	<Delimiters>,</Delimiters>
-	<DescriptionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManDescription</DescriptionClassName>
+	<DescriptionClassName>es.ucm.fdi.ici.practica5.grupo04.mspacman.MsPacManDescription</DescriptionClassName>
 	<DescriptionMappings>
 		<Map>id</Map>
 		<Map>score</Map>
-		<Map>time</Map>
+		<Map>level</Map>
+		<Map>ghost</Map>
+		<Map>BlinkyDistance</Map>
+		<Map>PinkyDistance</Map>
+		<Map>InkyDistance</Map>
+		<Map>SueDistance</Map>
+		<Map>PacmanDBlinky</Map>
+		<Map>PacmanDPinky</Map>
+		<Map>PacmanDInky</Map>
+		<Map>PacmanDSue</Map>
+		<Map>noPPills</Map>	
 		<Map>nearestPPill</Map>		
-		<Map>nearestGhost</Map>		
-		<Map>edibleGhost</Map>		
+		<Map>ghostCloseIndex</Map>		
+		<Map>edibleTime</Map>		
 	</DescriptionMappings>
-	<SolutionClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManSolution</SolutionClassName>
+	<SolutionClassName>es.ucm.fdi.ici.practica5.grupo04.mspacman.MsPacManSolution</SolutionClassName>
 	<SolutionMappings>
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.ici.practica5.grupoXX.mspacman.MsPacManResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.practica5.grupo04.mspacman.MsPacManResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>

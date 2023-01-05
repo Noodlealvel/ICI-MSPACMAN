@@ -28,7 +28,7 @@ public class GhostSolution implements CaseComponent {
 	
 	@Override
 	public String toString() {
-		return "MsPacManSolution [id=" + id + ", action=" + action + "]";
+		return "GhostSolution [id=" + id + ", action=" + action + "]";
 	}  
 	
 	

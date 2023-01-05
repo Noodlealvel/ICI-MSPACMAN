@@ -31,7 +31,7 @@ public class GhostResult implements CaseComponent {
 	
 	@Override
 	public String toString() {
-		return "MsPacManResult [id=" + id + ", score=" + score + "]";
+		return "GhostsResult [id=" + id + ", score=" + score + "]";
 	} 
 	
 	
