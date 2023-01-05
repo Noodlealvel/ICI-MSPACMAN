@@ -13,6 +13,8 @@ public class MsPacMan extends PacmanController {
 		
 	public MsPacMan()
 	{		
+		setName("MsPacman 04");
+		setTeam("Grupo 04");
 		this.storageManager = new MsPacManStorageManager();
 		cbrEngine = new MsPacManCBRengine(storageManager);
 	}

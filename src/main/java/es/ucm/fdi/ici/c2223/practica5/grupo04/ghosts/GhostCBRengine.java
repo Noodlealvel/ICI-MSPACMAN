@@ -66,28 +66,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		this.storageManager.setCaseBase(caseBase);
 		
-		simConfig = new NNConfig();
-		simConfig.setDescriptionSimFunction(new Average());
-		
-		simConfig.addMapping(new Attribute("score",MsPacManDescription.class), new Interval(15000));
-		simConfig.addMapping(new Attribute("level",MsPacManDescription.class), new Interval(4));
-		simConfig.addMapping(new Attribute("ghost",MsPacManDescription.class), new Interval(4));
-		simConfig.addMapping(new Attribute("BlinkyDistance",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PinkyDistance",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("InkyDistance",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("SueDistance",MsPacManDescription.class), new Interval(650));
-		
-		simConfig.addMapping(new Attribute("PacmanDBlinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PacmanDPinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PacmanDInky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PacmanDSue",MsPacManDescription.class), new Interval(650));
-		
-		simConfig.addMapping(new Attribute("noPPills",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("nearestPPill",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("ghostCloseIndex",MsPacManDescription.class), new Equal());
-		
-		simConfig.addMapping(new Attribute("edibleTime",MsPacManDescription.class), new Interval(15000));
-		
 	}
 
 	@Override
