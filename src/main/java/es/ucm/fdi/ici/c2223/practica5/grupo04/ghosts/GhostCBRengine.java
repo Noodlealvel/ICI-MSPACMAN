@@ -6,21 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import es.ucm.fdi.gaia.jcolibri.cbraplications.StandardCBRApplication;
-import es.ucm.fdi.gaia.jcolibri.cbrcore.Attribute;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCaseBase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRQuery;
 import es.ucm.fdi.gaia.jcolibri.exception.ExecutionException;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
-import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
-import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Interval;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
 import es.ucm.fdi.gaia.jcolibri.util.FileIO;
-import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.Average;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.CachedLinearCaseBase;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.CustomPlainTextConnector;
-import es.ucm.fdi.ici.c2223.practica5.grupo04.pacman.MsPacManDescription;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 
