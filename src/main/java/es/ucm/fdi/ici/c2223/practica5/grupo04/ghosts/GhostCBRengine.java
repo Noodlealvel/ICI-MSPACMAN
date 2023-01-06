@@ -87,7 +87,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 	}
 	
-	// Obtener más parecidos
+	// Obtener mï¿½s parecidos
 		private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
 			List<RetrievalResult> res = casos.parallelStream()
 					.map(c -> new RetrievalResult(c, Similaridad((GhostDescription)query.getDescription(), (GhostDescription) c.getDescription())))
@@ -106,19 +106,19 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		double similitud = 0.0;
 		
-		similitud  += Math.abs(des1.getBlinkyDist() - des2.getBlinkyDist()) * 0.1;
-		similitud  += Math.abs(des1.getInkyDist() - des2.getInkyDist()) * 0.1;
-		similitud  += Math.abs(des1.getPinkyDist() - des2.getPinkyDist()) * 0.1;
-		similitud  += Math.abs(des1.getSueDist() - des2.getSueDist()) * 0.1;
+		similitud  += Math.abs(des1.getBlinkyDistance() - des2.getBlinkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getInkyDistance() - des2.getInkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getPinkyDistance() - des2.getPinkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getSueDistance() - des2.getSueDistance()) * 0.1;
 		
-		similitud  += Math.abs(des1.getPacBlinkyDist() - des2.getPacBlinkyDist()) * 0.05;
-		similitud  += Math.abs(des1.getPacInkyDist() - des2.getPacInkyDist()) * 0.05;
-		similitud  += Math.abs(des1.getPacPinkyDist() - des2.getPacPinkyDist()) * 0.05;
-		similitud  += Math.abs(des1.getPacSueDist() - des2.getPacSueDist()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDBlinky() - des2.getPacmanDBlinky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDInky() - des2.getPacmanDInky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDPinky() - des2.getPacmanDPinky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDSue() - des2.getPacmanDSue()) * 0.05;
 		
 		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
-		similitud += Math.abs(des1.getNearestPPillDist() - des2.getNearestPPillDist()) * 0.1;
-		similitud += Math.abs(des1.getCloseIndex() - des2.getCloseIndex()) * 0.1;
+		similitud += Math.abs(des1.getPPillDistance() - des2.getPPillDistance()) * 0.1;
+		similitud += Math.abs(des1.getGhostsCloseIndex() - des2.getGhostsCloseIndex()) * 0.1;
 		similitud += Math.abs(des1.getTimeEdible() - des2.getTimeEdible())* 0.1;
 		return similitud;
 	}

@@ -33,7 +33,7 @@ public class GhostInput extends CBRInput {
 	
 	Boolean noPPills;
 	
-	Double GhostsCloseIndex;
+	Double ghostsCloseIndex;
 
 	private Integer score;
 	
@@ -58,7 +58,7 @@ public class GhostInput extends CBRInput {
 		
 		noPPills = game.getActivePillsIndices().length == 0;
 		PPillDistance = GhostsUtils.NearestActivePPill(game, ghost);
-		GhostsCloseIndex = GhostsUtils.CloseIndex(game, game.getPacmanCurrentNodeIndex());
+		ghostsCloseIndex = GhostsUtils.CloseIndex(game, game.getPacmanCurrentNodeIndex());
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class GhostInput extends CBRInput {
 		description.setPPillDistance(PPillDistance);
 		description.setTimeEdible(timeEdible);
 		description.setNoPPills(noPPills);
-		description.setCloseIndex(GhostsCloseIndex);
+		description.setGhostsCloseIndex(ghostsCloseIndex);
 		description.setScore(score);
 		CBRQuery query = new CBRQuery();
 		query.setDescription(description);

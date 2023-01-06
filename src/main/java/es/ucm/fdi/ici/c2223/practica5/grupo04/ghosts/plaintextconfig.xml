@@ -16,9 +16,9 @@
 		<Map>PacmanDInky</Map>
 		<Map>PacmanDSue</Map>
 		<Map>noPPills</Map>	
-		<Map>nearestPPill</Map>		
-		<Map>ghostCloseIndex</Map>		
-		<Map>edibleTime</Map>		
+		<Map>PPillDistance</Map>		
+		<Map>ghostsCloseIndex</Map>		
+		<Map>timeEdible</Map>		
 	</DescriptionMappings>
 	<SolutionClassName>es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts.GhostSolution</SolutionClassName>
 	<SolutionMappings>

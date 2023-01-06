@@ -41,35 +41,35 @@ GHOST ghost;
 		this.id = id;
 	}
 
-	public void setBlinkyDistance(double blinkyDistance) {
+	public void setBlinkyDistance(Double blinkyDistance) {
 		BlinkyDistance = blinkyDistance;
 	}
 
-	public void setPinkyDistance(double pinkyDistance) {
+	public void setPinkyDistance(Double pinkyDistance) {
 		PinkyDistance = pinkyDistance;
 	}
 
-	public void setInkyDistance(double inkyDistance) {
+	public void setInkyDistance(Double inkyDistance) {
 		InkyDistance = inkyDistance;
 	}
 
-	public void setSueDistance(double sueDistance) {
+	public void setSueDistance(Double sueDistance) {
 		SueDistance = sueDistance;
 	}
 
-	public void setPacmanDBlinky(double pacmanDBlinky) {
+	public void setPacmanDBlinky(Double pacmanDBlinky) {
 		PacmanDBlinky = pacmanDBlinky;
 	}
 
-	public void setPacmanDPinky(double pacmanDPinky) {
+	public void setPacmanDPinky(Double pacmanDPinky) {
 		PacmanDPinky = pacmanDPinky;
 	}
 
-	public void setPacmanDInky(double pacmanDInky) {
+	public void setPacmanDInky(Double pacmanDInky) {
 		PacmanDInky = pacmanDInky;
 	}
 
-	public void setPacmanDSue(double pacmanDSue) {
+	public void setPacmanDSue(Double pacmanDSue) {
 		PacmanDSue = pacmanDSue;
 	}
 	
@@ -112,11 +112,11 @@ GHOST ghost;
 		this.noPPills = noPPills2;
 	}
 
-	public void setCloseIndex(double ghostsCloseIndex2) {
+	public void setGhostsCloseIndex(Double ghostsCloseIndex2) {
 		this.ghostsCloseIndex = ghostsCloseIndex2;
 	}
 
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 
@@ -133,19 +133,19 @@ GHOST ghost;
 		return level;
 	}
 
-	public double getBlinkyDist() {
+	public Double getBlinkyDistance() {
 		return BlinkyDistance;
 	}
 	
-	public double getInkyDist() {
+	public Double getInkyDistance() {
 		return InkyDistance;
 	}
 	
-	public double getSueDist() {
+	public Double getSueDistance() {
 		return SueDistance;
 	}
 
-	public double getPinkyDist() {
+	public Double getPinkyDistance() {
 		return PinkyDistance;
 	}
 
@@ -153,32 +153,32 @@ GHOST ghost;
 		return noPPills;
 	}
 
-	public double getPacBlinkyDist() {
+	public Double getPacmanDBlinky() {
 		return PacmanDBlinky;
 	}
 	
-	public double getPacInkyDist() {
+	public Double getPacmanDInky() {
 		return PacmanDInky;
 	}
 	
-	public double getPacPinkyDist() {
+	public Double getPacmanDPinky() {
 		return PacmanDPinky;
 	}
 	
-	public double getPacSueDist() {
+	public Double getPacmanDSue() {
 		return PacmanDSue;
 	}
 
-	public int getTimeEdible() {
+	public Integer getTimeEdible() {
 		
 		return timeEdible;
 	}
 
-	public double getCloseIndex() {
+	public Double getGhostsCloseIndex() {
 		return ghostsCloseIndex;
 	}
 
-	public int getNearestPPillDist() {
+	public Integer getPPillDistance() {
 		return PPillDistance;
 	}
 
