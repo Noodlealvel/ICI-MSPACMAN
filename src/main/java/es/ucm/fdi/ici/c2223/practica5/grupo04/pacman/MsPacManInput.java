@@ -74,25 +74,25 @@ public class MsPacManInput extends CBRInput {
 	@Override
 	public void parseInput() {
 		
-		BlinkyDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.BLINKY), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PinkyDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.PINKY), game.getPacmanLastMoveMade(), DM.EUCLID);
-		InkyDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanLastMoveMade(), DM.EUCLID);
-		SueDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanLastMoveMade(), DM.EUCLID);
+		BlinkyDistance = game.getGhostLairTime(GHOST.BLINKY) > 0 ? 500.0 :game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.BLINKY), game.getPacmanLastMoveMade(), DM.PATH);
+		PinkyDistance = game.getGhostLairTime(GHOST.PINKY) > 0  ? 500.0 :game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.PINKY), game.getPacmanLastMoveMade(), DM.PATH);
+		InkyDistance = game.getGhostLairTime(GHOST.INKY) > 0  ? 500.0 :game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanLastMoveMade(), DM.PATH);
+		SueDistance = game.getGhostLairTime(GHOST.SUE) > 0  ? 500.0 :game.getDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanLastMoveMade(), DM.PATH);
 		
-		PacmanDBlinky = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.BLINKY), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PacmanDPinky = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.PINKY), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PacmanDInky = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PacmanDSue = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
+		PacmanDBlinky = game.getGhostLairTime(GHOST.BLINKY) > 0  ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.BLINKY), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.BLINKY), DM.PATH);
+		PacmanDPinky = game.getGhostLairTime(GHOST.PINKY) > 0   ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.PINKY), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.PINKY), DM.PATH);
+		PacmanDInky = game.getGhostLairTime(GHOST.INKY) > 0   ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.INKY), DM.PATH);
+		PacmanDSue = game.getGhostLairTime(GHOST.SUE) > 0  ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.SUE), DM.PATH);
 		
-		PPillUp = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestPP(game, 250, MOVE.UP), DM.EUCLID);
-		PPillDown = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestPP(game, 250, MOVE.DOWN), DM.EUCLID);
-		PPillRight = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestPP(game, 250, MOVE.RIGHT), DM.EUCLID);
-		PPillLeft = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestPP(game, 250, MOVE.LEFT), DM.EUCLID);
+		PPillUp = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestPP(game, 250, MOVE.UP), DM.EUCLID);
+		PPillDown = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestPP(game, 250, MOVE.DOWN), DM.EUCLID);
+		PPillRight = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestPP(game, 250, MOVE.RIGHT), DM.EUCLID);
+		PPillLeft = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestPP(game, 250, MOVE.LEFT), DM.EUCLID);
 		
-		PillUp = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestP(game, 250, MOVE.UP), DM.EUCLID);
-		PillDown = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestP(game, 250, MOVE.DOWN), DM.EUCLID);
-		PillRight = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestP(game, 250, MOVE.RIGHT), DM.EUCLID);
-		PillLeft = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestP(game, 250, MOVE.LEFT), DM.EUCLID);
+		PillUp = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestP(game, 250, MOVE.UP), DM.EUCLID);
+		PillDown = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestP(game, 250, MOVE.DOWN), DM.EUCLID);
+		PillRight = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestP(game, 250, MOVE.RIGHT), DM.EUCLID);
+		PillLeft = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestP(game, 250, MOVE.LEFT), DM.EUCLID);
 		
 		BlinkyTimeEdible = game.getGhostEdibleTime(GHOST.BLINKY);
 		PinkyTimeEdible = game.getGhostEdibleTime(GHOST.PINKY);

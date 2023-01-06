@@ -61,7 +61,7 @@ public class Ghosts extends GhostController {
 		MOVE move;
 		for(GHOST g : GHOST.values()) {
 			//Solo se activa cuando est� en una junction
-			if (game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
+			if (game.getGhostLairTime(GHOST.BLINKY) > 0 ||game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
 			else {
 				try {
 					inputs.put(g, new GhostInput(g, game));

@@ -53,7 +53,6 @@ public class MsPacMan extends PacmanController {
 		
 		try {
 			MsPacManInput input = new MsPacManInput(game);
-			input.parseInput();
 			storageManager.setGame(game);
 			cbrEngine.cycle(input.getQuery());
 			MOVE move = cbrEngine.getSolution();
