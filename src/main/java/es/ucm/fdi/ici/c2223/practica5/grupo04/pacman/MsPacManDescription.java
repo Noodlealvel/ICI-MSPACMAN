@@ -5,189 +5,277 @@ import es.ucm.fdi.gaia.jcolibri.cbrcore.CaseComponent;
 
 public class MsPacManDescription implements CaseComponent {
 
-	Integer id;
+	public Integer id;
 	
-	double BlinkyDistance;
-	double PinkyDistance;
-	double InkyDistance;
-	double SueDistance;
+	public double BlinkyDistance;
+	public double PinkyDistance;
+	public double InkyDistance;
+	public double SueDistance;
 	
-	double PacmanDBlinky;
-	double PacmanDPinky;
-	double PacmanDInky;
-	double PacmanDSue;
+	public double PacmanDBlinky;
+	public double PacmanDPinky;
+	public double PacmanDInky;
+	public double PacmanDSue;
 	
-	Integer PPillUp;
-	Integer PPillDown;
-	Integer PPillRight;
-	Integer PPillLeft;
+	public double PPillUp;
+	public double PPillDown;
+	public double PPillRight;
+	public double PPillLeft;
 	
-	Integer PillUp;
-	Integer PillDown;
-	Integer PillRight;
-	Integer PillLeft;
+	public double PillUp;
+	public double PillDown;
+	public double PillRight;
+	public double PillLeft;
 	
-	Integer BlinkyTimeEdible;
-	Integer PinkyTimeEdible;
-	Integer InkyTimeEdible;
-	Integer SueTimeEdible;
+	public Integer BlinkyTimeEdible;
+	public Integer PinkyTimeEdible;
+	public Integer InkyTimeEdible;
+	public Integer SueTimeEdible;
 	
-	Integer numPills;
-	Integer eatValue;
+	public Integer numPills;
+	public Integer eatValue;
 	
+	private Integer score;	
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
+	public double getBlinkyDistance() {
+		return BlinkyDistance;
+	}
+
 
 	public void setBlinkyDistance(double blinkyDistance) {
 		BlinkyDistance = blinkyDistance;
 	}
 
+
+	public double getPinkyDistance() {
+		return PinkyDistance;
+	}
+
+
 	public void setPinkyDistance(double pinkyDistance) {
 		PinkyDistance = pinkyDistance;
 	}
+
+
+	public double getInkyDistance() {
+		return InkyDistance;
+	}
+
 
 	public void setInkyDistance(double inkyDistance) {
 		InkyDistance = inkyDistance;
 	}
 
+
+	public double getSueDistance() {
+		return SueDistance;
+	}
+
+
 	public void setSueDistance(double sueDistance) {
 		SueDistance = sueDistance;
 	}
+
+
+	public double getPacmanDBlinky() {
+		return PacmanDBlinky;
+	}
+
 
 	public void setPacmanDBlinky(double pacmanDBlinky) {
 		PacmanDBlinky = pacmanDBlinky;
 	}
 
+
+	public double getPacmanDPinky() {
+		return PacmanDPinky;
+	}
+
+
 	public void setPacmanDPinky(double pacmanDPinky) {
 		PacmanDPinky = pacmanDPinky;
 	}
+
+
+	public double getPacmanDInky() {
+		return PacmanDInky;
+	}
+
 
 	public void setPacmanDInky(double pacmanDInky) {
 		PacmanDInky = pacmanDInky;
 	}
 
+
+	public double getPacmanDSue() {
+		return PacmanDSue;
+	}
+
+
 	public void setPacmanDSue(double pacmanDSue) {
 		PacmanDSue = pacmanDSue;
 	}
 
-	public Integer getPPillUp() {
+
+	public double getPPillUp() {
 		return PPillUp;
 	}
 
-	public void setPPillUp(Integer pPillUp) {
+
+	public void setPPillUp(double pPillUp) {
 		PPillUp = pPillUp;
 	}
 
-	public Integer getPPillDown() {
+
+	public double getPPillDown() {
 		return PPillDown;
 	}
 
-	public void setPPillDown(Integer pPillDown) {
+
+	public void setPPillDown(double pPillDown) {
 		PPillDown = pPillDown;
 	}
 
-	public Integer getPPillRight() {
+
+	public double getPPillRight() {
 		return PPillRight;
 	}
 
-	public void setPPillRight(Integer pPillRight) {
+
+	public void setPPillRight(double pPillRight) {
 		PPillRight = pPillRight;
 	}
 
-	public Integer getPPillLeft() {
+
+	public double getPPillLeft() {
 		return PPillLeft;
 	}
 
-	public void setPPillLeft(Integer pPillLeft) {
+
+	public void setPPillLeft(double pPillLeft) {
 		PPillLeft = pPillLeft;
 	}
 
-	public Integer getPillUp() {
+
+	public double getPillUp() {
 		return PillUp;
 	}
 
-	public void setPillUp(Integer pillUp) {
+
+	public void setPillUp(double pillUp) {
 		PillUp = pillUp;
 	}
 
-	public Integer getPillDown() {
+
+	public double getPillDown() {
 		return PillDown;
 	}
 
-	public void setPillDown(Integer pillDown) {
+
+	public void setPillDown(double pillDown) {
 		PillDown = pillDown;
 	}
 
-	public Integer getPillRight() {
+
+	public double getPillRight() {
 		return PillRight;
 	}
 
-	public void setPillRight(Integer pillRight) {
+
+	public void setPillRight(double pillRight) {
 		PillRight = pillRight;
 	}
 
-	public Integer getPillLeft() {
+
+	public double getPillLeft() {
 		return PillLeft;
 	}
 
-	public void setPillLeft(Integer pillLeft) {
+
+	public void setPillLeft(double pillLeft) {
 		PillLeft = pillLeft;
 	}
+
 
 	public Integer getBlinkyTimeEdible() {
 		return BlinkyTimeEdible;
 	}
 
+
 	public void setBlinkyTimeEdible(Integer blinkyTimeEdible) {
 		BlinkyTimeEdible = blinkyTimeEdible;
 	}
+
 
 	public Integer getPinkyTimeEdible() {
 		return PinkyTimeEdible;
 	}
 
+
 	public void setPinkyTimeEdible(Integer pinkyTimeEdible) {
 		PinkyTimeEdible = pinkyTimeEdible;
 	}
+
 
 	public Integer getInkyTimeEdible() {
 		return InkyTimeEdible;
 	}
 
+
 	public void setInkyTimeEdible(Integer inkyTimeEdible) {
 		InkyTimeEdible = inkyTimeEdible;
 	}
+
 
 	public Integer getSueTimeEdible() {
 		return SueTimeEdible;
 	}
 
+
 	public void setSueTimeEdible(Integer sueTimeEdible) {
 		SueTimeEdible = sueTimeEdible;
 	}
+
 
 	public Integer getNumPills() {
 		return numPills;
 	}
 
+
 	public void setNumPills(Integer numPills) {
 		this.numPills = numPills;
 	}
+
 
 	public Integer getEatValue() {
 		return eatValue;
 	}
 
+
 	public void setEatValue(Integer eatValue) {
 		this.eatValue = eatValue;
 	}
-	
+
+
+	public Integer getScore() {
+		return score;
+	}
+
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
 
 	@Override
 	public Attribute getIdAttribute() {

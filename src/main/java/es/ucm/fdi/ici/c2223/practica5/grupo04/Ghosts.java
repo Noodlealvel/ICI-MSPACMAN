@@ -11,7 +11,7 @@ import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
-public class Ghost extends GhostController {
+public class Ghosts extends GhostController {
 
 	HashMap<GHOST,GhostCBRengine> cbrEngines;
 	GhostStorageManager storageManager;
@@ -19,7 +19,7 @@ public class Ghost extends GhostController {
 	EnumMap<GHOST, GhostInput> inputs;
 	private EnumMap<GHOST, MOVE> moves;
 	
-	public Ghost()
+	public Ghosts()
 	{
 		setName("Ghosts 04");
 		setTeam("Grupo 04");
@@ -62,7 +62,7 @@ public class Ghost extends GhostController {
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue) {
 		MOVE move;
 		for(GHOST g : GHOST.values()) {
-			//Solo se activa cuando está en una junction
+			//Solo se activa cuando estï¿½ en una junction
 			if (game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
 			else {
 				try {

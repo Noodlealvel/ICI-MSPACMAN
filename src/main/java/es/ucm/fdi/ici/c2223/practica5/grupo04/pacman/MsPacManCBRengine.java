@@ -62,33 +62,33 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
 		
-		simConfig.addMapping(new Attribute("BlinkyDistance",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PinkyDistance",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("InkyDistance",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("SueDistance",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("BlinkyDistance",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PinkyDistance",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("InkyDistance",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("SueDistance",MsPacManDescription.class), new Interval(500));
 		
-		simConfig.addMapping(new Attribute("PacmanDBlinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PacmanDPinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PacmanDInky",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("PacmanDSue",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("PacmanDBlinky",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PacmanDPinky",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PacmanDInky",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PacmanDSue",MsPacManDescription.class), new Interval(500));
 		
-		simConfig.addMapping(new Attribute("PPillUp",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PPillDown",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PPillRight",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("PPillLeft",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("PPillUp",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PPillDown",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PPillRight",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PPillLeft",MsPacManDescription.class), new Interval(500));
 		
-		simConfig.addMapping(new Attribute("PillUp",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PillDown",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("PillRight",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("PillLeft",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("PillUp",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PillDown",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PillRight",MsPacManDescription.class), new Interval(500));
+		simConfig.addMapping(new Attribute("PillLeft",MsPacManDescription.class), new Interval(500));
 		
-		simConfig.addMapping(new Attribute("TimeEdibleBlinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("TimeEdiblePinky",MsPacManDescription.class), new Interval(650));
-		simConfig.addMapping(new Attribute("TimeEdibleInky",MsPacManDescription.class), new Equal());
-		simConfig.addMapping(new Attribute("TimeEdibleSue",MsPacManDescription.class), new Equal());
+		simConfig.addMapping(new Attribute("TimeEdibleBlinky",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("TimeEdiblePinky",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("TimeEdibleInky",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("TimeEdibleSue",MsPacManDescription.class), new Interval(255));
 		
-		simConfig.addMapping(new Attribute("numPills",MsPacManDescription.class), new Interval(4000));
-		simConfig.addMapping(new Attribute("eatValue",MsPacManDescription.class), new Interval(15000));
+		simConfig.addMapping(new Attribute("numPills",MsPacManDescription.class), new Interval(200));
+		simConfig.addMapping(new Attribute("eatValue",MsPacManDescription.class), new Interval(1600));
 	}
 
 	@Override
