@@ -17,15 +17,15 @@ public class GhostInput extends CBRInput {
 	
 	Integer level;
 
-	double BlinkyDistance;
-	double PinkyDistance;
-	double InkyDistance;
-	double SueDistance;
+	Double BlinkyDistance;
+	Double PinkyDistance;
+	Double InkyDistance;
+	Double SueDistance;
 	
-	double PacmanDBlinky;
-	double PacmanDPinky;
-	double PacmanDInky;
-	double PacmanDSue;
+	Double PacmanDBlinky;
+	Double PacmanDPinky;
+	Double PacmanDInky;
+	Double PacmanDSue;
 	
 	Integer PPillDistance;
 
@@ -33,7 +33,7 @@ public class GhostInput extends CBRInput {
 	
 	Boolean noPPills;
 	
-	double GhostsCloseIndex;
+	Double GhostsCloseIndex;
 
 	private Integer score;
 	

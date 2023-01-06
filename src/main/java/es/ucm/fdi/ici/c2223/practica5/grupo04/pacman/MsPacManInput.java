@@ -14,25 +14,25 @@ public class MsPacManInput extends CBRInput {
 		
 	}
 
-	double BlinkyDistance;
-	double PinkyDistance;
-	double InkyDistance;
-	double SueDistance;
+	Double BlinkyDistance;
+	Double PinkyDistance;
+	Double InkyDistance;
+	Double SueDistance;
 	
-	double PacmanDBlinky;
-	double PacmanDPinky;
-	double PacmanDInky;
-	double PacmanDSue;
+	Double PacmanDBlinky;
+	Double PacmanDPinky;
+	Double PacmanDInky;
+	Double PacmanDSue;
 	
-	double PPillUp;
-	double PPillDown;
-	double PPillRight;
-	double PPillLeft;
+	Double PPillUp;
+	Double PPillDown;
+	Double PPillRight;
+	Double PPillLeft;
 	
-	double PillUp;
-	double PillDown;
-	double PillRight;
-	double PillLeft;
+	Double PillUp;
+	Double PillDown;
+	Double PillRight;
+	Double PillLeft;
 	
 	Integer BlinkyTimeEdible;
 	Integer PinkyTimeEdible;

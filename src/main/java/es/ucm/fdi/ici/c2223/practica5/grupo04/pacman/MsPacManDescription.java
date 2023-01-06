@@ -7,25 +7,25 @@ public class MsPacManDescription implements CaseComponent {
 
 	public Integer id;
 	
-	public double BlinkyDistance;
-	public double PinkyDistance;
-	public double InkyDistance;
-	public double SueDistance;
+	public Double BlinkyDistance;
+	public Double PinkyDistance;
+	public Double InkyDistance;
+	public Double SueDistance;
 	
-	public double PacmanDBlinky;
-	public double PacmanDPinky;
-	public double PacmanDInky;
-	public double PacmanDSue;
+	public Double PacmanDBlinky;
+	public Double PacmanDPinky;
+	public Double PacmanDInky;
+	public Double PacmanDSue;
 	
-	public double PPillUp;
-	public double PPillDown;
-	public double PPillRight;
-	public double PPillLeft;
+	public Double PPillUp;
+	public Double PPillDown;
+	public Double PPillRight;
+	public Double PPillLeft;
 	
-	public double PillUp;
-	public double PillDown;
-	public double PillRight;
-	public double PillLeft;
+	public Double PillUp;
+	public Double PillDown;
+	public Double PillRight;
+	public Double PillLeft;
 	
 	public Integer BlinkyTimeEdible;
 	public Integer PinkyTimeEdible;
