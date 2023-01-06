@@ -1,10 +1,17 @@
 package es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCaseBase;
+import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRQuery;
 import es.ucm.fdi.gaia.jcolibri.method.retain.StoreCasesMethod;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
 import pacman.game.Game;
 
 public class GhostStorageManager {
@@ -59,9 +66,56 @@ public class GhostStorageManager {
 		//Store the old case right now into the case base
 		//Alternatively we could store all them when game finishes in close() method
 		
-		//here you should also check if the case must be stored into persistence (too similar to existing ones, etc.)
 		
-		StoreCasesMethod.storeCase(this.caseBase, bCase);
+		//here you should also check if the case must be stored into persistence (too similar to existing ones, etc.)
+		Collection<RetrievalResult> eval = NNnuevo(caseBase.getCases(),bCase);
+		
+		// This simple implementation only uses 1NN
+		// Consider using kNNs with majority voting
+		Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
+		Iterator<RetrievalResult> it = cases.iterator();
+		CBRCase mostSimilarCase = it.next().get_case();
+		
+		//-----
+		
+		if (Similaridad((GhostDescription)mostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 200 && Similaridad((GhostDescription)mostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) != 0.0) {
+			StoreCasesMethod.storeCase(this.caseBase, bCase);
+		}
+	}
+
+	private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
+			List<RetrievalResult> res = casos.parallelStream()
+					.map(c -> new RetrievalResult(c, Similaridad((GhostDescription)query.getDescription(), (GhostDescription) c.getDescription())))
+			        .collect(Collectors.toList());
+			
+			res.sort(RetrievalResult::compareTo);
+			return res;
+		}
+		
+
+	private Double Similaridad(GhostDescription des1, GhostDescription des2) {
+		if (des1.getGhost() != des2.getGhost()) return 0.0;
+		if(des1.getLevel() != des1.getLevel()) return 0.0;
+		if((des1.getTimeEdible() > 0 && des2.getTimeEdible() == 0) || (des1.getTimeEdible() == 0 && des2.getTimeEdible() > 0)) return 0.0;
+		if(des1.getNoPPills() != des1.getNoPPills()) return 0.0;
+		
+		double similitud = 0.0;
+		
+		similitud  += Math.abs(des1.getBlinkyDistance() - des2.getBlinkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getInkyDistance() - des2.getInkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getPinkyDistance() - des2.getPinkyDistance()) * 0.1;
+		similitud  += Math.abs(des1.getSueDistance() - des2.getSueDistance()) * 0.1;
+		
+		similitud  += Math.abs(des1.getPacmanDBlinky() - des2.getPacmanDBlinky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDInky() - des2.getPacmanDInky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDPinky() - des2.getPacmanDPinky()) * 0.05;
+		similitud  += Math.abs(des1.getPacmanDSue() - des2.getPacmanDSue()) * 0.05;
+		
+		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
+		similitud += Math.abs(des1.getPPillDistance() - des2.getPPillDistance()) * 0.1;
+		similitud += Math.abs(des1.getGhostsCloseIndex() - des2.getGhostsCloseIndex()) * 0.1;
+		similitud += Math.abs(des1.getTimeEdible() - des2.getTimeEdible())* 0.1;
+		return similitud;
 	}
 
 	public void close() {

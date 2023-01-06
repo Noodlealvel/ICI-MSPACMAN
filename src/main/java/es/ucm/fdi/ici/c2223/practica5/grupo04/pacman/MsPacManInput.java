@@ -84,10 +84,10 @@ public class MsPacManInput extends CBRInput {
 		PacmanDInky = game.getGhostLairTime(GHOST.INKY) > 0   ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.INKY), DM.PATH);
 		PacmanDSue = game.getGhostLairTime(GHOST.SUE) > 0  ? 500.0 :game.getDistance(game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(GHOST.SUE), DM.PATH);
 		
-		PPillUp = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestPP(game, 250, MOVE.UP), DM.EUCLID);
-		PPillDown = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestPP(game, 250, MOVE.DOWN), DM.EUCLID);
-		PPillRight = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestPP(game, 250, MOVE.RIGHT), DM.EUCLID);
-		PPillLeft = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestPP(game, 250, MOVE.LEFT), DM.EUCLID);
+		PPillUp = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP) == -1 || game.getActivePowerPillsIndices().length == 0  ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestPP(game, 250, MOVE.UP), DM.EUCLID);
+		PPillDown = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN) == -1 || game.getActivePowerPillsIndices().length == 0 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestPP(game, 250, MOVE.DOWN), DM.EUCLID);
+		PPillRight = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT) == -1  || game.getActivePowerPillsIndices().length == 0 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestPP(game, 250, MOVE.RIGHT), DM.EUCLID);
+		PPillLeft = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT) == -1  || game.getActivePowerPillsIndices().length == 0 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestPP(game, 250, MOVE.LEFT), DM.EUCLID);
 		
 		PillUp = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestP(game, 250, MOVE.UP), DM.EUCLID);
 		PillDown = game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN) == -1 ? -1 :game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestP(game, 250, MOVE.DOWN), DM.EUCLID);

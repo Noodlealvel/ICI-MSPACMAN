@@ -1,10 +1,16 @@
 package es.ucm.fdi.ici.c2223.practica5.grupo04.pacman;
 
+import java.util.Collection;
 import java.util.Vector;
 
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCaseBase;
 import es.ucm.fdi.gaia.jcolibri.method.retain.StoreCasesMethod;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
+import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
+import es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts.GhostDescription;
 import pacman.game.Game;
 
 public class MsPacManStorageManager {
@@ -29,7 +35,7 @@ public class MsPacManStorageManager {
 		this.caseBase = caseBase;
 	}
 	
-	public void reviseAndRetain(CBRCase newCase)
+	public void reviseAndRetain(CBRCase newCase, NNConfig simConfig)
 	{			
 		this.buffer.add(newCase);
 		
@@ -40,7 +46,7 @@ public class MsPacManStorageManager {
 		
 		CBRCase bCase = this.buffer.remove(0);
 		reviseCase(bCase);
-		retainCase(bCase);
+		retainCase(bCase, simConfig);
 		
 	}
 	
@@ -54,21 +60,32 @@ public class MsPacManStorageManager {
 		result.setScore(resultValue);	
 	}
 	
-	private void retainCase(CBRCase bCase)
+	private void retainCase(CBRCase bCase, NNConfig simConfig)
 	{
 		//Store the old case right now into the case base
 		//Alternatively we could store all them when game finishes in close() method
 		
 		//here you should also check if the case must be stored into persistence (too similar to existing ones, etc.)
+		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), bCase, simConfig);
 		
+		// This simple implementation only uses 1NN
+		// Consider using kNNs with majority voting
+		Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
+		RetrievalResult top = cases.iterator().next();
+		
+		//-----
+		
+		if (top.getEval() <= 0.9) {
+			StoreCasesMethod.storeCase(this.caseBase, bCase);
+		}
 		StoreCasesMethod.storeCase(this.caseBase, bCase);
 	}
 
-	public void close() {
+	public void close(NNConfig simConfig) {
 		for(CBRCase oldCase: this.buffer)
 		{
 			reviseCase(oldCase);
-			retainCase(oldCase);
+			retainCase(oldCase, simConfig);
 		}
 		this.buffer.removeAllElements();
 	}

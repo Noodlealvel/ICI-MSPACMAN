@@ -2,13 +2,16 @@ package es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import es.ucm.fdi.gaia.jcolibri.cbraplications.StandardCBRApplication;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRCaseBase;
 import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRQuery;
+import es.ucm.fdi.gaia.jcolibri.cbrcore.CaseComponent;
 import es.ucm.fdi.gaia.jcolibri.exception.ExecutionException;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.NNConfig;
@@ -28,9 +31,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 	CustomPlainTextConnector connector;
 	CBRCaseBase caseBase;
 	NNConfig simConfig;
-	private GHOST ghost;
-	
-	
 	final static String TEAM = "grupo04";  //Cuidado!! poner el grupo aquÃ­
 	
 	
@@ -41,7 +41,6 @@ public class GhostCBRengine implements StandardCBRApplication {
 	public GhostCBRengine(GhostStorageManager storageManager, GHOST ghost)
 	{
 		this.storageManager = storageManager;
-		this.ghost = ghost;
 	}
 	
 	public void setOpponent(String opponent) {
@@ -57,7 +56,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 		//Do not use default case base path in the xml file. Instead use custom file path for each opponent.
 		//Note that you can create any subfolder of files to store the case base inside your "cbrdata/grupoXX" folder.
-		connector.setCaseBaseFile(CASE_BASE_PATH, opponent+ghost.toString()+".csv");
+		connector.setCaseBaseFile(CASE_BASE_PATH, opponent+".csv");
 		
 		this.storageManager.setCaseBase(caseBase);
 		
@@ -72,21 +71,63 @@ public class GhostCBRengine implements StandardCBRApplication {
 	@Override
 	public void cycle(CBRQuery query) throws ExecutionException {
 		if(caseBase.getCases().isEmpty()) {
-			this.action = MOVE.NEUTRAL;
+			int index = (int)Math.floor(Math.random()*4);
+			if(MOVE.values()[index]==action) 
+				index= (index+1)%4;
+			action = MOVE.values()[index];
+		}else {
+			//Compute NN
+			//Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
+			Collection<RetrievalResult> eval = NNnuevo(caseBase.getCases(),query);
+			
+			// This simple implementation only uses 1NN
+			// Consider using kNNs with majority voting
+			Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
+			RetrievalResult top = cases.iterator().next();
+			
+			//-----
+			CBRCase mostSimilarCase = top.get_case();
+			double similarity = top.getEval();
+			//------
+	
+			GhostResult result = (GhostResult) mostSimilarCase.getResult();
+			
+			this.action = pruebaCasos(cases, query.getDescription());
+			
+			if(similarity < 0.4) {
+				int index = (int)Math.floor(Math.random()*4);
+				if(MOVE.values()[index]==action) 
+					index= (index+1)%4;
+				action = MOVE.values()[index];}
+
+			else if(result.getScore() <= 0) {	// Caso muy malo (Aún siendo el más similar)
+				int index = (int)Math.floor(Math.random()*4);
+				if(MOVE.values()[index]==action) 
+					index= (index+1)%4;
+				action = MOVE.values()[index];
+			}
 		}
-		else {
-			//Compute retrieve
-			Collection<RetrievalResult> eval = NNnuevo(caseBase.getCases(), query);
-			//Compute reuse
-			this.action = reuse(eval);
-		}
-		
-		//Compute revise & retain
 		CBRCase newCase = createNewCase(query);
 		this.storageManager.reviseAndRetain(newCase);
 		
 	}
 	
+	private MOVE pruebaCasos(Collection<RetrievalResult> cases, CaseComponent description) {
+		HashMap<MOVE, Double> poll = new HashMap<MOVE, Double>();
+		for (MOVE m : MOVE.values()) {
+			poll.put(m, 0.0);
+		}
+		for (RetrievalResult r : cases) {
+			CBRCase c = r.get_case();
+			MOVE a = ((GhostSolution) c.getSolution()).getAction();
+			poll.put(a, poll.getOrDefault(a, 0.) + ((GhostResult) c.getResult()).getScore() * Similaridad((GhostDescription)description, (GhostDescription) c.getDescription()));
+		}
+		MOVE fin = null; 
+		Double mas = 0.0;
+		for (Entry<MOVE, Double> e : poll.entrySet()) if (e.getValue() > mas) {	fin = e.getKey(); mas = e.getValue();	}	
+		return fin;
+	}
+
 	// Obtener mï¿½s parecidos
 		private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
 			List<RetrievalResult> res = casos.parallelStream()

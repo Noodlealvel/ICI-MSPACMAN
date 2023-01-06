@@ -37,6 +37,7 @@ public class Ghosts extends GhostController {
 	@Override
 	public void preCompute(String opponent) {
 		for (GHOST g : GHOST.values()) {
+			cbrEngines.get(g).setOpponent(opponent);
 			try {
 				cbrEngines.get(g).configure();
 				cbrEngines.get(g).preCycle();

@@ -25,7 +25,7 @@
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.c2223.ici.practica5.grupo04.ghosts.GhostResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts.GhostResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>

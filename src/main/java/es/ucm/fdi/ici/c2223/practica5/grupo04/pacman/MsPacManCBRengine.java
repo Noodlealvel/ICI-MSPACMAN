@@ -111,7 +111,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		
 		//Compute revise & retain
 		CBRCase newCase = createNewCase(query);
-		this.storageManager.reviseAndRetain(newCase);
+		this.storageManager.reviseAndRetain(newCase, simConfig);
 		
 	}
 
@@ -172,7 +172,7 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 
 	@Override
 	public void postCycle() throws ExecutionException {
-		this.storageManager.close();
+		this.storageManager.close(simConfig);
 		this.caseBase.close();
 	}
 

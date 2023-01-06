@@ -33,5 +33,14 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Usuario/.m2/repository/es/ucm/fdi/gaia/jCOLIBRI/3.2/jCOLIBRI-3.2.jar" sourcepath="C:/Users/Usuario/.m2/repository/es/ucm/fdi/gaia/jCOLIBRI/3.2/jCOLIBRI-3.2-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="es.ucm.fdi.gaia"/>
+			<attribute name="maven.artifactId" value="jCOLIBRI"/>
+			<attribute name="maven.version" value="3.2"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

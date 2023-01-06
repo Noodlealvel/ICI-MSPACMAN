@@ -33,7 +33,7 @@
 		<Map>id</Map>
 		<Map>action</Map>
 	</SolutionMappings>
-	<ResultClassName>es.ucm.fdi.ici.2223.practica5.grupo04.pacman.MsPacManResult</ResultClassName>
+	<ResultClassName>es.ucm.fdi.ici.c2223.practica5.grupo04.pacman.MsPacManResult</ResultClassName>
 	<ResultMappings>
 		<Map>id</Map>
 		<Map>score</Map>
