@@ -8,8 +8,8 @@ import pacman.game.Game;
 
 public class GhostInput extends CBRInput {
 
-	public GhostInput(GHOST g) {
-		super(null);
+	public GhostInput(GHOST g, Game game) {
+		super(game);
 		ghost = g;
 	}
 	
@@ -83,10 +83,6 @@ public class GhostInput extends CBRInput {
 		CBRQuery query = new CBRQuery();
 		query.setDescription(description);
 		return query;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;		
 	}
 	
 }

@@ -24,15 +24,15 @@ public class MsPacManInput extends CBRInput {
 	double PacmanDInky;
 	double PacmanDSue;
 	
-	double PPillUp;
-	double PPillDown;
-	double PPillRight;
-	double PPillLeft;
+	Integer PPillUp;
+	Integer PPillDown;
+	Integer PPillRight;
+	Integer PPillLeft;
 	
-	double PillUp;
-	double PillDown;
-	double PillRight;
-	double PillLeft;
+	Integer PillUp;
+	Integer PillDown;
+	Integer PillRight;
+	Integer PillLeft;
 	
 	Integer BlinkyTimeEdible;
 	Integer PinkyTimeEdible;
@@ -41,35 +41,6 @@ public class MsPacManInput extends CBRInput {
 	
 	Integer numPills;
 	Integer eatValue;
-	Integer score;
-	
-	public static int getNearestPP(Game game, int limit, MOVE move) {
-		double powerPillDistance;
-		double shortestDistance = -1;
-		int nearestPPill = -1;
-		for (int pillNode : game.getActivePowerPillsIndices()) {
-			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, move, DM.PATH);
-			if ((powerPillDistance < shortestDistance && powerPillDistance < limit) || shortestDistance == -1) {
-				shortestDistance = powerPillDistance;
-				nearestPPill = pillNode;
-			}
-		}
-		return nearestPPill;
-	}
-	
-	public static int getNearestP(Game game, int limit, MOVE move) {
-		double powerPillDistance;
-		double shortestDistance = -1;
-		int nearestPPill = -1;
-		for (int pillNode : game.getActivePillsIndices()) {
-			powerPillDistance = game.getDistance(game.getPacmanCurrentNodeIndex(), pillNode, move, DM.PATH);
-			if ((powerPillDistance < shortestDistance && powerPillDistance < limit) || shortestDistance == -1) {
-				shortestDistance = powerPillDistance;
-				nearestPPill = pillNode;
-			}
-		}
-		return nearestPPill;
-	}
 	
 	@Override
 	public void parseInput() {
@@ -84,15 +55,15 @@ public class MsPacManInput extends CBRInput {
 		PacmanDInky = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.INKY), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
 		PacmanDSue = game.getDistance(game.getGhostCurrentNodeIndex(GHOST.SUE), game.getPacmanCurrentNodeIndex(), game.getPacmanLastMoveMade(), DM.EUCLID);
 		
-		PPillUp = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestPP(game, 250, MOVE.UP), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PPillDown = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestPP(game, 250, MOVE.DOWN), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PPillRight = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestPP(game, 250, MOVE.RIGHT), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PPillLeft = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestPP(game, 250, MOVE.LEFT), game.getPacmanLastMoveMade(), DM.EUCLID);
+		PPillUp = game.getDistance(game.getPacmanCurrentNodeIndex(), game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP));
+		PPillDown = 
+		PPillRight =
+		PPillLeft = 
 		
-		PillUp = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.UP), getNearestP(game, 250, MOVE.UP), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PillDown = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.DOWN), getNearestP(game, 250, MOVE.DOWN), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PillRight = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.RIGHT), getNearestP(game, 250, MOVE.RIGHT), game.getPacmanLastMoveMade(), DM.EUCLID);
-		PillLeft = game.getDistance(game.getNeighbour(game.getPacmanCurrentNodeIndex(), MOVE.LEFT), getNearestP(game, 250, MOVE.LEFT), game.getPacmanLastMoveMade(), DM.EUCLID);
+		PillUp = 
+		PillDown = 
+		PillRight =
+		PillLeft = 
 		
 		BlinkyTimeEdible = game.getGhostEdibleTime(GHOST.BLINKY);
 		PinkyTimeEdible = game.getGhostEdibleTime(GHOST.PINKY);
@@ -101,8 +72,6 @@ public class MsPacManInput extends CBRInput {
 		
 		numPills = game.getActivePillsIndices().length;
 		eatValue = game.getGhostCurrentEdibleScore();
-		
-		score = game.getScore();
 	}
 
 	@Override
@@ -131,7 +100,6 @@ public class MsPacManInput extends CBRInput {
 		description.setSueTimeEdible(SueTimeEdible);
 		description.setEatValue(eatValue);
 		description.setNumPills(numPills);
-		description.setNumPills(score);
 		
 		CBRQuery query = new CBRQuery();
 		query.setDescription(description);

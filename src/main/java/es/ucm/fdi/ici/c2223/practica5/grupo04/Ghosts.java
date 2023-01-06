@@ -27,8 +27,6 @@ public class Ghosts extends GhostController {
 		moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 		inputs = new EnumMap<GHOST, GhostInput>(GHOST.class);
 		
-		for (GHOST g : GHOST.values()) 
-			inputs.put(g, new GhostInput(g));
 
 		this.storageManager = new GhostStorageManager();
 		
@@ -66,7 +64,7 @@ public class Ghosts extends GhostController {
 			if (game.getGhostCurrentNodeIndex(g) == -1 || !game.isJunction(game.getGhostCurrentNodeIndex(g))) move = MOVE.NEUTRAL;
 			else {
 				try {
-					inputs.get(g).setGame(game);
+					inputs.put(g, new GhostInput(g, game));
 					inputs.get(g).parseInput();
 					storageManager.setGame(game);
 					cbrEngines.get(g).cycle(inputs.get(g).getQuery());
