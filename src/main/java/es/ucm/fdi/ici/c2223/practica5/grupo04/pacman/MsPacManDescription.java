@@ -47,162 +47,162 @@ public class MsPacManDescription implements CaseComponent {
 	}
 
 
-	public double getBlinkyDistance() {
+	public Double getBlinkyDistance() {
 		return BlinkyDistance;
 	}
 
 
-	public void setBlinkyDistance(double blinkyDistance) {
+	public void setBlinkyDistance(Double blinkyDistance) {
 		BlinkyDistance = blinkyDistance;
 	}
 
 
-	public double getPinkyDistance() {
+	public Double getPinkyDistance() {
 		return PinkyDistance;
 	}
 
 
-	public void setPinkyDistance(double pinkyDistance) {
+	public void setPinkyDistance(Double pinkyDistance) {
 		PinkyDistance = pinkyDistance;
 	}
 
 
-	public double getInkyDistance() {
+	public Double getInkyDistance() {
 		return InkyDistance;
 	}
 
 
-	public void setInkyDistance(double inkyDistance) {
+	public void setInkyDistance(Double inkyDistance) {
 		InkyDistance = inkyDistance;
 	}
 
 
-	public double getSueDistance() {
+	public Double getSueDistance() {
 		return SueDistance;
 	}
 
 
-	public void setSueDistance(double sueDistance) {
+	public void setSueDistance(Double sueDistance) {
 		SueDistance = sueDistance;
 	}
 
 
-	public double getPacmanDBlinky() {
+	public Double getPacmanDBlinky() {
 		return PacmanDBlinky;
 	}
 
 
-	public void setPacmanDBlinky(double pacmanDBlinky) {
+	public void setPacmanDBlinky(Double pacmanDBlinky) {
 		PacmanDBlinky = pacmanDBlinky;
 	}
 
 
-	public double getPacmanDPinky() {
+	public Double getPacmanDPinky() {
 		return PacmanDPinky;
 	}
 
 
-	public void setPacmanDPinky(double pacmanDPinky) {
+	public void setPacmanDPinky(Double pacmanDPinky) {
 		PacmanDPinky = pacmanDPinky;
 	}
 
 
-	public double getPacmanDInky() {
+	public Double getPacmanDInky() {
 		return PacmanDInky;
 	}
 
 
-	public void setPacmanDInky(double pacmanDInky) {
+	public void setPacmanDInky(Double pacmanDInky) {
 		PacmanDInky = pacmanDInky;
 	}
 
 
-	public double getPacmanDSue() {
+	public Double getPacmanDSue() {
 		return PacmanDSue;
 	}
 
 
-	public void setPacmanDSue(double pacmanDSue) {
+	public void setPacmanDSue(Double pacmanDSue) {
 		PacmanDSue = pacmanDSue;
 	}
 
 
-	public double getPPillUp() {
+	public Double getPPillUp() {
 		return PPillUp;
 	}
 
 
-	public void setPPillUp(double pPillUp) {
+	public void setPPillUp(Double pPillUp) {
 		PPillUp = pPillUp;
 	}
 
 
-	public double getPPillDown() {
+	public Double getPPillDown() {
 		return PPillDown;
 	}
 
 
-	public void setPPillDown(double pPillDown) {
+	public void setPPillDown(Double pPillDown) {
 		PPillDown = pPillDown;
 	}
 
 
-	public double getPPillRight() {
+	public Double getPPillRight() {
 		return PPillRight;
 	}
 
 
-	public void setPPillRight(double pPillRight) {
+	public void setPPillRight(Double pPillRight) {
 		PPillRight = pPillRight;
 	}
 
 
-	public double getPPillLeft() {
+	public Double getPPillLeft() {
 		return PPillLeft;
 	}
 
 
-	public void setPPillLeft(double pPillLeft) {
+	public void setPPillLeft(Double pPillLeft) {
 		PPillLeft = pPillLeft;
 	}
 
 
-	public double getPillUp() {
+	public Double getPillUp() {
 		return PillUp;
 	}
 
 
-	public void setPillUp(double pillUp) {
+	public void setPillUp(Double pillUp) {
 		PillUp = pillUp;
 	}
 
 
-	public double getPillDown() {
+	public Double getPillDown() {
 		return PillDown;
 	}
 
 
-	public void setPillDown(double pillDown) {
+	public void setPillDown(Double pillDown) {
 		PillDown = pillDown;
 	}
 
 
-	public double getPillRight() {
+	public Double getPillRight() {
 		return PillRight;
 	}
 
 
-	public void setPillRight(double pillRight) {
+	public void setPillRight(Double pillRight) {
 		PillRight = pillRight;
 	}
 
 
-	public double getPillLeft() {
+	public Double getPillLeft() {
 		return PillLeft;
 	}
 
 
-	public void setPillLeft(double pillLeft) {
+	public void setPillLeft(Double pillLeft) {
 		PillLeft = pillLeft;
 	}
 

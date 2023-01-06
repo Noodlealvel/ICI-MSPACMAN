@@ -82,10 +82,10 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 		simConfig.addMapping(new Attribute("PillRight",MsPacManDescription.class), new Interval(500));
 		simConfig.addMapping(new Attribute("PillLeft",MsPacManDescription.class), new Interval(500));
 		
-		simConfig.addMapping(new Attribute("TimeEdibleBlinky",MsPacManDescription.class), new Interval(255));
-		simConfig.addMapping(new Attribute("TimeEdiblePinky",MsPacManDescription.class), new Interval(255));
-		simConfig.addMapping(new Attribute("TimeEdibleInky",MsPacManDescription.class), new Interval(255));
-		simConfig.addMapping(new Attribute("TimeEdibleSue",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("BlinkyTimeEdible",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("PinkyTimeEdible",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("InkyTimeEdible",MsPacManDescription.class), new Interval(255));
+		simConfig.addMapping(new Attribute("SueTimeEdible",MsPacManDescription.class), new Interval(255));
 		
 		simConfig.addMapping(new Attribute("numPills",MsPacManDescription.class), new Interval(200));
 		simConfig.addMapping(new Attribute("eatValue",MsPacManDescription.class), new Interval(1600));
