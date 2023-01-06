@@ -34,7 +34,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 	final static String TEAM = "grupo04";  //Cuidado!! poner el grupo aquí
 	
 	
-	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/practica5/"+TEAM+"/ghosts/plaintextconfig.xml";
+	final static String CONNECTOR_FILE_PATH = "es//ucm//fdi//ici//c2223//practica5//"+TEAM+"//ghosts//plaintextconfig.xml";
 	final static String CASE_BASE_PATH = "cbrdata"+File.separator+TEAM+File.separator+"ghosts"+File.separator;
 
 	

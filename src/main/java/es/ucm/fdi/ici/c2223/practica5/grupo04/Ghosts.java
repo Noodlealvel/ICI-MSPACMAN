@@ -26,7 +26,7 @@ public class Ghosts extends GhostController {
 		
 		moves = new EnumMap<GHOST, MOVE>(GHOST.class);
 		inputs = new EnumMap<GHOST, GhostInput>(GHOST.class);
-		
+		cbrEngines = new HashMap<GHOST, GhostCBRengine>();
 
 		this.storageManager = new GhostStorageManager();
 		
