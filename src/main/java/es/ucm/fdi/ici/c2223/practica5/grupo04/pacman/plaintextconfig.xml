@@ -25,7 +25,8 @@
 		<Map>InkyTimeEdible</Map>
 		<Map>SueTimeEdible</Map>
 		<Map>numPills</Map>
-		<Map>eatValue</Map>		
+		<Map>eatValue</Map>	
+		<Map>score</Map>	
 	</DescriptionMappings>
 	<SolutionClassName>es.ucm.fdi.ici.practica5.grupo04.pacman.MsPacManSolution</SolutionClassName>
 	<SolutionMappings>
