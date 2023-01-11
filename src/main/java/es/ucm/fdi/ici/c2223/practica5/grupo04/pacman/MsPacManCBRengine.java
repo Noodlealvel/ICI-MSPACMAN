@@ -17,6 +17,7 @@ import es.ucm.fdi.gaia.jcolibri.method.retrieve.NNretrieval.similarity.local.Int
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
 import es.ucm.fdi.gaia.jcolibri.util.FileIO;
 import es.ucm.fdi.ici.c2223.practica5.grupo04.CBRengine.*;
+import es.ucm.fdi.ici.c2223.practica5.grupo04.ghosts.GhostResult;
 import pacman.game.Constants.MOVE;
 
 public class MsPacManCBRengine implements StandardCBRApplication {
@@ -100,13 +101,41 @@ public class MsPacManCBRengine implements StandardCBRApplication {
 	@Override
 	public void cycle(CBRQuery query) throws ExecutionException {
 		if(caseBase.getCases().isEmpty()) {
-			this.action = MOVE.NEUTRAL;
+			int index = (int)Math.floor(Math.random()*4);
+			if(MOVE.values()[index]==action) 
+				index= (index+1)%4;
+			action = MOVE.values()[index];
 		}
 		else {
 			//Compute retrieve
 			Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(caseBase.getCases(), query, simConfig);
+			
+			Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
+			RetrievalResult top = cases.iterator().next();
+			
+			CBRCase mostSimilarCase = top.get_case();
+			double similarity = top.getEval();
+			
+			MsPacManResult result = (MsPacManResult) mostSimilarCase.getResult();
+			
+			
 			//Compute reuse
 			this.action = reuse(eval);
+			
+			//this.action = pruebaCasos(cases, query.getDescription());
+			
+			if(similarity < 0.4) {
+				int index = (int)Math.floor(Math.random()*4);
+				if(MOVE.values()[index]==action) 
+					index= (index+1)%4;
+				action = MOVE.values()[index];}
+
+			else if(result.getScore() <= 0) {	// Caso muy malo (A�n siendo el m�s similar)
+				int index = (int)Math.floor(Math.random()*4);
+				if(MOVE.values()[index]==action) 
+					index= (index+1)%4;
+				action = MOVE.values()[index];
+			}
 		}
 		
 		//Compute revise & retain
