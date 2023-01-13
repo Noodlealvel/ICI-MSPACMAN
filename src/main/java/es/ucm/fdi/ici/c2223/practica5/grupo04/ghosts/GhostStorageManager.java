@@ -138,7 +138,7 @@ public class GhostStorageManager {
 			RetrievalResult [] top = cases.toArray(new RetrievalResult[cases.size()]);
 			CBRCase fifthMostSimilarCase = top[top.length-1].get_case();
 			//System.out.println(Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()));
-			if (Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 0.95) {
+			if (Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 0.8) {
 				StoreCasesMethod.storeCase(this.caseBase, bCase);
 			}
 		}
