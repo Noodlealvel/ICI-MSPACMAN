@@ -113,19 +113,23 @@ public class GhostCBRengine implements StandardCBRApplication {
 	}
 	
 	private MOVE reusarCasos(Collection<RetrievalResult> cases, CaseComponent description) {
-		HashMap<MOVE, Double> poll = new HashMap<MOVE, Double>();
+		HashMap<MOVE, Double> encuesta = new HashMap<MOVE, Double>();
 		for (MOVE m : MOVE.values()) {
-			poll.put(m, 0.0);
+			encuesta.put(m, 0.0);
 		}
 		for (RetrievalResult r : cases) {
-			CBRCase c = r.get_case();
-			MOVE a = ((GhostSolution) c.getSolution()).getAction();
-			poll.put(a, poll.getOrDefault(a, 0.) + ((GhostResult) c.getResult()).getScore() * Similaridad((GhostDescription)description, (GhostDescription) c.getDescription()));
+			MOVE movimiento = ((GhostSolution) r.get_case().getSolution()).getAction();
+			//El "voto" de cada uno vale su similaridad al nuesto x la score de cada uno.
+			encuesta.put(movimiento, encuesta.get(movimiento) + ((GhostResult) r.get_case().getResult()).getScore() 
+					* Similaridad((GhostDescription)description, (GhostDescription) r.get_case().getDescription()));
 		}
 		//Buscar movimiento más votado
 		MOVE fin = null; 
 		Double mas = 0.0;
-		for (Entry<MOVE, Double> e : poll.entrySet()) if (e.getValue() > mas) {	fin = e.getKey(); mas = e.getValue();	}	
+		for (Entry<MOVE, Double> par : encuesta.entrySet()) 
+			if (par.getValue() > mas) {	
+				fin = par.getKey(); mas = par.getValue();	
+			}	
 		return fin;
 	}
 
