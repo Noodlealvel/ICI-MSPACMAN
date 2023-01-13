@@ -73,7 +73,7 @@ public class MsPacManStorageManager {
 		Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
 		if (!cases.isEmpty()) {
 			RetrievalResult [] top = cases.toArray(new RetrievalResult[cases.size()]);
-			System.out.println(top[top.length-1].getEval());
+			//System.out.println(top[top.length-1].getEval());
 			if (top[top.length-1].getEval() <= 0.95) {
 				StoreCasesMethod.storeCase(this.caseBase, bCase);
 			}

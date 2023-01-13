@@ -59,7 +59,7 @@ public class GhostInput extends CBRInput {
 			timeEdible = game.getGhostEdibleTime(ghost);
 
 			noPPills = game.getActivePillsIndices().length == 0;
-			PPillDistance = GhostsUtils.NearestActivePPill(game, ghost);
+			PPillDistance = game.getActivePillsIndices().length == 0 ? 500 :GhostsUtils.NearestActivePPill(game, ghost);
 			ghostsCloseIndex = GhostsUtils.CloseIndex(game, game.getPacmanCurrentNodeIndex());
 		}
 	}

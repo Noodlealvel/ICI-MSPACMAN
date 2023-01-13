@@ -138,7 +138,7 @@ public class GhostStorageManager {
 			RetrievalResult [] top = cases.toArray(new RetrievalResult[cases.size()]);
 			CBRCase fifthMostSimilarCase = top[top.length-1].get_case();
 			//System.out.println(Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()));
-			if (Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 0.8) {
+			if (Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 0.95) {
 				StoreCasesMethod.storeCase(this.caseBase, bCase);
 			}
 		}
@@ -181,7 +181,7 @@ public class GhostStorageManager {
 		maxDiferencia += (0.2 * 500);
 		
 		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
-		maxDiferencia += (0.1 * 1000);
+		maxDiferencia += (0.1 * 1500);
 		similitud += Math.abs(des1.getPPillDistance() - des2.getPPillDistance()) * 0.1;
 		maxDiferencia += (0.1 * 500);
 		similitud += Math.abs(des1.getGhostsCloseIndex() - des2.getGhostsCloseIndex()) * 0.1;
