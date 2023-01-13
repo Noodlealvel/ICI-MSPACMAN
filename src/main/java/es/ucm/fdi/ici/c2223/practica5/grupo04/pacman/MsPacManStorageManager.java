@@ -71,14 +71,16 @@ public class MsPacManStorageManager {
 		// This simple implementation only uses 1NN
 		// Consider using kNNs with majority voting
 		Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
-		RetrievalResult top = cases.iterator().next();
-		
-		//-----
-		
-		if (top.getEval() <= 0.9) {
+		if (!cases.isEmpty()) {
+			RetrievalResult [] top = cases.toArray(new RetrievalResult[cases.size()]);
+			System.out.println(top[top.length-1].getEval());
+			if (top[top.length-1].getEval() <= 0.95) {
+				StoreCasesMethod.storeCase(this.caseBase, bCase);
+			}
+		}
+		else {
 			StoreCasesMethod.storeCase(this.caseBase, bCase);
 		}
-		StoreCasesMethod.storeCase(this.caseBase, bCase);
 	}
 
 	public void close(NNConfig simConfig) {

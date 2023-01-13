@@ -12,6 +12,7 @@ import es.ucm.fdi.gaia.jcolibri.cbrcore.CBRQuery;
 import es.ucm.fdi.gaia.jcolibri.method.retain.StoreCasesMethod;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.RetrievalResult;
 import es.ucm.fdi.gaia.jcolibri.method.retrieve.selection.SelectCases;
+import pacman.game.Constants.GHOST;
 import pacman.game.Game;
 
 public class GhostStorageManager {
@@ -55,8 +56,68 @@ public class GhostStorageManager {
 		GhostDescription description = (GhostDescription)bCase.getDescription();
 		int oldScore = description.getScore();
 		int currentScore = game.getScore();
-		int resultValue = currentScore - oldScore;
-		
+		int valuePacman = currentScore - oldScore;
+		GHOST ghost = description.getGhost();
+		int ghostProgress = 0;
+		switch(ghost){
+		case BLINKY:
+			ghostProgress += description.getTimeEdible() - game.getGhostEdibleTime(ghost);
+			if (game.getGhostEdibleTime(ghost) == 0) {
+				ghostProgress += game.getShortestPathDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost)) - description.getBlinkyDistance();
+			}
+			else {
+				ghostProgress += game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade()) - description.getPacmanDBlinky();
+			}
+			if (game.getNumberOfActivePowerPills() != 0)
+				ghostProgress += game.getEuclideanDistance(GhostsUtils.NearestActivePPill(game, ghost),game.getGhostCurrentNodeIndex(ghost)) - description.getPPillDistance();
+			else {
+				ghostProgress += 500;
+			}
+			break;
+		case INKY:
+			ghostProgress += description.getTimeEdible() - game.getGhostEdibleTime(ghost);
+			if (game.getGhostEdibleTime(ghost) == 0) {
+				ghostProgress += game.getShortestPathDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost)) - description.getInkyDistance();
+			}
+			else {
+				ghostProgress += game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade()) - description.getPacmanDInky();
+			}
+			if (game.getNumberOfActivePowerPills() != 0)
+				ghostProgress += game.getEuclideanDistance(GhostsUtils.NearestActivePPill(game, ghost),game.getGhostCurrentNodeIndex(ghost)) - description.getPPillDistance();
+			else {
+				ghostProgress += 500;
+			}
+			break;
+		case PINKY:
+			ghostProgress += description.getTimeEdible() - game.getGhostEdibleTime(ghost);
+			if (game.getGhostEdibleTime(ghost) == 0) {
+				ghostProgress += game.getShortestPathDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost)) - description.getPinkyDistance();
+			}
+			else {
+				ghostProgress += game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade()) - description.getPacmanDPinky();
+			}
+			if (game.getNumberOfActivePowerPills() != 0)
+				ghostProgress += game.getEuclideanDistance(GhostsUtils.NearestActivePPill(game, ghost),game.getGhostCurrentNodeIndex(ghost)) - description.getPPillDistance();
+			else {
+				ghostProgress += 500;
+			}
+			break;
+		case SUE:
+			ghostProgress += description.getTimeEdible() - game.getGhostEdibleTime(ghost);
+			if (game.getGhostEdibleTime(ghost) == 0) {
+				ghostProgress += game.getShortestPathDistance(game.getGhostCurrentNodeIndex(ghost), game.getPacmanCurrentNodeIndex(), game.getGhostLastMoveMade(ghost)) - description.getSueDistance();
+			}
+			else {
+				ghostProgress += game.getShortestPathDistance(game.getPacmanCurrentNodeIndex(), game.getGhostCurrentNodeIndex(ghost), game.getPacmanLastMoveMade()) - description.getPacmanDSue();
+			}
+			if (game.getNumberOfActivePowerPills() != 0)
+				ghostProgress += game.getEuclideanDistance(GhostsUtils.NearestActivePPill(game, ghost),game.getGhostCurrentNodeIndex(ghost)) - description.getPPillDistance();
+			else {
+				ghostProgress += 500;
+			}
+			break;
+		}
+		int resultValue = ghostProgress - valuePacman;
 		GhostResult result = (GhostResult)bCase.getResult();
 		result.setScore(resultValue);	
 	}
@@ -69,16 +130,19 @@ public class GhostStorageManager {
 		
 		//here you should also check if the case must be stored into persistence (too similar to existing ones, etc.)
 		Collection<RetrievalResult> eval = NNnuevo(caseBase.getCases(),bCase);
-		
+
 		// This simple implementation only uses 1NN
 		// Consider using kNNs with majority voting
 		Collection<RetrievalResult> cases = SelectCases.selectTopKRR(eval, 5);
-		Iterator<RetrievalResult> it = cases.iterator();
-		CBRCase mostSimilarCase = it.next().get_case();
-		
-		//-----
-		
-		if (Similaridad((GhostDescription)mostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 200 && Similaridad((GhostDescription)mostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) != 0.0) {
+		if (!cases.isEmpty()) {
+			RetrievalResult [] top = cases.toArray(new RetrievalResult[cases.size()]);
+			CBRCase fifthMostSimilarCase = top[top.length-1].get_case();
+			//System.out.println(Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()));
+			if (Similaridad((GhostDescription)fifthMostSimilarCase.getDescription(), (GhostDescription)bCase.getDescription()) <= 0.8) {
+				StoreCasesMethod.storeCase(this.caseBase, bCase);
+			}
+		}
+		else {
 			StoreCasesMethod.storeCase(this.caseBase, bCase);
 		}
 	}
@@ -99,6 +163,7 @@ public class GhostStorageManager {
 		if((des1.getTimeEdible() > 0 && des2.getTimeEdible() == 0) || (des1.getTimeEdible() == 0 && des2.getTimeEdible() > 0)) return 0.0;
 		if(des1.getNoPPills() != des1.getNoPPills()) return 0.0;
 		
+		double maxDiferencia = 0.0;
 		double similitud = 0.0;
 		
 		similitud  += Math.abs(des1.getBlinkyDistance() - des2.getBlinkyDistance()) * 0.1;
@@ -106,16 +171,24 @@ public class GhostStorageManager {
 		similitud  += Math.abs(des1.getPinkyDistance() - des2.getPinkyDistance()) * 0.1;
 		similitud  += Math.abs(des1.getSueDistance() - des2.getSueDistance()) * 0.1;
 		
+		maxDiferencia += (0.4 * 500);
+		
 		similitud  += Math.abs(des1.getPacmanDBlinky() - des2.getPacmanDBlinky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDInky() - des2.getPacmanDInky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDPinky() - des2.getPacmanDPinky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDSue() - des2.getPacmanDSue()) * 0.05;
 		
+		maxDiferencia += (0.2 * 500);
+		
 		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
+		maxDiferencia += (0.1 * 1000);
 		similitud += Math.abs(des1.getPPillDistance() - des2.getPPillDistance()) * 0.1;
+		maxDiferencia += (0.1 * 500);
 		similitud += Math.abs(des1.getGhostsCloseIndex() - des2.getGhostsCloseIndex()) * 0.1;
+		maxDiferencia += (0.1 * 500);
 		similitud += Math.abs(des1.getTimeEdible() - des2.getTimeEdible())* 0.1;
-		return similitud;
+		maxDiferencia += (0.1 * 500);
+		return 1-(similitud/maxDiferencia);
 	}
 
 	public void close() {

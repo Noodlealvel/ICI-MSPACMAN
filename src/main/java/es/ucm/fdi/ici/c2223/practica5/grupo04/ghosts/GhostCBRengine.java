@@ -92,7 +92,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 	
 			GhostResult result = (GhostResult) mostSimilarCase.getResult();
 			
-			this.action = pruebaCasos(cases, query.getDescription());
+			this.action = reusarCasos(cases, query.getDescription());
 			
 			if(similarity < 0.4) {
 				int index = (int)Math.floor(Math.random()*4);
@@ -112,7 +112,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		
 	}
 	
-	private MOVE pruebaCasos(Collection<RetrievalResult> cases, CaseComponent description) {
+	private MOVE reusarCasos(Collection<RetrievalResult> cases, CaseComponent description) {
 		HashMap<MOVE, Double> poll = new HashMap<MOVE, Double>();
 		for (MOVE m : MOVE.values()) {
 			poll.put(m, 0.0);
@@ -122,21 +122,21 @@ public class GhostCBRengine implements StandardCBRApplication {
 			MOVE a = ((GhostSolution) c.getSolution()).getAction();
 			poll.put(a, poll.getOrDefault(a, 0.) + ((GhostResult) c.getResult()).getScore() * Similaridad((GhostDescription)description, (GhostDescription) c.getDescription()));
 		}
+		//Buscar movimiento más votado
 		MOVE fin = null; 
 		Double mas = 0.0;
 		for (Entry<MOVE, Double> e : poll.entrySet()) if (e.getValue() > mas) {	fin = e.getKey(); mas = e.getValue();	}	
 		return fin;
 	}
 
-	// Obtener mï¿½s parecidos
-		private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
-			List<RetrievalResult> res = casos.parallelStream()
-					.map(c -> new RetrievalResult(c, Similaridad((GhostDescription)query.getDescription(), (GhostDescription) c.getDescription())))
-			        .collect(Collectors.toList());
-			
-			res.sort(RetrievalResult::compareTo);
-			return res;
-		}
+	private Collection<RetrievalResult> NNnuevo(Collection<CBRCase> casos, CBRQuery query) {
+		List<RetrievalResult> res = casos.parallelStream()
+				.map(c -> new RetrievalResult(c, Similaridad((GhostDescription)query.getDescription(), (GhostDescription) c.getDescription())))
+				.collect(Collectors.toList());
+
+		res.sort(RetrievalResult::compareTo);
+		return res;
+	}
 		
 
 	private Double Similaridad(GhostDescription des1, GhostDescription des2) {
@@ -145,6 +145,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 		if((des1.getTimeEdible() > 0 && des2.getTimeEdible() == 0) || (des1.getTimeEdible() == 0 && des2.getTimeEdible() > 0)) return 0.0;
 		if(des1.getNoPPills() != des1.getNoPPills()) return 0.0;
 		
+		double maxDiferencia = 0.0;
 		double similitud = 0.0;
 		
 		similitud  += Math.abs(des1.getBlinkyDistance() - des2.getBlinkyDistance()) * 0.1;
@@ -152,42 +153,24 @@ public class GhostCBRengine implements StandardCBRApplication {
 		similitud  += Math.abs(des1.getPinkyDistance() - des2.getPinkyDistance()) * 0.1;
 		similitud  += Math.abs(des1.getSueDistance() - des2.getSueDistance()) * 0.1;
 		
+		maxDiferencia += (0.4 * 500);
+		
 		similitud  += Math.abs(des1.getPacmanDBlinky() - des2.getPacmanDBlinky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDInky() - des2.getPacmanDInky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDPinky() - des2.getPacmanDPinky()) * 0.05;
 		similitud  += Math.abs(des1.getPacmanDSue() - des2.getPacmanDSue()) * 0.05;
 		
+		maxDiferencia += (0.2 * 500);
+		
 		similitud += Math.abs(des1.getScore() - des2.getScore()) * 0.1;
+		maxDiferencia += (0.1 * 1000);
 		similitud += Math.abs(des1.getPPillDistance() - des2.getPPillDistance()) * 0.1;
+		maxDiferencia += (0.1 * 500);
 		similitud += Math.abs(des1.getGhostsCloseIndex() - des2.getGhostsCloseIndex()) * 0.1;
+		maxDiferencia += (0.1 * 500);
 		similitud += Math.abs(des1.getTimeEdible() - des2.getTimeEdible())* 0.1;
-		return similitud;
-	}
-
-	private MOVE reuse(Collection<RetrievalResult> eval)
-	{
-		// This simple implementation only uses 1NN
-		// Consider using kNNs with majority voting
-		RetrievalResult first = SelectCases.selectTopKRR(eval, 1).iterator().next();
-		CBRCase mostSimilarCase = first.get_case();
-		double similarity = first.getEval();
-
-		GhostResult result = (GhostResult) mostSimilarCase.getResult();
-		GhostSolution solution = (GhostSolution) mostSimilarCase.getSolution();
-		
-		//Now compute a solution for the query
-		
-		//Here, it simply takes the action of the 1NN
-		MOVE action = solution.getAction();
-		
-		//But if not enough similarity or bad case, choose another move randomly
-		if((similarity<0.7)||(result.getScore()<100)) {
-			int index = (int)Math.floor(Math.random()*4);
-			if(MOVE.values()[index]==action) 
-				index= (index+1)%4;
-			action = MOVE.values()[index];
-		}
-		return action;
+		maxDiferencia += (0.1 * 500);
+		return 1-(similitud/maxDiferencia);
 	}
 	
 	
