@@ -34,8 +34,8 @@ public class GhostCBRengine implements StandardCBRApplication {
 	final static String TEAM = "grupo04";  //Cuidado!! poner el grupo aqu√≠
 	
 	
-	final static String CONNECTOR_FILE_PATH = "es//ucm//fdi//ici//c2223//practica5//"+TEAM+"//ghosts//plaintextconfig.xml";
-	final static String CASE_BASE_PATH = "cbrdata"+File.separator+TEAM+File.separator+"ghosts"+File.separator;
+	final static String CONNECTOR_FILE_PATH = "es/ucm/fdi/ici/c2223/practica5/"+TEAM+"/ghosts/plaintextconfig.xml";
+	final static String CASE_BASE_PATH = "data"+File.separator+TEAM+File.separator+"ghosts"+File.separator;
 
 	
 	public GhostCBRengine(GhostStorageManager storageManager, GHOST ghost)
@@ -100,7 +100,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 					index= (index+1)%4;
 				action = MOVE.values()[index];}
 
-			else if(result.getScore() <= 0) {	// Caso muy malo (A˙n siendo el m·s similar)
+			else if(result.getScore() <= 0) {	// Caso muy malo (AÔøΩn siendo el mÔøΩs similar)
 				int index = (int)Math.floor(Math.random()*4);
 				if(MOVE.values()[index]==action) 
 					index= (index+1)%4;
@@ -123,7 +123,7 @@ public class GhostCBRengine implements StandardCBRApplication {
 			encuesta.put(movimiento, encuesta.get(movimiento) + ((GhostResult) r.get_case().getResult()).getScore() 
 					* Similaridad((GhostDescription)description, (GhostDescription) r.get_case().getDescription()));
 		}
-		//Buscar movimiento m·s votado
+		//Buscar movimiento mÔøΩs votado
 		MOVE fin = null; 
 		Double mas = 0.0;
 		for (Entry<MOVE, Double> par : encuesta.entrySet()) 
