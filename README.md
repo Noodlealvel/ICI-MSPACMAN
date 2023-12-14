@@ -1,4 +1,4 @@
-<h1>**Intelligent Behaviours Engineering**</h1>
+<h1>Intelligent Behaviours Engineering</h1>
 Project for control of MsPacMan and its Ghosts with symbolic AI techniques, such as:
 
 <ul>
