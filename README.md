@@ -11,7 +11,7 @@ Project for control of MsPacMan and its Ghosts with symbolic AI techniques, such
 
 **List of Authors:**
 
-Pablo Pardos Medem
-Álvaro Velasco
-Marta Gómez
+Pablo Pardos Medem <br/>
+Álvaro Velasco <br/>
+Marta Gómez <br/>
 David Gabilantes
